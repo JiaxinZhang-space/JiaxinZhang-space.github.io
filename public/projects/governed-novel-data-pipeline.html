@@ -1,0 +1,2079 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Governed Novel Data Pipeline｜张佳欣作品集</title>
+    <meta
+      name="description"
+      content="张佳欣的 AI 数据工程作品集：从三人私有 AI 小说项目中的权利、伪验证与评测耦合事故出发，独立重建并公开发布 100% 合成、可复核的数据治理 Demo。"
+    >
+    <link rel="canonical" href="https://jiaxinzhang-space.github.io/projects/governed-novel-data-pipeline.html">
+    <link rel="icon" href="../favicon.svg" type="image/svg+xml">
+    <meta name="theme-color" content="#10231d">
+    <meta property="og:type" content="article">
+    <meta property="og:locale" content="zh_CN">
+    <meta property="og:site_name" content="张佳欣的技术作品集">
+    <meta property="og:title" content="Governed Novel Data Pipeline｜张佳欣作品集">
+    <meta property="og:description" content="从权利、伪验证与评测耦合问题出发，公开发布 100% 合成、可复核的数据治理 Demo。">
+    <meta property="og:url" content="https://jiaxinzhang-space.github.io/projects/governed-novel-data-pipeline.html">
+    <meta property="og:image" content="https://jiaxinzhang-space.github.io/og-cover.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <style>
+      :root {
+        --bg: #f7f3ea;
+        --surface: #fffdf8;
+        --surface-strong: #f0eadf;
+        --ink: #1f211d;
+        --muted: #5f6359;
+        --line: #d8d2c4;
+        --green: #1f5c45;
+        --green-dark: #10231d;
+        --green-soft: rgba(31, 92, 69, 0.1);
+        --amber: #b7791f;
+        --amber-soft: #f3dfb7;
+        --radius: 8px;
+        --content: 1360px;
+        --shadow: 0 16px 40px rgba(32, 34, 29, 0.08);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        margin: 0;
+        background:
+          linear-gradient(90deg, rgba(31, 92, 69, 0.045) 1px, transparent 1px),
+          linear-gradient(rgba(31, 92, 69, 0.035) 1px, transparent 1px),
+          var(--bg);
+        background-size: 56px 56px;
+        color: var(--ink);
+        font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        font-size: clamp(16px, 1.04vw, 18px);
+        line-height: 1.65;
+      }
+
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
+
+      a:focus-visible {
+        outline: 3px solid rgba(183, 121, 31, 0.55);
+        outline-offset: 3px;
+      }
+
+      .site-header {
+        position: sticky;
+        top: 0;
+        z-index: 20;
+        border-bottom: 1px solid rgba(216, 210, 196, 0.82);
+        background: rgba(247, 243, 234, 0.94);
+        backdrop-filter: blur(12px);
+      }
+
+      .nav {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        width: min(100% - 32px, var(--content));
+        min-height: 70px;
+        margin: 0 auto;
+        gap: 20px;
+      }
+
+      .brand {
+        display: inline-grid;
+        grid-template-columns: 40px auto;
+        align-items: center;
+        gap: 12px;
+        min-width: max-content;
+        font-weight: 750;
+      }
+
+      .brand-mark {
+        display: grid;
+        width: 40px;
+        height: 40px;
+        place-items: center;
+        border: 1px solid var(--green);
+        border-radius: var(--radius);
+        background: var(--green-dark);
+        color: var(--amber-soft);
+        font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
+        font-size: 15px;
+      }
+
+      .brand small {
+        display: block;
+        color: var(--muted);
+        font-size: 15px;
+        font-weight: 500;
+      }
+
+      .nav-links {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: flex-end;
+        gap: 8px;
+      }
+
+      .nav-links a,
+      .button {
+        min-height: 48px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 6px;
+        font-size: clamp(15px, 0.95vw, 16px);
+        font-weight: 750;
+      }
+
+      .nav-links a {
+        padding: 0 12px;
+        color: var(--muted);
+        font-size: clamp(15px, 0.95vw, 16px);
+      }
+
+      .nav-links a:hover {
+        background: rgba(31, 92, 69, 0.08);
+        color: var(--ink);
+      }
+
+      main {
+        overflow: clip;
+      }
+
+      .section {
+        width: min(100% - 32px, var(--content));
+        margin: 0 auto;
+        padding: 74px 0;
+      }
+
+      .hero {
+        display: grid;
+        grid-template-columns: minmax(0, 0.92fr) minmax(320px, 0.58fr);
+        gap: 42px;
+        align-items: center;
+        min-height: calc(92dvh - 70px);
+        padding-top: 52px;
+      }
+
+      .hero > * {
+        min-width: 0;
+      }
+
+      .eyebrow {
+        display: inline-flex;
+        align-items: center;
+        width: fit-content;
+        min-height: 32px;
+        padding: 0 10px;
+        border: 1px solid var(--line);
+        border-radius: 999px;
+        background: rgba(255, 253, 248, 0.76);
+        color: var(--green);
+        font-size: 13px;
+        font-weight: 800;
+        text-transform: uppercase;
+      }
+
+      h1,
+      h2,
+      h3,
+      p {
+        margin-top: 0;
+      }
+
+      h1 {
+        max-width: 880px;
+        margin: 20px 0 22px;
+        font-size: clamp(38px, 6.4vw, 76px);
+        line-height: 1.02;
+        letter-spacing: 0;
+        overflow-wrap: anywhere;
+      }
+
+      h2 {
+        margin-bottom: 14px;
+        font-size: clamp(28px, 4vw, 46px);
+        line-height: 1.08;
+        letter-spacing: 0;
+      }
+
+      h3 {
+        margin-bottom: 10px;
+        font-size: 24px;
+        line-height: 1.2;
+      }
+
+      .lead {
+        max-width: 780px;
+        color: var(--muted);
+        font-size: clamp(18px, 1.45vw, 24px);
+        overflow-wrap: anywhere;
+      }
+
+      .section-intro {
+        max-width: 100%;
+        margin-bottom: 28px;
+        color: var(--muted);
+        font-size: clamp(17px, 1.1vw, 19px);
+      }
+
+      .hero-actions,
+      .repo-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+        margin-top: 28px;
+      }
+
+      .repo-actions {
+        margin-top: 16px;
+      }
+
+      .button {
+        padding: 0 18px;
+        border: 1px solid var(--green);
+        color: var(--green);
+        transition: transform 180ms ease, background 180ms ease, color 180ms ease;
+      }
+
+      .button.primary {
+        background: var(--green);
+        color: #fffdf8;
+      }
+
+      .button:hover {
+        transform: translateY(-2px);
+      }
+
+      .hero-panel,
+      .card,
+      .metric,
+      .flow-step,
+      .project-figure,
+      .run-box,
+      .summary-box {
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        background: rgba(255, 253, 248, 0.86);
+        box-shadow: 0 1px 0 rgba(255, 255, 255, 0.7) inset;
+      }
+
+      .hero-panel {
+        padding: 22px;
+      }
+
+      .hero-panel strong {
+        color: var(--green-dark);
+        font-size: 20px;
+      }
+
+      .scope-note {
+        margin: 18px 0 0;
+        padding: 16px;
+        border-left: 4px solid var(--amber);
+        background: rgba(243, 223, 183, 0.28);
+        color: var(--muted);
+        font-size: clamp(17px, 1.1vw, 19px);
+        line-height: 1.7;
+      }
+
+      .metric-grid,
+      .problem-grid,
+      .engineering-grid,
+      .validation-copy,
+      .limits-grid,
+      .flow-grid,
+      .figure-grid {
+        display: grid;
+        gap: 16px;
+      }
+
+      .metric-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        margin-top: 18px;
+      }
+
+      .problem-grid,
+      .flow-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+
+      .engineering-grid,
+      .limits-grid,
+      .figure-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .validation-layout {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) minmax(320px, 0.68fr);
+        gap: 16px;
+        align-items: start;
+      }
+
+      .metric,
+      .card,
+      .flow-step,
+      .run-box,
+      .summary-box {
+        padding: 22px;
+      }
+
+      .metric strong {
+        display: block;
+        margin-bottom: 6px;
+        color: var(--green-dark);
+        font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        font-size: clamp(32px, 2vw, 36px);
+        font-weight: 800;
+        font-variant-numeric: tabular-nums;
+        line-height: 1;
+      }
+
+      .metric span,
+      .card p,
+      .flow-step p,
+      .summary-box p {
+        color: var(--muted);
+      }
+
+      .metric span {
+        font-size: clamp(16px, 1vw, 18px);
+        font-weight: 500;
+      }
+
+      .hero-actions .button {
+        width: 160px;
+      }
+
+      .card ul,
+      .summary-box ul {
+        display: grid;
+        gap: 9px;
+        margin: 14px 0 0;
+        padding: 0;
+        list-style: none;
+      }
+
+      .card li,
+      .summary-box li {
+        color: var(--muted);
+      }
+
+      .card li strong,
+      .summary-box li strong {
+        color: var(--green-dark);
+      }
+
+      .flow-step small {
+        display: inline-grid;
+        width: 32px;
+        height: 32px;
+        margin-bottom: 14px;
+        place-items: center;
+        border-radius: 50%;
+        background: var(--green-dark);
+        color: var(--amber-soft);
+        font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
+        font-weight: 800;
+      }
+
+      .pipeline-line {
+        margin: 24px 0 0;
+        padding: 18px;
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        background: var(--green-dark);
+        color: #f8edd7;
+        font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
+        font-size: 15px;
+        line-height: 1.75;
+      }
+
+      .project-figure {
+        margin: 30px 0 0;
+        overflow: hidden;
+        box-shadow: var(--shadow);
+      }
+
+      .project-figure a {
+        display: block;
+      }
+
+      .project-figure img {
+        display: block;
+        width: 100%;
+        height: auto;
+        background: var(--surface-strong);
+      }
+
+      .project-figure figcaption {
+        padding: 12px 16px;
+        border-top: 1px solid var(--line);
+        color: var(--muted);
+        font-size: 15px;
+      }
+
+      .figure-grid {
+        margin-top: 30px;
+      }
+
+      .figure-grid .project-figure {
+        margin: 0;
+      }
+
+      .validation-layout .project-figure {
+        margin: 0;
+      }
+
+      .validation-note {
+        grid-column: 1 / -1;
+        margin: 0;
+        padding: 12px 16px;
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        background: rgba(255, 253, 248, 0.78);
+        color: var(--muted);
+      }
+
+      @media (min-width: 901px) {
+        .validation-note {
+          white-space: nowrap;
+        }
+      }
+
+      .data-table {
+        overflow-x: auto;
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        background: rgba(255, 253, 248, 0.86);
+      }
+
+      table {
+        width: 100%;
+        min-width: 720px;
+        border-collapse: collapse;
+      }
+
+      th,
+      td {
+        padding: 14px 16px;
+        border-bottom: 1px solid var(--line);
+        text-align: left;
+        vertical-align: top;
+      }
+
+      th {
+        background: var(--surface-strong);
+        color: var(--green-dark);
+        font-size: 13px;
+      }
+
+      td {
+        color: var(--muted);
+      }
+
+      tr:last-child td {
+        border-bottom: 0;
+      }
+
+      code,
+      pre {
+        font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
+      }
+
+      pre {
+        overflow-x: auto;
+        margin: 14px 0 0;
+        padding: 18px;
+        border-radius: var(--radius);
+        background: var(--green-dark);
+        color: #f8edd7;
+        line-height: 1.7;
+      }
+
+      .summary-box {
+        background:
+          linear-gradient(135deg, rgba(31, 92, 69, 0.08), transparent 42%),
+          rgba(255, 253, 248, 0.86);
+      }
+
+      footer {
+        width: min(100% - 32px, var(--content));
+        margin: 0 auto;
+        padding: 28px 0 48px;
+        border-top: 1px solid var(--line);
+        color: var(--muted);
+        font-size: 15px;
+      }
+
+      @media (max-width: 900px) {
+        .nav {
+          align-items: flex-start;
+          flex-direction: column;
+          padding: 14px 0;
+          gap: 10px;
+        }
+
+        .nav-links {
+          justify-content: flex-start;
+        }
+
+        .hero,
+        .problem-grid,
+        .engineering-grid,
+        .validation-layout,
+        .limits-grid,
+        .flow-grid,
+        .figure-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .hero {
+          min-height: auto;
+          padding-top: 44px;
+        }
+      }
+
+      @media (max-width: 560px) {
+        .section,
+        .nav,
+        footer {
+          width: min(100% - 24px, var(--content));
+        }
+
+        .section {
+          padding: 56px 0;
+        }
+
+        h1 {
+          max-width: 100%;
+          font-size: clamp(27px, 7.5vw, 30px);
+          line-height: 1.08;
+          word-break: break-all;
+        }
+
+        .lead {
+          max-width: 100%;
+          font-size: 17px;
+          word-break: break-all;
+        }
+
+        .metric-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        *,
+        *::before,
+        *::after {
+          scroll-behavior: auto !important;
+          transition: none !important;
+        }
+      }
+
+      .skip-link {
+        position: fixed;
+        top: 10px;
+        left: 10px;
+        z-index: 100;
+        padding: 10px 14px;
+        border-radius: 6px;
+        background: var(--green-dark);
+        color: #fffdf8;
+        transform: translateY(-160%);
+      }
+
+      .skip-link:focus {
+        transform: translateY(0);
+      }
+
+      .section[id] {
+        scroll-margin-top: 92px;
+      }
+
+      .hero {
+        align-items: start;
+        min-height: auto;
+        padding-top: 76px;
+        padding-bottom: 86px;
+      }
+
+      .hero h1 {
+        max-width: 920px;
+        font-size: clamp(42px, 6.1vw, 78px);
+        overflow-wrap: anywhere;
+        word-break: normal;
+      }
+
+      .hero-subtitle {
+        max-width: 760px;
+        margin: -6px 0 18px;
+        color: var(--green-dark);
+        font-size: clamp(23px, 2.2vw, 34px);
+        font-weight: 800;
+        line-height: 1.2;
+      }
+
+      .hero .lead {
+        max-width: 820px;
+        font-size: clamp(17px, 1.25vw, 21px);
+        overflow-wrap: anywhere;
+        word-break: normal;
+      }
+
+      .hero-actions .button {
+        width: auto;
+        min-width: 150px;
+      }
+
+      .snapshot {
+        display: block;
+        margin-top: 4px;
+        color: var(--green);
+        font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
+        font-size: 13px;
+        font-weight: 800;
+        overflow-wrap: anywhere;
+      }
+
+      .metric small,
+      .audit-stat small,
+      .output-card small,
+      .proof-card small {
+        display: block;
+        margin-bottom: 8px;
+        color: var(--green);
+        font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
+        font-size: 11px;
+        font-weight: 850;
+        letter-spacing: 0.04em;
+        line-height: 1.35;
+        text-transform: uppercase;
+      }
+
+      .metric {
+        min-height: 132px;
+      }
+
+      .metric span {
+        line-height: 1.45;
+      }
+
+      .boundary-strip {
+        margin-top: 18px;
+        padding: 16px 18px;
+        border: 1px solid rgba(31, 92, 69, 0.22);
+        border-radius: var(--radius);
+        background: rgba(223, 233, 223, 0.54);
+        color: var(--green-dark);
+        font-size: 15px;
+        line-height: 1.65;
+      }
+
+      .section-kicker {
+        display: block;
+        margin-bottom: 10px;
+        color: var(--green);
+        font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
+        font-size: 13px;
+        font-weight: 850;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+      }
+
+      .intro-grid,
+      .contrast-grid,
+      .decision-grid,
+      .limits-grid,
+      .role-grid,
+      .proof-grid,
+      .evidence-grid {
+        display: grid;
+        gap: 16px;
+      }
+
+      .intro-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+
+      .intro-grid .card {
+        min-height: 250px;
+      }
+
+      .context-bridge {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 16px;
+        margin: 28px 0 34px;
+      }
+
+      .context-card {
+        min-height: 245px;
+        padding: 24px;
+        border: 1px solid var(--line);
+        border-top: 5px solid var(--amber);
+        border-radius: var(--radius);
+        background:
+          linear-gradient(145deg, rgba(243, 223, 183, 0.24), transparent 58%),
+          rgba(255, 253, 248, 0.9);
+      }
+
+      .context-card.public {
+        border-top-color: var(--green);
+        background:
+          linear-gradient(145deg, rgba(31, 92, 69, 0.11), transparent 58%),
+          rgba(255, 253, 248, 0.9);
+      }
+
+      .context-label {
+        display: block;
+        margin-bottom: 12px;
+        color: var(--green);
+        font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
+        font-size: 11px;
+        font-weight: 850;
+        letter-spacing: 0.045em;
+        line-height: 1.45;
+        text-transform: uppercase;
+      }
+
+      .context-card.private .context-label {
+        color: #8a5c18;
+      }
+
+      .context-card h3 {
+        font-size: clamp(21px, 2vw, 27px);
+      }
+
+      .context-card p {
+        margin-bottom: 0;
+        color: var(--muted);
+      }
+
+      .context-note {
+        grid-column: 1 / -1;
+        margin: 0;
+        padding: 16px 18px;
+        border-left: 4px solid var(--green);
+        background: rgba(31, 92, 69, 0.08);
+        color: var(--green-dark);
+        font-weight: 750;
+        line-height: 1.65;
+      }
+
+      .subsection-title {
+        margin: 0 0 16px;
+        color: var(--green-dark);
+        font-size: clamp(22px, 2.4vw, 30px);
+      }
+
+      .workbench-title {
+        margin-top: 34px;
+      }
+
+      .failure-quote {
+        margin: 30px 0;
+        padding: clamp(24px, 4vw, 44px);
+        border: 1px solid rgba(255, 255, 255, 0.18);
+        border-radius: var(--radius);
+        background:
+          linear-gradient(135deg, rgba(183, 121, 31, 0.22), transparent 46%),
+          var(--green-dark);
+        color: #fffdf8;
+        box-shadow: var(--shadow);
+      }
+
+      .failure-quote p {
+        max-width: 980px;
+        margin-bottom: 10px;
+        font-size: clamp(27px, 4.2vw, 54px);
+        font-weight: 850;
+        line-height: 1.08;
+      }
+
+      .failure-quote span {
+        color: #d9e4dd;
+        font-size: 16px;
+      }
+
+      .contrast-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .contrast-card {
+        position: relative;
+        min-height: 290px;
+        padding: 24px;
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        background: rgba(255, 253, 248, 0.86);
+      }
+
+      .contrast-card.pass {
+        border-top: 5px solid var(--green);
+      }
+
+      .contrast-card.fail {
+        border-top: 5px solid var(--amber);
+      }
+
+      .contrast-card ul {
+        display: grid;
+        gap: 10px;
+        margin: 18px 0 0;
+        padding: 0;
+        color: var(--muted);
+        list-style: none;
+      }
+
+      .audit-stats,
+      .output-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 14px;
+        margin-top: 22px;
+      }
+
+      .audit-stat,
+      .output-card,
+      .proof-card {
+        padding: 20px;
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        background: rgba(255, 253, 248, 0.86);
+      }
+
+      .audit-stat strong,
+      .output-card strong,
+      .proof-card strong {
+        display: block;
+        margin-bottom: 8px;
+        color: var(--green-dark);
+        font-size: clamp(29px, 3vw, 40px);
+        font-variant-numeric: tabular-nums;
+        line-height: 1;
+      }
+
+      .audit-stat span,
+      .output-card span,
+      .proof-card span {
+        color: var(--muted);
+        line-height: 1.5;
+      }
+
+      .timeline {
+        display: grid;
+        margin-top: 18px;
+      }
+
+      .timeline-heading {
+        margin: 42px 0 8px;
+        color: var(--green-dark);
+        font-size: clamp(24px, 3vw, 36px);
+      }
+
+      .timeline-item {
+        position: relative;
+        display: grid;
+        grid-template-columns: 150px minmax(0, 1fr);
+        gap: 18px;
+        padding: 0 0 28px 30px;
+        border-left: 1px solid var(--line);
+      }
+
+      .timeline-item::before {
+        content: "";
+        position: absolute;
+        top: 8px;
+        left: -6px;
+        width: 11px;
+        height: 11px;
+        border-radius: 50%;
+        background: var(--green);
+        box-shadow: 0 0 0 5px var(--bg);
+      }
+
+      .timeline-item:last-child {
+        padding-bottom: 0;
+        border-left-color: transparent;
+      }
+
+      .timeline-item time {
+        color: var(--green);
+        font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
+        font-size: 13px;
+        font-weight: 850;
+        line-height: 1.5;
+        overflow-wrap: anywhere;
+        text-transform: uppercase;
+      }
+
+      .timeline-item .card {
+        padding: 18px 20px;
+      }
+
+      .timeline-item h3 {
+        font-size: 20px;
+      }
+
+      .timeline-item p {
+        margin-bottom: 0;
+      }
+
+      .responsibility-grid {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 14px;
+        margin-bottom: 24px;
+      }
+
+      .responsibility-card {
+        min-height: 230px;
+        padding: 20px;
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        background: rgba(255, 253, 248, 0.86);
+      }
+
+      .responsibility-card b {
+        display: grid;
+        width: 38px;
+        height: 38px;
+        margin-bottom: 16px;
+        place-items: center;
+        border-radius: 50%;
+        background: var(--green-dark);
+        color: var(--amber-soft);
+        font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
+      }
+
+      .responsibility-card p {
+        margin-bottom: 0;
+        color: var(--muted);
+      }
+
+      .responsibility-card > small {
+        display: block;
+        margin-bottom: 8px;
+        color: var(--green);
+        font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
+        font-size: 11px;
+        font-weight: 750;
+        letter-spacing: 0.05em;
+      }
+
+      .architecture-board {
+        padding: 22px;
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        background: rgba(255, 253, 248, 0.72);
+        box-shadow: var(--shadow);
+      }
+
+      .architecture-flow {
+        display: grid;
+        grid-template-columns: repeat(6, minmax(0, 1fr));
+        gap: 10px;
+      }
+
+      .arch-step {
+        position: relative;
+        min-height: 150px;
+        padding: 16px;
+        border: 1px solid var(--line);
+        border-radius: 6px;
+        background: var(--surface);
+      }
+
+      .arch-step::after {
+        content: "→";
+        position: absolute;
+        top: 50%;
+        right: -10px;
+        z-index: 2;
+        width: 20px;
+        color: var(--green);
+        font-weight: 900;
+        text-align: center;
+        transform: translateY(-50%);
+      }
+
+      .arch-step:last-child::after {
+        display: none;
+      }
+
+      .arch-step small {
+        color: var(--green);
+        font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
+        font-weight: 850;
+      }
+
+      .arch-step h3 {
+        margin: 14px 0 8px;
+        font-size: 17px;
+      }
+
+      .arch-step p {
+        margin-bottom: 0;
+        color: var(--muted);
+        font-size: 14px;
+        line-height: 1.55;
+      }
+
+      .branch-grid,
+      .control-grid {
+        display: grid;
+        gap: 10px;
+        margin-top: 12px;
+      }
+
+      .branch-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+
+      .control-grid {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        padding-top: 12px;
+        border-top: 1px dashed var(--line);
+      }
+
+      .branch-card,
+      .control-card {
+        padding: 14px 16px;
+        border-radius: 6px;
+        text-align: center;
+      }
+
+      .branch-card {
+        border: 1px solid rgba(31, 92, 69, 0.24);
+        background: rgba(223, 233, 223, 0.66);
+        color: var(--green-dark);
+        font-weight: 800;
+      }
+
+      .control-card {
+        border: 1px solid rgba(183, 121, 31, 0.28);
+        background: rgba(243, 223, 183, 0.28);
+        color: var(--ink);
+        font-size: 14px;
+        font-weight: 750;
+      }
+
+      .architecture-caption {
+        margin: 16px 0 0;
+        color: var(--muted);
+        font-size: 14px;
+      }
+
+      .funnel {
+        display: grid;
+        gap: 12px;
+        margin: 26px 0;
+        padding: 22px;
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        background: rgba(255, 253, 248, 0.76);
+      }
+
+      .funnel-row {
+        display: grid;
+        grid-template-columns: 170px minmax(0, 1fr) 90px;
+        align-items: center;
+        gap: 14px;
+      }
+
+      .funnel-label {
+        color: var(--ink);
+        font-weight: 800;
+      }
+
+      .funnel-track {
+        height: 34px;
+        overflow: hidden;
+        border: 1px solid var(--line);
+        border-radius: 5px;
+        background: var(--surface-strong);
+      }
+
+      .funnel-fill {
+        display: flex;
+        height: 100%;
+        align-items: center;
+        padding-left: 12px;
+        background: var(--green);
+        color: #fffdf8;
+        font-size: 12px;
+        font-weight: 800;
+        white-space: nowrap;
+      }
+
+      .funnel-value {
+        color: var(--green-dark);
+        font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
+        font-size: 26px;
+        font-weight: 850;
+        text-align: right;
+      }
+
+      .reject-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 10px;
+      }
+
+      .reject-note {
+        padding: 13px 15px;
+        border: 1px dashed var(--line);
+        border-radius: 6px;
+        color: var(--muted);
+        font-size: 14px;
+      }
+
+      .output-grid {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+      }
+
+      .proof-grid {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        margin-top: 16px;
+      }
+
+      .proof-card strong {
+        font-size: clamp(23px, 2.2vw, 32px);
+      }
+
+      .decision-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .decision-card {
+        min-height: 270px;
+        padding: 24px;
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        background: rgba(255, 253, 248, 0.86);
+      }
+
+      .decision-card .decision-index {
+        display: inline-flex;
+        min-height: 28px;
+        align-items: center;
+        padding: 0 9px;
+        border-radius: 999px;
+        background: var(--green-soft);
+        color: var(--green);
+        font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
+        font-size: 12px;
+        font-weight: 850;
+      }
+
+      .decision-card h3 {
+        margin-top: 18px;
+      }
+
+      .decision-card p {
+        margin-bottom: 0;
+        color: var(--muted);
+      }
+
+      .plan-banner {
+        margin-bottom: 22px;
+        padding: 14px 18px;
+        border: 1px solid rgba(183, 121, 31, 0.32);
+        border-radius: var(--radius);
+        background: rgba(243, 223, 183, 0.3);
+        color: var(--ink);
+        font-weight: 750;
+      }
+
+      .role-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+
+      .role-grid .card {
+        min-height: 260px;
+      }
+
+      .workbench-flow {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 10px;
+        margin-top: 24px;
+      }
+
+      .work-step {
+        min-height: 130px;
+        padding: 16px;
+        border: 1px solid var(--line);
+        border-radius: 6px;
+        background: rgba(255, 253, 248, 0.82);
+      }
+
+      .work-step small {
+        color: var(--green);
+        font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
+        font-weight: 850;
+      }
+
+      .work-step strong {
+        display: block;
+        margin-top: 10px;
+        color: var(--green-dark);
+        line-height: 1.35;
+      }
+
+      .project-context-note {
+        display: grid;
+        gap: 8px;
+        margin: 0 0 24px;
+        padding: 18px 20px;
+        border: 1px solid rgba(183, 121, 31, 0.26);
+        border-left: 4px solid var(--amber);
+        border-radius: var(--radius);
+        background: rgba(243, 223, 183, 0.2);
+        color: var(--muted);
+      }
+
+      .project-context-note strong {
+        color: #8a5c18;
+        font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
+        font-size: 12px;
+        letter-spacing: 0.045em;
+      }
+
+      .stop-rule {
+        margin-top: 22px;
+        padding: 24px;
+        border-radius: var(--radius);
+        background: var(--green-dark);
+        color: #fffdf8;
+      }
+
+      .stop-rule small {
+        color: var(--amber-soft);
+        font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
+        font-weight: 850;
+      }
+
+      .stop-rule p {
+        max-width: 1040px;
+        margin: 12px 0 0;
+        font-size: clamp(18px, 1.6vw, 24px);
+        line-height: 1.55;
+      }
+
+      .evidence-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+
+      .evidence-card {
+        display: flex;
+        min-height: 190px;
+        flex-direction: column;
+        padding: 20px;
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        background: rgba(255, 253, 248, 0.86);
+        transition: transform 180ms ease, border-color 180ms ease;
+      }
+
+      .evidence-card:hover {
+        border-color: rgba(31, 92, 69, 0.42);
+        transform: translateY(-2px);
+      }
+
+      .evidence-card small {
+        color: var(--green);
+        font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
+        font-size: 12px;
+        font-weight: 850;
+      }
+
+      .evidence-card h3 {
+        margin: 14px 0 8px;
+        font-size: 20px;
+      }
+
+      .evidence-card p {
+        margin-bottom: 16px;
+        color: var(--muted);
+        font-size: 15px;
+      }
+
+      .evidence-card span {
+        margin-top: auto;
+        color: var(--green);
+        font-weight: 850;
+      }
+
+      .limits-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .limits-grid .card {
+        min-height: 280px;
+      }
+
+      .fine-print {
+        margin-top: 22px;
+        padding: 16px 18px;
+        border-left: 4px solid var(--amber);
+        background: rgba(243, 223, 183, 0.22);
+        color: var(--muted);
+        font-size: 14px;
+      }
+
+      @media (max-width: 1120px) {
+        .architecture-flow {
+          grid-template-columns: repeat(3, minmax(0, 1fr));
+        }
+
+        .arch-step:nth-child(3)::after,
+        .arch-step:last-child::after {
+          display: none;
+        }
+
+        .proof-grid,
+        .output-grid,
+        .workbench-flow {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+      }
+
+      @media (max-width: 900px) {
+        .context-bridge,
+        .intro-grid,
+        .contrast-grid,
+        .responsibility-grid,
+        .decision-grid,
+        .role-grid,
+        .evidence-grid,
+        .limits-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .audit-stats {
+          grid-template-columns: repeat(3, minmax(0, 1fr));
+        }
+
+        .timeline-item {
+          grid-template-columns: 120px minmax(0, 1fr);
+        }
+      }
+
+      @media (max-width: 640px) {
+        .brand {
+          width: 100%;
+          min-width: 0;
+          grid-template-columns: 40px minmax(0, 1fr);
+        }
+
+        .brand > span,
+        .brand small {
+          min-width: 0;
+          overflow-wrap: anywhere;
+        }
+
+        .hero h1,
+        .hero .lead {
+          overflow-wrap: anywhere;
+          word-break: normal;
+        }
+
+        .hero h1 {
+          font-size: clamp(31px, 10.2vw, 43px);
+        }
+
+        .hero-subtitle {
+          font-size: 22px;
+        }
+
+        .audit-stats,
+        .output-grid,
+        .proof-grid,
+        .branch-grid,
+        .control-grid,
+        .workbench-flow,
+        .reject-grid,
+        .architecture-flow {
+          grid-template-columns: 1fr;
+        }
+
+        .arch-step::after {
+          content: "↓";
+          top: auto;
+          right: 50%;
+          bottom: -20px;
+          transform: translateX(50%);
+        }
+
+        .arch-step:nth-child(3)::after {
+          display: block;
+        }
+
+        .timeline-item {
+          grid-template-columns: 1fr;
+          gap: 8px;
+          padding-left: 22px;
+        }
+
+        .funnel-row {
+          grid-template-columns: 1fr;
+          gap: 8px;
+        }
+
+        .funnel-value {
+          text-align: left;
+        }
+
+        .funnel-track {
+          height: 32px;
+        }
+
+        pre {
+          white-space: pre-wrap;
+          overflow-wrap: anywhere;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <a class="skip-link" href="#main-content">跳到正文</a>
+
+    <header class="site-header">
+      <nav class="nav" aria-label="项目页导航">
+        <a class="brand" href="../index.html#top" aria-label="返回张佳欣作品集首页">
+          <span class="brand-mark">P03</span>
+          <span>
+            Governed Novel Pipeline
+            <small>Synthetic AI data governance portfolio project</small>
+          </span>
+        </a>
+        <div class="nav-links">
+          <a href="#background">背景</a>
+          <a href="#incident">事故</a>
+          <a href="#architecture">架构</a>
+          <a href="#validation">验证</a>
+          <a href="#decisions">决策</a>
+          <a href="#limits">边界</a>
+          <a href="../index.html#projects">返回作品集</a>
+        </div>
+      </nav>
+    </header>
+
+    <main id="main-content">
+      <section class="section hero" id="top" aria-labelledby="project-title">
+        <div>
+          <span class="eyebrow">P03 · AI DATA ENGINEERING · SYNTHETIC DEMO</span>
+          <h1 id="project-title">Governed Novel Data Pipeline</h1>
+          <p class="hero-subtitle">从“伪精确文学特征”到可审计 AI 数据管道</p>
+          <p class="lead">
+            2025 年 6 月，我与一名算法工程师和一名内容编辑开始筹备私有 AI 小说创作工作台；后续我把项目中暴露的权利、标签真值、评测隔离和版本治理问题，独立重建为这套 100% 合成、可公开复核的数据管道。
+          </p>
+          <div class="hero-actions">
+            <a class="button primary" href="https://github.com/JiaxinZhang-space/novel-ai-data-pipeline" target="_blank" rel="noopener">查看 GitHub</a>
+            <a class="button" href="https://github.com/JiaxinZhang-space/novel-ai-data-pipeline/releases/tag/v0.1.0-demo" target="_blank" rel="noopener">查看 Release</a>
+            <a class="button" href="#evidence">查看证据</a>
+          </div>
+          <div class="boundary-strip">
+            真实项目提供问题背景，公开 Demo 提供可审计的工程证据；两者不是同一份数据，也不是同一套代码。公开仓库不含私有项目的代码、小说、日志、配置、提示词、合同或经营记录。
+          </div>
+        </div>
+
+        <aside class="hero-panel" aria-label="固定 Release 的项目验证指标">
+          <strong>Evidence snapshot</strong>
+          <span class="snapshot">v0.1.0-demo · b19b3b5d9aa78715fbb65218a3438516d901b87b</span>
+          <p class="scope-note">
+            页面中的数据量全部属于固定合成回归样例，不代表真实业务规模、模型效果或生产吞吐。
+          </p>
+          <div class="metric-grid">
+            <div class="metric">
+              <small>SYNTHETIC DEMO</small>
+              <strong>27 → 20</strong>
+              <span>原始记录 → 最终唯一作品</span>
+            </div>
+            <div class="metric">
+              <small>SYNTHETIC DEMO BUILD</small>
+              <strong>17/17</strong>
+              <span>自动化测试通过</span>
+            </div>
+            <div class="metric">
+              <small>SYNTHETIC DEMO SPLIT</small>
+              <strong>0 / 0 / 0</strong>
+              <span>作者 / 作品 / 正文哈希跨集合重叠</span>
+            </div>
+            <div class="metric">
+              <small>SYNTHETIC DEMO ARTIFACTS</small>
+              <strong>23</strong>
+              <span>受管构建文件 SHA-256 校验通过</span>
+            </div>
+          </div>
+        </aside>
+      </section>
+
+      <section class="section" id="background" aria-labelledby="background-title">
+        <span class="section-kicker">01 / Background</span>
+        <h2 id="background-title">真实项目起点：三人协作的私有小说创作工作台</h2>
+        <p class="section-intro">
+          项目在 2025 年 6 月筹备、7 月进入开发。我们希望把选题、素材、大纲、正文、润色和评价串成一套私有工作台：算法工程师负责模型调用与工作流，编辑负责内容规则与最终验收，我负责采集、清洗、数据库、向量检索，并在后期主导数据审计与治理重构。
+        </p>
+
+        <div class="context-bridge" aria-label="私有真实项目与公开合成 Demo 的边界">
+          <article class="context-card private">
+            <span class="context-label">PRIVATE PROJECT · REAL CONTEXT</span>
+            <h3>真实项目：问题从哪里来</h3>
+            <p>
+              三人合作的私有 AI 小说项目暴露了权利追溯、语义验证、编辑瓶颈、重试恢复、版本管理和模型替换等真实问题。相关代码、小说、日志、提示词、合同和经营记录不进入公开仓库。
+            </p>
+          </article>
+          <article class="context-card public">
+            <span class="context-label">PUBLIC REPOSITORY · 100% SYNTHETIC DEMO</span>
+            <h3>公开作品：如何证明我会解决</h3>
+            <p>
+              我基于上述事故独立重建了训练前数据治理 Demo。所有公开数据 100% 合成；页面中的可复现指标只来自固定 Release，不代表私有项目规模或业务结果。
+            </p>
+          </article>
+          <p class="context-note">
+            真实项目提供可解释的问题链，公开 Demo 提供可复核的实现链。二者在页面中并列说明，但资产边界始终分开。
+          </p>
+        </div>
+
+        <h3 class="subsection-title">为什么不能直接训练</h3>
+        <div class="intro-grid">
+          <article class="card">
+            <h3>字段合同发生漂移</h3>
+            <p>
+              我对照早期字段说明、数据库表和分析模块后发现，“12 维文学特征”存在三套不同定义。实际更接近 11 个核心维度加扩展字段；第 12 维“爆款等级”缺少真实平台结果数据，无法建立可靠标签。
+            </p>
+          </article>
+          <article class="card">
+            <h3>文学语义被过度规则化</h3>
+            <p>
+              钩子、反转和情绪递进主要依赖关键词、词典与模板。它们可以寻找表面信号，却难以判断反讽、冷幽默和字面含义与真实意图相反的表达。
+            </p>
+          </article>
+          <article class="card">
+            <h3>生成与评审没有解耦</h3>
+            <p>
+              同类模型服务同时参与生成和评价，缺少独立金标、盲评与校准。部分模型评价虽然被保存，却没有进入最终门禁，实际通过条件仍主要依赖表面格式规则。
+            </p>
+          </article>
+        </div>
+
+        <div class="boundary-strip">
+          我的角色：早期负责数据采集、清洗、数据库、向量检索和文学特征工程；发现问题后主导数据审计与治理重构。公开仓库由我独立设计、实现和发布。我使用 AI 辅助开发，但对数据边界、工程设计、验证结果和最终发布负责。
+        </div>
+      </section>
+
+      <section class="section" id="incident" aria-labelledby="incident-title">
+        <span class="section-kicker">02 / Failure analysis</span>
+        <h2 id="incident-title">最有价值的一次失败：抽样结构检查全绿，语义已经塌缩</h2>
+
+        <blockquote class="failure-quote">
+          <p>数据格式全部通过，但文学语义完全没有区分度。</p>
+          <span>原报告里的“全部通过”只指抽样字段格式、范围和枚举检查，不是全量语义验证。</span>
+        </blockquote>
+
+        <div class="contrast-grid">
+          <article class="contrast-card pass">
+            <span class="section-kicker">Report says PASS</span>
+            <h3>自动报告实际检查了什么</h3>
+            <ul>
+              <li>字段类型与基础格式是否合法</li>
+              <li>数值是否非负、评分是否落在 1—5</li>
+              <li>枚举和布尔值是否属于允许集合</li>
+              <li>部分语义字段即使为空或 None 也能通过</li>
+            </ul>
+          </article>
+          <article class="contrast-card fail">
+            <span class="section-kicker">Semantics collapse</span>
+            <h3>这些检查没有证明什么</h3>
+            <ul>
+              <li>某个位置是否真的构成开篇钩子</li>
+              <li>情节是否真的发生语义反转</li>
+              <li>情绪变化是否具有有效区分度</li>
+              <li>同类模型给出的评价是否能作为独立真值</li>
+            </ul>
+          </article>
+        </div>
+
+        <div class="audit-stats" aria-label="早期原型审计聚合结果">
+          <div class="audit-stat">
+            <small>EARLY PRIVATE PROTOTYPE · SYNTHETIC DEMO RECORDS · NOT PUBLIC DATASET</small>
+            <strong>21/32</strong>
+            <span>未识别到开篇钩子</span>
+          </div>
+          <div class="audit-stat">
+            <small>EARLY PRIVATE PROTOTYPE · SYNTHETIC DEMO RECORDS · NOT PUBLIC DATASET</small>
+            <strong>30/32</strong>
+            <span>反转数为 0</span>
+          </div>
+          <div class="audit-stat">
+            <small>EARLY PRIVATE PROTOTYPE · SYNTHETIC DEMO RECORDS · NOT PUBLIC DATASET</small>
+            <strong>32/32</strong>
+            <span>情绪递进全部为 2</span>
+          </div>
+        </div>
+        <p class="fine-print">
+          以上来自私有早期原型的 32 条合成 AI 试验记录，只展示内部审计聚合结果。来源材料属于私有证据，不在公开仓库复现；它们不是公开 Demo 的固定回归数据，也不代表真实业务规模。
+        </p>
+
+        <h3 class="timeline-heading">从私有项目到公开 Demo</h3>
+        <div class="timeline" aria-label="从私有项目筹备到公开合成治理 Demo 的时间线">
+          <article class="timeline-item">
+            <time>2025.06—07</time>
+            <div class="card">
+              <h3>项目筹备与开发启动</h3>
+              <p>我们三人开始搭建私有小说创作工作台。我负责采集、清洗、数据库和向量检索；算法工程师负责模型调用与工作流，编辑负责内容规则与验收。</p>
+            </div>
+          </article>
+          <article class="timeline-item">
+            <time>2025.08</time>
+            <div class="card">
+              <h3>多 Agent Demo 跑通</h3>
+              <p>Streamlit、LangGraph、通义千问、Chroma 和 SQLite 串起选题、素材、大纲、正文与评分；此时“能生成”仍被误当成“数据可用于训练”。</p>
+            </div>
+          </article>
+          <article class="timeline-item">
+            <time>2025.09</time>
+            <div class="card">
+              <h3>权利与数据接入重建</h3>
+              <p>旧素材无法逐作品证明来源和使用范围。我把旧库隔离为只读实验数据，重新建立作者、来源、授权范围、撤回方式和版本台账。</p>
+            </div>
+          </article>
+          <article class="timeline-item">
+            <time>2025.10</time>
+            <div class="card">
+              <h3>抽样结构全绿，语义却塌缩</h3>
+              <p>编辑抽查发现样本高度同质；我继续对照材料、数据库和分析 Agent，确认字段口径漂移、特征分布塌缩，以及生成与评价没有真正解耦。</p>
+            </div>
+          </article>
+          <article class="timeline-item">
+            <time>2025.11—2026.01</time>
+            <div class="card">
+              <h3>从生成吞吐转向可用稿成本</h3>
+              <p>批量生成暴露了编辑瓶颈、限流重试、断点恢复和向量版本错位。同题盲测进一步说明：复杂 Agent 编排不应成为不可替换的核心，评测必须冻结且独立。</p>
+            </div>
+          </article>
+          <article class="timeline-item">
+            <time>2026.02—03</time>
+            <div class="card">
+              <h3>私有项目收束与资产边界</h3>
+              <p>商业假设未通过止损线后，我们停止继续扩张。我整理权属、版本、密钥、索引、依赖与交付边界，把可保留价值收敛到工作流、治理规范和评测资产。</p>
+            </div>
+          </article>
+          <article class="timeline-item">
+            <time>2026.07</time>
+            <div class="card">
+              <h3>公开合成治理 Demo</h3>
+              <p>我把训练前治理部分独立重建为公开仓库，以 100% 合成数据、固定 Release、双版本 CI、可复现构建和治理文件完成发布。</p>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section class="section" id="architecture" aria-labelledby="architecture-title">
+        <span class="section-kicker">03 / Governed architecture</span>
+        <h2 id="architecture-title">修复方法：让每一种判断都有清晰责任</h2>
+        <p class="section-intro">
+          我没有继续给规则增加更多文学名词，而是把客观硬门、候选检索、语义预筛和最终内容判断拆开。公开仓库重点实现其中的训练前数据工程层。
+        </p>
+
+        <div class="responsibility-grid" aria-label="规则、检索、AI 与编辑职责分层">
+          <article class="responsibility-card">
+            <b>01</b>
+            <small>PUBLIC DEMO · IMPLEMENTED</small>
+            <h3>规则</h3>
+            <p>权利准入、Schema、格式、字数、哈希、版本和文件完整性。</p>
+          </article>
+          <article class="responsibility-card">
+            <b>02</b>
+            <small>PRIVATE BLUEPRINT · NOT IMPLEMENTED</small>
+            <h3>检索</h3>
+            <p>相似人设、相似冲突、历史素材、旧大纲和编辑经验。</p>
+          </article>
+          <article class="responsibility-card">
+            <b>03</b>
+            <small>PRIVATE BLUEPRINT · NOT IMPLEMENTED</small>
+            <h3>AI</h3>
+            <p>创意扩展、候选生成、风格改写、编辑建议和带证据的语义预筛。</p>
+          </article>
+          <article class="responsibility-card">
+            <b>04</b>
+            <small>PRIVATE BLUEPRINT · REQUIRES REAL EVALUATION</small>
+            <h3>编辑</h3>
+            <p>黄金集、盲评、最终语义判断，以及修改 diff 的持续校准。</p>
+          </article>
+        </div>
+
+        <div class="architecture-board" role="img" aria-label="Governed Novel 合成数据治理架构：权利门、规范化、精确去重、近似去重、作者作品切分、数据集生产与控制面">
+          <div class="architecture-flow">
+            <article class="arch-step">
+              <small>INPUT</small>
+              <h3>合成原始记录</h3>
+              <p>正文、作者、作品、权利字段与版本标识。</p>
+            </article>
+            <article class="arch-step">
+              <small>GATE 01</small>
+              <h3>权利硬门</h3>
+              <p>状态、用途、期限不满足即进入拒绝旁路。</p>
+            </article>
+            <article class="arch-step">
+              <small>PROCESS 02</small>
+              <h3>文本规范化</h3>
+              <p>Unicode、空白、标点与可重复哈希输入。</p>
+            </article>
+            <article class="arch-step">
+              <small>DEDUP 03</small>
+              <h3>SHA-256</h3>
+              <p>识别规范化正文的精确重复。</p>
+            </article>
+            <article class="arch-step">
+              <small>DEDUP 04</small>
+              <h3>MinHash / LSH</h3>
+              <p>发现近重复候选，不把相似性等同于版权判断。</p>
+            </article>
+            <article class="arch-step">
+              <small>SPLIT 05</small>
+              <h3>作者 / 作品切分</h3>
+              <p>作者优先分组、作品不可拆，再派生数据集。</p>
+            </article>
+          </div>
+          <div class="branch-grid" aria-label="派生数据集">
+            <div class="branch-card">SFT train / validation</div>
+            <div class="branch-card">Preference pairs</div>
+            <div class="branch-card">Isolated evaluation</div>
+          </div>
+          <div class="control-grid" aria-label="治理控制面">
+            <div class="control-card">Dataset Card</div>
+            <div class="control-card">Manifest + Lineage</div>
+            <div class="control-card">Tests + Leakage Checks</div>
+            <div class="control-card">Checksums + Release Gate</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="validation" aria-labelledby="validation-title">
+        <span class="section-kicker">04 / Verification</span>
+        <h2 id="validation-title">固定合成回归：从数据漏斗到发布证据</h2>
+        <p class="section-intro">
+          所有数据量都固定在 <code>v0.1.0-demo</code>，用于验证权利门、去重、切分、数据集派生和文件对账。它们不是业务规模指标。
+        </p>
+
+        <div class="funnel" aria-label="SYNTHETIC DEMO 作品级数据漏斗">
+          <div class="funnel-row">
+            <div class="funnel-label">合成原始记录</div>
+            <div class="funnel-track"><div class="funnel-fill" style="width: 100%;">SYNTHETIC DEMO</div></div>
+            <div class="funnel-value">27</div>
+          </div>
+          <div class="funnel-row">
+            <div class="funnel-label">权利硬门通过</div>
+            <div class="funnel-track"><div class="funnel-fill" style="width: 92.6%;">SYNTHETIC DEMO</div></div>
+            <div class="funnel-value">25</div>
+          </div>
+          <div class="funnel-row">
+            <div class="funnel-label">最终唯一作品</div>
+            <div class="funnel-track"><div class="funnel-fill" style="width: 74.1%;">SYNTHETIC DEMO</div></div>
+            <div class="funnel-value">20</div>
+          </div>
+          <div class="reject-grid" aria-label="被硬门与去重流程拒绝的合成记录">
+            <div class="reject-note"><strong>2</strong> 条 SYNTHETIC DEMO 权利案例被硬门阻断</div>
+            <div class="reject-note"><strong>2</strong> 条 SYNTHETIC DEMO 精确重复</div>
+            <div class="reject-note"><strong>3</strong> 条 SYNTHETIC DEMO 近似重复</div>
+          </div>
+        </div>
+
+        <div class="output-grid" aria-label="SYNTHETIC DEMO 派生数据集">
+          <div class="output-card">
+            <small>SYNTHETIC DEMO DATASET</small>
+            <strong>36 / 12</strong>
+            <span>SFT train / validation</span>
+          </div>
+          <div class="output-card">
+            <small>SYNTHETIC DEMO DATASET</small>
+            <strong>24</strong>
+            <span>偏好对</span>
+          </div>
+          <div class="output-card">
+            <small>SYNTHETIC DEMO DATASET</small>
+            <strong>30</strong>
+            <span>隔离评测任务</span>
+          </div>
+          <div class="output-card">
+            <small>SYNTHETIC DEMO · SIMULATED EVENTS</small>
+            <strong>40</strong>
+            <span>模拟编辑事件</span>
+          </div>
+        </div>
+
+        <div class="proof-grid" aria-label="Release 工程验证结果">
+          <div class="proof-card">
+            <small>SYNTHETIC DEMO BUILD</small>
+            <strong>17/17</strong>
+            <span>自动化测试通过</span>
+          </div>
+          <div class="proof-card">
+            <small>RELEASE CI</small>
+            <strong>3.10 / 3.12</strong>
+            <span>两个 Python job 均成功</span>
+          </div>
+          <div class="proof-card">
+            <small>DETERMINISTIC SYNTHETIC BUILD</small>
+            <strong>byte-stable</strong>
+            <span>重复构建 checksum 一致，CI 重建 artifacts 无 diff</span>
+          </div>
+          <div class="proof-card">
+            <small>LIGHTWEIGHT RELEASE GATE</small>
+            <strong>PASS</strong>
+            <span>密钥模式、本机路径、私有目录、归档类型和 DEMO 标记检查</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="decisions" aria-labelledby="decisions-title">
+        <span class="section-kicker">05 / Engineering decisions</span>
+        <h2 id="decisions-title">四个关键设计决策</h2>
+        <p class="section-intro">
+          我做这四个取舍，是为了不把无法证明的判断混进确定性硬门。
+        </p>
+
+        <div class="decision-grid">
+          <article class="decision-card">
+            <span class="decision-index">DECISION 01</span>
+            <h3>为什么先按作者切分</h3>
+            <p>
+              同一作者的风格、偏好与叙事习惯可能跨作品重复。如果只按章节或样本随机切分，验证集仍可能看到训练集作者的稳定模式。项目先冻结作者分组，并保持作品不可拆，再派生 SFT、偏好和评测任务。
+            </p>
+          </article>
+          <article class="decision-card">
+            <span class="decision-index">DECISION 02</span>
+            <h3>为什么 SHA-256 和 MinHash 都需要</h3>
+            <p>
+              SHA-256 对规范化后完全相同的正文确定、快速、可追踪；MinHash/LSH 用于发现轻微改写或局部变化的候选。前者不能识别语义近似，后者也不能证明版权安全，两者承担不同职责。
+            </p>
+          </article>
+          <article class="decision-card">
+            <span class="decision-index">DECISION 03</span>
+            <h3>为什么模型评审不能作为唯一真值</h3>
+            <p>
+              当同类模型同时生成和评审，它们容易共享盲区。模型评分适合预筛、解释和提供证据，不应替代独立金标、真实编辑盲评与校准后的发布门槛。
+            </p>
+          </article>
+          <article class="decision-card">
+            <span class="decision-index">DECISION 04</span>
+            <h3>为什么规则、检索和 AI 必须分层</h3>
+            <p>
+              规则处理可确定的约束，检索召回历史证据，AI 提供候选与语义建议，编辑负责最终内容判断。分层后，每个组件的错误类型、验证方式和责任边界都更清楚。
+            </p>
+          </article>
+        </div>
+      </section>
+
+      <section class="section" id="delivery" aria-labelledby="delivery-title">
+        <span class="section-kicker">06 / Private project context</span>
+        <h2 id="delivery-title">三人实际协作与私有工作台</h2>
+        <p class="project-context-note">
+          <strong>PRIVATE PROJECT · REAL CONTEXT · NOT IN PUBLIC REPO</strong>
+          <span>以下角色分工和工作流来自私有项目的实际协作与迭代。不同阶段的自动化程度不同，最终内容始终由编辑验收；公开仓库只实现其中的训练前数据治理部分。</span>
+        </p>
+
+        <div class="role-grid">
+          <article class="card">
+            <h3>编辑</h3>
+            <ul>
+              <li>维护评分卡与黄金集</li>
+              <li>执行盲评和最终内容验收</li>
+              <li>把修改 diff 沉淀为可追踪反馈</li>
+            </ul>
+          </article>
+          <article class="card">
+            <h3>数据工程师</h3>
+            <ul>
+              <li>权利、清洗、去重与切分</li>
+              <li>数据、评测和发布版本管理</li>
+              <li>盲化统计、血缘与质量看板</li>
+            </ul>
+          </article>
+          <article class="card">
+            <h3>算法工程师</h3>
+            <ul>
+              <li>模型适配、RAG 与推理</li>
+              <li>可选微调和供应商切换</li>
+              <li>成本、延迟与维护复杂度优化</li>
+            </ul>
+          </article>
+        </div>
+
+        <h3 class="subsection-title workbench-title">项目中持续迭代的创作流程</h3>
+        <div class="workbench-flow" aria-label="私有小说创作工作台持续迭代的流程">
+          <div class="work-step"><small>01</small><strong>创建作品</strong></div>
+          <div class="work-step"><small>02</small><strong>上传授权素材</strong></div>
+          <div class="work-step"><small>03</small><strong>生成选题 / 大纲候选</strong></div>
+          <div class="work-step"><small>04</small><strong>锁定 Story Bible</strong></div>
+          <div class="work-step"><small>05</small><strong>逐章生成</strong></div>
+          <div class="work-step"><small>06</small><strong>人物 / 伏笔 / 逻辑检查</strong></div>
+          <div class="work-step"><small>07</small><strong>编辑修改并保存 diff</strong></div>
+          <div class="work-step"><small>08</small><strong>导出交付稿</strong></div>
+        </div>
+
+        <div class="boundary-strip">
+          <span class="context-label">PRIVATE PROJECT DECISION · MODEL-AGNOSTIC DELIVERY</span>
+          模型和 Agent 编排保持可替换：如果连续两个冻结评测版本中，自研模型在编辑盲测、可用稿成本和维护成本上仍不优于外部基础模型，就停止训练。真正可沉淀的是私有新增代码、创作工作流、模型适配层、评分规范、权属清晰的编辑反馈与黄金集，以及部署与操作手册。
+        </div>
+
+      </section>
+
+      <section class="section" id="evidence" aria-labelledby="evidence-title">
+        <span class="section-kicker">07 / Public evidence</span>
+        <h2 id="evidence-title">固定到 Release 快照的公开证据</h2>
+        <p class="section-intro">
+          以下治理证据固定到 Release 对应提交 <code>b19b3b5…</code>；CI 结果单独链接到当次 Actions 运行记录。
+        </p>
+
+        <div class="evidence-grid">
+          <a class="evidence-card" href="https://github.com/JiaxinZhang-space/novel-ai-data-pipeline/releases/tag/v0.1.0-demo" target="_blank" rel="noopener">
+            <small>RELEASE</small>
+            <h3>v0.1.0-demo</h3>
+            <p>Synthetic Portfolio Build 与固定提交快照。</p>
+            <span>查看 Release →</span>
+          </a>
+          <a class="evidence-card" href="https://github.com/JiaxinZhang-space/novel-ai-data-pipeline/actions/runs/29549542743" target="_blank" rel="noopener">
+            <small>CI</small>
+            <h3>Python 3.10 / 3.12</h3>
+            <p>两个 job 的轻量公开发布安全门、确定性重建、测试、CLI、编译与 artifacts diff 均成功。</p>
+            <span>查看 Actions →</span>
+          </a>
+          <a class="evidence-card" href="https://github.com/JiaxinZhang-space/novel-ai-data-pipeline/blob/b19b3b5d9aa78715fbb65218a3438516d901b87b/governance/dataset_card.md" target="_blank" rel="noopener">
+            <small>GOVERNANCE</small>
+            <h3>Dataset Card</h3>
+            <p>数据来源、用途、切分策略、限制和真实性边界。</p>
+            <span>查看文档 →</span>
+          </a>
+          <a class="evidence-card" href="https://github.com/JiaxinZhang-space/novel-ai-data-pipeline/blob/b19b3b5d9aa78715fbb65218a3438516d901b87b/docs/verification_report.md" target="_blank" rel="noopener">
+            <small>VERIFICATION</small>
+            <h3>Verification Report</h3>
+            <p>固定合成构建的计数、测试、去重、隔离和校验结果。</p>
+            <span>查看报告 →</span>
+          </a>
+          <a class="evidence-card" href="https://github.com/JiaxinZhang-space/novel-ai-data-pipeline/blob/b19b3b5d9aa78715fbb65218a3438516d901b87b/artifacts/manifests/release_manifest.json" target="_blank" rel="noopener">
+            <small>MANIFEST</small>
+            <h3>Release Manifest</h3>
+            <p>数据版本、阶段产物、源码快照与 Release 血缘。</p>
+            <span>查看 Manifest →</span>
+          </a>
+          <a class="evidence-card" href="https://github.com/JiaxinZhang-space/novel-ai-data-pipeline/blob/b19b3b5d9aa78715fbb65218a3438516d901b87b/artifacts/metrics/split_leakage_report.json" target="_blank" rel="noopener">
+            <small>SPLIT CHECK</small>
+            <h3>跨集合重叠 0 / 0 / 0</h3>
+            <p>固定合成切分的作者、作品与正文哈希重叠检查。</p>
+            <span>查看报告 →</span>
+          </a>
+          <a class="evidence-card" href="https://github.com/JiaxinZhang-space/novel-ai-data-pipeline/blob/b19b3b5d9aa78715fbb65218a3438516d901b87b/artifacts/manifests/checksums.sha256" target="_blank" rel="noopener">
+            <small>CHECKSUMS</small>
+            <h3>23 项 SHA-256</h3>
+            <p>受管合成构建文件的固定校验和清单。</p>
+            <span>查看清单 →</span>
+          </a>
+          <a class="evidence-card" href="https://github.com/JiaxinZhang-space/novel-ai-data-pipeline/blob/b19b3b5d9aa78715fbb65218a3438516d901b87b/architecture/system_architecture.md" target="_blank" rel="noopener">
+            <small>ARCHITECTURE</small>
+            <h3>系统架构</h3>
+            <p>公开数据工程范围、阶段边界与未实现范围。</p>
+            <span>查看架构 →</span>
+          </a>
+          <a class="evidence-card" href="https://github.com/JiaxinZhang-space/novel-ai-data-pipeline/blob/b19b3b5d9aa78715fbb65218a3438516d901b87b/architecture/data_lineage.md" target="_blank" rel="noopener">
+            <small>LINEAGE</small>
+            <h3>DEMO 数据血缘</h3>
+            <p>公开实现的阶段、数据与评测版本，以及未执行训练 / 模型的占位关联；生产撤回路径属于目标设计。</p>
+            <span>查看血缘 →</span>
+          </a>
+          <a class="evidence-card" href="https://github.com/JiaxinZhang-space/novel-ai-data-pipeline/blob/b19b3b5d9aa78715fbb65218a3438516d901b87b/CONTRIBUTIONS.md" target="_blank" rel="noopener">
+            <small>OWNERSHIP</small>
+            <h3>Contributions</h3>
+            <p>独立实现、AI 辅助开发与最终责任边界。</p>
+            <span>查看声明 →</span>
+          </a>
+          <a class="evidence-card" href="https://github.com/JiaxinZhang-space/novel-ai-data-pipeline/blob/b19b3b5d9aa78715fbb65218a3438516d901b87b/PROVENANCE.md" target="_blank" rel="noopener">
+            <small>PROVENANCE</small>
+            <h3>来源声明</h3>
+            <p>合成数据生成方式与不包含第三方项目资产的公开边界。</p>
+            <span>查看声明 →</span>
+          </a>
+          <a class="evidence-card" href="https://github.com/JiaxinZhang-space/novel-ai-data-pipeline/blob/b19b3b5d9aa78715fbb65218a3438516d901b87b/SECURITY.md" target="_blank" rel="noopener">
+            <small>PUBLIC SAFETY</small>
+            <h3>Security Policy</h3>
+            <p>公开仓库禁止提交的敏感资产与人工复核边界。</p>
+            <span>查看策略 →</span>
+          </a>
+        </div>
+
+        <div class="run-box">
+          <h3>本地复现入口</h3>
+          <pre><code>python scripts/run_demo.py --output-dir artifacts
+python -m unittest discover -s tests -v
+python scripts/check_public_repo.py</code></pre>
+          <div class="repo-actions">
+            <a class="button primary" href="https://github.com/JiaxinZhang-space/novel-ai-data-pipeline/tree/b19b3b5d9aa78715fbb65218a3438516d901b87b" target="_blank" rel="noopener">打开固定代码快照</a>
+            <a class="button" href="https://github.com/JiaxinZhang-space/novel-ai-data-pipeline/blob/b19b3b5d9aa78715fbb65218a3438516d901b87b/governance/data_dictionary.md" target="_blank" rel="noopener">查看数据字典</a>
+            <a class="button" href="https://github.com/JiaxinZhang-space/novel-ai-data-pipeline/blob/b19b3b5d9aa78715fbb65218a3438516d901b87b/governance/data_quality_contract.md" target="_blank" rel="noopener">查看部分实现的质量契约</a>
+            <a class="button" href="https://github.com/JiaxinZhang-space/novel-ai-data-pipeline/blob/b19b3b5d9aa78715fbb65218a3438516d901b87b/LICENSE" target="_blank" rel="noopener">查看 MIT License</a>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="limits" aria-labelledby="limits-title">
+        <span class="section-kicker">08 / Limits</span>
+        <h2 id="limits-title">公开 Demo 边界</h2>
+        <p class="section-intro">
+          下面只描述固定公开仓库的实现范围；它不否认私有项目的真实经历与工作流，也不把私有资产包装成公开可复现证据。
+        </p>
+
+        <div class="limits-grid">
+          <article class="card">
+            <h3>公开 Demo 已完成</h3>
+            <ul>
+              <li>确定性合成数据可以重复生成和对账。</li>
+              <li>权利硬门、规范化、SHA-256 精确去重与教学型 MinHash/LSH 近重复候选检测，已在合成回归上运行。</li>
+              <li>SFT、偏好和隔离评测格式可以稳定派生。</li>
+              <li>Manifest、DEMO 阶段 / 占位血缘、测试、作者 / 作品 / 正文哈希跨 split 重叠检查和轻量公开发布门禁可以公开复核。</li>
+            </ul>
+          </article>
+          <article class="card">
+            <h3>当前没有覆盖</h3>
+            <ul>
+              <li>未训练或微调小说模型，模型与训练运行只保留占位关联。</li>
+              <li>没有真实用户、发布结果、收入或生产吞吐。</li>
+              <li>不是生产级版权法律判断、PII 或内容安全系统。</li>
+              <li>基线、消融与盲测文件是合成格式样例，不是真实编辑实验。</li>
+              <li>真实落地仍需私有环境、逐作品授权和独立编辑盲测。</li>
+            </ul>
+          </article>
+        </div>
+
+        <div class="summary-box">
+          <h3>我希望通过这个项目展示什么</h3>
+          <p>
+            这个项目不包含“爆款”预测，也没有训练小说模型。我用它展示了自己如何识别伪精确标签、建立数据契约，并把权利、去重、隔离、版本和发布验证落实成可执行链路；文学语义仍由真实编辑评测和人工判断负责。
+          </p>
+          <div class="repo-actions">
+            <a class="button primary" href="../index.html#projects">返回作品集</a>
+            <a class="button" href="https://github.com/JiaxinZhang-space/novel-ai-data-pipeline" target="_blank" rel="noopener">查看公开仓库</a>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <span>Governed Novel Data Pipeline · 张佳欣的 AI 数据工程作品集</span>
+    </footer>
+  </body>
+</html>

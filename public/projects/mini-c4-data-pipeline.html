@@ -1,0 +1,854 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Mini-C4 风格网页预训练语料流水线</title>
+    <meta
+      name="description"
+      content="大模型数据工程作品集项目：基于开源 Mini-C4 项目做复现与增强，在单机 CPU / WSL 环境下把 Common Crawl WARC 处理成可训练 JSONL，并补齐阶段日志、留存漏斗、manifest 和一致性检查。"
+    >
+    <link rel="canonical" href="https://jiaxinzhang-space.github.io/projects/mini-c4-data-pipeline.html">
+    <link rel="icon" href="../favicon.svg" type="image/svg+xml">
+    <meta name="theme-color" content="#10231d">
+    <meta property="og:type" content="article">
+    <meta property="og:locale" content="zh_CN">
+    <meta property="og:site_name" content="张佳欣的技术作品集">
+    <meta property="og:title" content="Mini-C4 风格网页预训练语料流水线｜张佳欣作品集">
+    <meta property="og:description" content="把 Common Crawl WARC 处理成可训练 JSONL，并补齐阶段日志、留存漏斗、manifest 和一致性检查。">
+    <meta property="og:url" content="https://jiaxinzhang-space.github.io/projects/mini-c4-data-pipeline.html">
+    <meta property="og:image" content="https://jiaxinzhang-space.github.io/og-cover.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <style>
+      :root {
+        --bg: #f7f3ea;
+        --surface: #fffdf8;
+        --surface-strong: #f0eadf;
+        --ink: #1f211d;
+        --muted: #5f6359;
+        --line: #d8d2c4;
+        --green: #1f5c45;
+        --green-dark: #10231d;
+        --green-soft: rgba(31, 92, 69, 0.1);
+        --amber: #b7791f;
+        --amber-soft: #f3dfb7;
+        --radius: 8px;
+        --content: 1360px;
+        --shadow: 0 16px 40px rgba(32, 34, 29, 0.08);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        margin: 0;
+        background:
+          linear-gradient(90deg, rgba(31, 92, 69, 0.045) 1px, transparent 1px),
+          linear-gradient(rgba(31, 92, 69, 0.035) 1px, transparent 1px),
+          var(--bg);
+        background-size: 56px 56px;
+        color: var(--ink);
+        font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        font-size: clamp(16px, 1.04vw, 18px);
+        line-height: 1.65;
+      }
+
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
+
+      a:focus-visible {
+        outline: 3px solid rgba(183, 121, 31, 0.55);
+        outline-offset: 3px;
+      }
+
+      .skip-link {
+        position: fixed;
+        top: 12px;
+        left: 12px;
+        z-index: 100;
+        padding: 10px 14px;
+        border-radius: var(--radius);
+        background: var(--green-dark);
+        color: #fffdf8;
+        transform: translateY(-160%);
+        transition: transform 160ms ease;
+      }
+
+      .skip-link:focus {
+        transform: translateY(0);
+      }
+
+      .site-header {
+        position: sticky;
+        top: 0;
+        z-index: 20;
+        border-bottom: 1px solid rgba(216, 210, 196, 0.82);
+        background: rgba(247, 243, 234, 0.94);
+        backdrop-filter: blur(12px);
+      }
+
+      .nav {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        width: min(100% - 32px, var(--content));
+        min-height: 70px;
+        margin: 0 auto;
+        gap: 20px;
+      }
+
+      .brand {
+        display: inline-grid;
+        grid-template-columns: 40px auto;
+        align-items: center;
+        gap: 12px;
+        min-width: max-content;
+        font-weight: 750;
+      }
+
+      .brand-mark {
+        display: grid;
+        width: 40px;
+        height: 40px;
+        place-items: center;
+        border: 1px solid var(--green);
+        border-radius: var(--radius);
+        background: var(--green-dark);
+        color: var(--amber-soft);
+        font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
+        font-size: 15px;
+      }
+
+      .brand small {
+        display: block;
+        color: var(--muted);
+        font-size: 15px;
+        font-weight: 500;
+      }
+
+      .nav-links {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: flex-end;
+        gap: 8px;
+      }
+
+      .nav-links a,
+      .button {
+        min-height: 48px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 6px;
+        font-size: clamp(15px, 0.95vw, 16px);
+        font-weight: 750;
+      }
+
+      .nav-links a {
+        padding: 0 12px;
+        color: var(--muted);
+        font-size: clamp(15px, 0.95vw, 16px);
+      }
+
+      .nav-links a:hover {
+        background: rgba(31, 92, 69, 0.08);
+        color: var(--ink);
+      }
+
+      main {
+        overflow: clip;
+      }
+
+      .section {
+        width: min(100% - 32px, var(--content));
+        margin: 0 auto;
+        padding: 74px 0;
+      }
+
+      .hero {
+        display: grid;
+        grid-template-columns: minmax(0, 0.92fr) minmax(320px, 0.58fr);
+        gap: 42px;
+        align-items: center;
+        min-height: calc(92dvh - 70px);
+        padding-top: 52px;
+      }
+
+      .hero > * {
+        min-width: 0;
+      }
+
+      .eyebrow {
+        display: inline-flex;
+        align-items: center;
+        width: fit-content;
+        min-height: 32px;
+        padding: 0 10px;
+        border: 1px solid var(--line);
+        border-radius: 999px;
+        background: rgba(255, 253, 248, 0.76);
+        color: var(--green);
+        font-size: 13px;
+        font-weight: 800;
+        text-transform: uppercase;
+      }
+
+      h1,
+      h2,
+      h3,
+      p {
+        margin-top: 0;
+      }
+
+      h1 {
+        max-width: 880px;
+        margin: 20px 0 22px;
+        font-size: clamp(38px, 6.4vw, 76px);
+        line-height: 1.02;
+        letter-spacing: 0;
+        overflow-wrap: anywhere;
+      }
+
+      h2 {
+        margin-bottom: 14px;
+        font-size: clamp(28px, 4vw, 46px);
+        line-height: 1.08;
+        letter-spacing: 0;
+      }
+
+      h3 {
+        margin-bottom: 10px;
+        font-size: 24px;
+        line-height: 1.2;
+      }
+
+      .lead {
+        max-width: 780px;
+        color: var(--muted);
+        font-size: clamp(18px, 1.45vw, 24px);
+        overflow-wrap: anywhere;
+      }
+
+      .section-intro {
+        max-width: 100%;
+        margin-bottom: 28px;
+        color: var(--muted);
+        font-size: clamp(17px, 1.1vw, 19px);
+      }
+
+      .hero-actions,
+      .repo-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+        margin-top: 28px;
+      }
+
+      .repo-actions {
+        margin-top: 16px;
+      }
+
+      .button {
+        padding: 0 18px;
+        border: 1px solid var(--green);
+        color: var(--green);
+        transition: transform 180ms ease, background 180ms ease, color 180ms ease;
+      }
+
+      .button.primary {
+        background: var(--green);
+        color: #fffdf8;
+      }
+
+      .button:hover {
+        transform: translateY(-2px);
+      }
+
+      .hero-panel,
+      .card,
+      .metric,
+      .flow-step,
+      .project-figure,
+      .run-box,
+      .summary-box {
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        background: rgba(255, 253, 248, 0.86);
+        box-shadow: 0 1px 0 rgba(255, 255, 255, 0.7) inset;
+      }
+
+      .hero-panel {
+        padding: 22px;
+      }
+
+      .hero-panel strong {
+        color: var(--green-dark);
+        font-size: 20px;
+      }
+
+      .scope-note {
+        margin: 18px 0 0;
+        padding: 16px;
+        border-left: 4px solid var(--amber);
+        background: rgba(243, 223, 183, 0.28);
+        color: var(--muted);
+        font-size: clamp(17px, 1.1vw, 19px);
+        line-height: 1.7;
+      }
+
+      .metric-grid,
+      .problem-grid,
+      .engineering-grid,
+      .validation-copy,
+      .limits-grid,
+      .flow-grid,
+      .figure-grid {
+        display: grid;
+        gap: 16px;
+      }
+
+      .metric-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        margin-top: 18px;
+      }
+
+      .problem-grid,
+      .flow-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+
+      .engineering-grid,
+      .limits-grid,
+      .figure-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .validation-layout {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) minmax(320px, 0.68fr);
+        gap: 16px;
+        align-items: start;
+      }
+
+      .metric,
+      .card,
+      .flow-step,
+      .run-box,
+      .summary-box {
+        padding: 22px;
+      }
+
+      .metric strong {
+        display: block;
+        margin-bottom: 6px;
+        color: var(--green-dark);
+        font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        font-size: clamp(32px, 2vw, 36px);
+        font-weight: 800;
+        font-variant-numeric: tabular-nums;
+        line-height: 1;
+      }
+
+      .metric span,
+      .card p,
+      .flow-step p,
+      .summary-box p {
+        color: var(--muted);
+      }
+
+      .metric span {
+        font-size: clamp(16px, 1vw, 18px);
+        font-weight: 500;
+      }
+
+      .hero-actions .button {
+        width: 160px;
+      }
+
+      .card ul,
+      .summary-box ul {
+        display: grid;
+        gap: 9px;
+        margin: 14px 0 0;
+        padding: 0;
+        list-style: none;
+      }
+
+      .card li,
+      .summary-box li {
+        color: var(--muted);
+      }
+
+      .card li strong,
+      .summary-box li strong {
+        color: var(--green-dark);
+      }
+
+      .flow-step small {
+        display: inline-grid;
+        width: 32px;
+        height: 32px;
+        margin-bottom: 14px;
+        place-items: center;
+        border-radius: 50%;
+        background: var(--green-dark);
+        color: var(--amber-soft);
+        font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
+        font-weight: 800;
+      }
+
+      .pipeline-line {
+        margin: 24px 0 0;
+        padding: 18px;
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        background: var(--green-dark);
+        color: #f8edd7;
+        font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
+        font-size: 15px;
+        line-height: 1.75;
+      }
+
+      .project-figure {
+        margin: 30px 0 0;
+        overflow: hidden;
+        box-shadow: var(--shadow);
+      }
+
+      .project-figure a {
+        display: block;
+      }
+
+      .project-figure img {
+        display: block;
+        width: 100%;
+        height: auto;
+        background: var(--surface-strong);
+      }
+
+      .project-figure figcaption {
+        padding: 12px 16px;
+        border-top: 1px solid var(--line);
+        color: var(--muted);
+        font-size: 15px;
+      }
+
+      .figure-grid {
+        margin-top: 30px;
+      }
+
+      .figure-grid .project-figure {
+        margin: 0;
+      }
+
+      .validation-layout .project-figure {
+        margin: 0;
+      }
+
+      .validation-note {
+        grid-column: 1 / -1;
+        margin: 0;
+        padding: 12px 16px;
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        background: rgba(255, 253, 248, 0.78);
+        color: var(--muted);
+      }
+
+      @media (min-width: 901px) {
+        .validation-note {
+          white-space: nowrap;
+        }
+      }
+
+      .data-table {
+        overflow-x: auto;
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        background: rgba(255, 253, 248, 0.86);
+      }
+
+      table {
+        width: 100%;
+        min-width: 720px;
+        border-collapse: collapse;
+      }
+
+      th,
+      td {
+        padding: 14px 16px;
+        border-bottom: 1px solid var(--line);
+        text-align: left;
+        vertical-align: top;
+      }
+
+      th {
+        background: var(--surface-strong);
+        color: var(--green-dark);
+        font-size: 13px;
+      }
+
+      td {
+        color: var(--muted);
+      }
+
+      tr:last-child td {
+        border-bottom: 0;
+      }
+
+      code,
+      pre {
+        font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
+      }
+
+      pre {
+        overflow-x: auto;
+        margin: 14px 0 0;
+        padding: 18px;
+        border-radius: var(--radius);
+        background: var(--green-dark);
+        color: #f8edd7;
+        line-height: 1.7;
+      }
+
+      .summary-box {
+        background:
+          linear-gradient(135deg, rgba(31, 92, 69, 0.08), transparent 42%),
+          rgba(255, 253, 248, 0.86);
+      }
+
+      footer {
+        width: min(100% - 32px, var(--content));
+        margin: 0 auto;
+        padding: 28px 0 48px;
+        border-top: 1px solid var(--line);
+        color: var(--muted);
+        font-size: 15px;
+      }
+
+      @media (max-width: 900px) {
+        .nav {
+          align-items: flex-start;
+          flex-direction: column;
+          padding: 14px 0;
+          gap: 10px;
+        }
+
+        .nav-links {
+          justify-content: flex-start;
+        }
+
+        .hero,
+        .problem-grid,
+        .engineering-grid,
+        .validation-layout,
+        .limits-grid,
+        .flow-grid,
+        .figure-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .hero {
+          min-height: auto;
+          padding-top: 44px;
+        }
+      }
+
+      @media (max-width: 560px) {
+        .section,
+        .nav,
+        footer {
+          width: min(100% - 24px, var(--content));
+        }
+
+        .section {
+          padding: 56px 0;
+        }
+
+        h1 {
+          max-width: 100%;
+          font-size: clamp(27px, 7.5vw, 30px);
+          line-height: 1.08;
+          word-break: break-all;
+        }
+
+        .lead {
+          max-width: 100%;
+          font-size: 17px;
+          word-break: break-all;
+        }
+
+        .metric-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        *,
+        *::before,
+        *::after {
+          scroll-behavior: auto !important;
+          transition: none !important;
+        }
+      }
+    </style>
+  </head>
+  <body id="top">
+    <a class="skip-link" href="#main-content">跳到正文</a>
+    <header class="site-header">
+      <nav class="nav" aria-label="主导航">
+        <a class="brand" href="../index.html#top" aria-label="返回首页">
+          <span class="brand-mark">P01</span>
+          <span>
+            Mini-C4 Pipeline
+            <small>LLM data engineering portfolio project</small>
+          </span>
+        </a>
+        <div class="nav-links">
+          <a href="#problem">问题</a>
+          <a href="#pipeline">流程</a>
+          <a href="#engineering">工程点</a>
+          <a href="#results">结果</a>
+          <a href="#validation">验收</a>
+          <a href="#limits">扩展</a>
+          <a href="../index.html#projects">返回作品集</a>
+        </div>
+      </nav>
+    </header>
+
+    <main id="main-content">
+      <section class="section hero" aria-labelledby="project-title">
+        <div>
+          <span class="eyebrow">Open-source reproduction / LLM data pipeline</span>
+          <h1 id="project-title">Mini-C4 风格网页预训练语料流水线</h1>
+          <p class="lead">
+            基于开源 Mini-C4 项目做复现与增强，在单机 CPU / WSL 环境下，把 Common Crawl WARC 处理成可训练 JSONL，并补齐阶段日志、留存漏斗、manifest 和一致性检查。
+          </p>
+          <div class="hero-actions">
+            <a class="button primary" href="#pipeline">查看处理链路</a>
+            <a class="button" href="#results">查看实验结果</a>
+          </div>
+        </div>
+
+        <aside class="hero-panel" aria-label="项目关键指标">
+          <strong>项目定位</strong>
+          <p class="scope-note">
+            这是开源项目复现与增强，不是全量 Common Crawl 生产系统。重点展示我如何把网页语料任务拆成可执行、可验证、可复盘的数据工程链路。
+          </p>
+          <div class="metric-grid">
+            <div class="metric"><strong>10</strong><span>阶段脚本串联运行</span></div>
+            <div class="metric"><strong>3008</strong><span>正文候选记录</span></div>
+            <div class="metric"><strong>231</strong><span>最终训练样本</span></div>
+            <div class="metric"><strong>205 / 26</strong><span>train / val 切分</span></div>
+            <div class="metric"><strong>180k</strong><span>估算训练 tokens</span></div>
+            <div class="metric"><strong>14 / 14</strong><span>一致性检查通过</span></div>
+          </div>
+        </aside>
+      </section>
+
+      <section class="section" id="problem" aria-labelledby="problem-title">
+        <h2 id="problem-title">为什么网页语料不能直接训练</h2>
+        <p class="section-intro">
+          网页是大模型预训练的重要数据来源，但原始网页通常包含模板噪声、重复转载、多语言混杂、目录页、广告页和低信息密度内容。这个项目的价值，是把这些问题拆成一条可复现的数据处理链路，并让每一层过滤都有指标可复盘。
+        </p>
+        <div class="problem-grid">
+          <article class="card">
+            <h3>网页噪声高</h3>
+            <p>导航、页脚、广告、脚本、评论和模板内容会挤占正文比例。第一步不是训练，而是把 WARC 里的 HTML 响应稳定转成正文候选。</p>
+          </article>
+          <article class="card">
+            <h3>重复内容多</h3>
+            <p>转载、镜像站和模板页会放大重复文本，让训练分布倾斜。项目用 MinHash + LSH 做近重复去重，避免全量两两比较。</p>
+          </article>
+          <article class="card">
+            <h3>训练接口要求高</h3>
+            <p>清洗后的文本还不是可交付数据集。训练侧需要确定性 train / val、manifest、hash、token 统计和一致性检查。</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="section" id="pipeline" aria-labelledby="pipeline-title">
+        <h2 id="pipeline-title">怎么做：三段式流水线</h2>
+        <p class="section-intro">
+          我把流水线按工程边界拆成三段：先把网页归档变成正文文本，再把正文文本治理成训练语料，最后把语料封装成训练系统可以消费和验收的数据产物。
+        </p>
+        <div class="flow-grid">
+          <article class="flow-step">
+            <small>01</small>
+            <h3>网页归档 -> 正文文本</h3>
+            <p>使用 warcio 流式读取 WARC response，筛选 HTML 响应，再用 trafilatura 提取主内容区域。</p>
+          </article>
+          <article class="flow-step">
+            <small>02</small>
+            <h3>正文文本 -> 训练语料</h3>
+            <p>串联启发式清洗、MinHash + LSH 去重、fastText 语种拆分和 KenLM 英文质量过滤。</p>
+          </article>
+          <article class="flow-step">
+            <small>03</small>
+            <h3>训练语料 -> 训练交付物</h3>
+            <p>输出 train / val / smoke_test JSONL、training_manifest、评估报告和一致性检查结果。</p>
+          </article>
+        </div>
+        <div class="pipeline-line" aria-label="Mini-C4 核心数据流">
+          Common Crawl WARC -> HTML 正文 -> 粗清洗文本 -> 去重文本 -> 分语种子集 -> 高质量语料 -> train / val JSONL + manifest + reports
+        </div>
+        <figure class="project-figure" data-visual="pipeline-iterations">
+          <a href="../assets/projects/mini-c4/pipeline-iterations.webp" target="_blank" rel="noopener">
+            <img src="../assets/projects/mini-c4/pipeline-iterations.webp" alt="Mini-C4 数据管道三次迭代：从基础管道、噪声减少到质量收敛" width="1500" height="839" loading="lazy">
+          </a>
+          <figcaption>这张图把项目叙事压缩成三次迭代：先让管道可跑，再减少网页噪声，最后收敛到可训练数据。</figcaption>
+        </figure>
+      </section>
+
+      <section class="section" id="engineering" aria-labelledby="engineering-title">
+        <h2 id="engineering-title">核心工程能力：4个关键点</h2>
+        <p class="section-intro">
+          每个关键点解决什么工程问题，以及为什么这么设计。
+        </p>
+        <div class="engineering-grid">
+          <article class="card">
+            <h3>WARC 流式解析与正文抽取</h3>
+            <p>用 warcio 逐条读取归档记录，避免一次性加载大文件；用 trafilatura 抽取正文，减少导航、页脚、模板内容带来的噪声。</p>
+          </article>
+          <article class="card">
+            <h3>MinHash + LSH 近重复去重</h3>
+            <p>网页语料不能做全量两两比较。MinHash 把文本压成签名，LSH 把候选限制在相似桶里，降低比较成本。</p>
+          </article>
+          <article class="card">
+            <h3>语言拆分与分语言质量控制</h3>
+            <p>使用 fastText 识别语种；英文侧使用 KenLM 做质量过滤，中文侧保留为后续质量模型增强点。</p>
+          </article>
+          <article class="card">
+            <h3>标准化训练交付</h3>
+            <p>最终产物不是散乱文本，而是带 id、url、lang、text_sha1、estimated_tokens、split 的 JSONL，并配套 manifest 与检查报告。</p>
+          </article>
+        </div>
+        <div class="figure-grid" aria-label="核心工程图示">
+          <figure class="project-figure" data-visual="dedup-minhash-lsh">
+            <a href="../assets/projects/mini-c4/dedup-minhash-lsh.webp" target="_blank" rel="noopener">
+              <img src="../assets/projects/mini-c4/dedup-minhash-lsh.webp" alt="MinHash 与 LSH 近重复去重流程：签名压缩、候选分桶、移除重复项" width="1500" height="839" loading="lazy">
+            </a>
+            <figcaption>MinHash + LSH 的核心价值是减少候选比较范围，避免把去重做成不可扩展的两两比较。</figcaption>
+          </figure>
+          <figure class="project-figure" data-visual="language-branching">
+            <a href="../assets/projects/mini-c4/language-branching.webp" target="_blank" rel="noopener">
+              <img src="../assets/projects/mini-c4/language-branching.webp" alt="fastText 语言识别后按英文、中文和其他语言拆分流水线" width="1500" height="837" loading="lazy">
+            </a>
+            <figcaption>语种拆分让质量规则变成可扩展分支，而不是所有语言共用同一套粗糙阈值。</figcaption>
+          </figure>
+        </div>
+      </section>
+
+      <section class="section" id="results" aria-labelledby="results-title">
+        <h2 id="results-title">结果与复盘：用真实数字说话</h2>
+        <figure class="project-figure" data-visual="retention-funnel-current">
+          <a href="../assets/projects/mini-c4/retention-funnel-current.webp" target="_blank" rel="noopener">
+            <img src="../assets/projects/mini-c4/retention-funnel-current.webp" alt="本次 Mini-C4 复现实验留存漏斗：3008 条正文候选收敛到 231 条最终样本" width="1600" height="920" loading="lazy">
+          </a>
+                  </figure>
+        <div class="data-table" aria-label="Mini-C4 本次实验留存结果">
+          <table>
+            <thead>
+              <tr><th>阶段</th><th>样本数</th><th>相对 extracted 留存</th><th>工程含义</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>extracted</td><td>3008</td><td>100.00%</td><td>从 WARC 中拿到正文候选，只能说明“有文本”，不能说明“能训练”。</td></tr>
+              <tr><td>clean</td><td>2522</td><td>83.84%</td><td>基础清洗先压掉明显异常文本，为后续去重和质量判断节省成本。</td></tr>
+              <tr><td>deduplicated</td><td>2443</td><td>81.22%</td><td>去重收缩不剧烈，但改善训练分布健康度，减少镜像和模板重复。</td></tr>
+              <tr><td>final</td><td>231</td><td>7.68%</td><td>进入最终训练集的数据需要同时通过语言、长度、重复度和质量门，代表这批样本已具备训练交付条件。</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="section" id="validation" aria-labelledby="validation-title">
+        <h2 id="validation-title">训练交付与验收闭环</h2>
+        <div class="validation-layout">
+          <div class="validation-copy">
+            <article class="card">
+              <h3>训练交付物</h3>
+              <ul>
+                <li><strong>train.jsonl：</strong>205 条训练样本。</li>
+                <li><strong>val.jsonl：</strong>26 条验证样本。</li>
+                <li><strong>smoke_test.jsonl：</strong>32 条快速调试样本。</li>
+                <li><strong>training_manifest.json：</strong>记录样本数、token、路径和 split 信息。</li>
+              </ul>
+            </article>
+            <article class="card">
+              <h3>我补充的增强</h3>
+              <ul>
+                <li><strong>环境检查：</strong>检查 fastText、KenLM 和模型文件。</li>
+                <li><strong>阶段日志：</strong>记录 10 个阶段的 return code、开始时间和耗时。</li>
+                <li><strong>可观测报告：</strong>汇总留存漏斗、过滤原因、训练输出和检查结果。</li>
+                <li><strong>一致性检查：</strong>覆盖文件完整性、split overlap、重复样本和报告一致性。</li>
+              </ul>
+            </article>
+          </div>
+          <figure class="project-figure" data-visual="validation-loop">
+            <a href="../assets/projects/mini-c4/validation-loop.webp" target="_blank" rel="noopener">
+              <img src="../assets/projects/mini-c4/validation-loop.webp" alt="数据管道验证循环：脚本、数据产物、训练清单、评估清单和验证检查互相校验" width="1180" height="1180" loading="lazy">
+            </a>
+          </figure>
+          <p class="validation-note">验收闭环的价值是让代码、数据和报告互相对得上，减少数据漂移和报告失真的风险。</p>
+        </div>
+      </section>
+
+      <section class="section" id="limits" aria-labelledby="limits-title">
+        <h2 id="limits-title">局限与下一步</h2>
+        <p class="section-intro">
+          我把这一版控制在单 shard、单机 CPU 的复现边界内，先验证方法闭环、质量指标和验收链路。后续如果扩展数据量，应先增强控制面和质量建模，再扩大处理规模。
+        </p>
+        <div class="limits-grid">
+          <article class="card">
+            <h3>当前局限</h3>
+            <ul>
+              <li>中文质量过滤仍偏弱，英文侧有 KenLM，中文侧更多依赖启发式规则。</li>
+              <li>当前只验证单 shard、单机 CPU 环境，不代表全量 Common Crawl 生产系统。</li>
+              <li>LSH 去重索引当前适合小规模复现，大规模多 shard 需要外部索引后端。</li>
+              <li>缺少前置域名质量治理，低价值站点会进入后续处理链路。</li>
+            </ul>
+          </article>
+          <article class="card">
+            <h3>下一步优化</h3>
+            <ul>
+              <li>增加域名黑白名单和站点质量画像。</li>
+              <li>引入中文网页质量模型或中文困惑度评分。</li>
+              <li>将去重索引迁移到 Redis / Cassandra 等外部存储。</li>
+              <li>增加可观测控制面板，展示吞吐、耗时、过滤原因和样本抽检。</li>
+            </ul>
+          </article>
+        </div>
+      </section>
+
+      <section class="section" id="run" aria-labelledby="run-title">
+        <h2 id="run-title">复现入口</h2>
+        <p class="section-intro">
+          仓库中保留完整环境说明。核心路径是先检查依赖，再运行流水线，最后生成可观测性报告。
+        </p>
+        <div class="run-box">
+          <pre><code>python scripts/check_env.py
+python scripts/run_pipeline.py
+python scripts/build_observability_report.py</code></pre>
+          <div class="repo-actions">
+            <a class="button primary" href="https://github.com/JiaxinZhang-space/mini-c4-data-pipeline" target="_blank" rel="noopener">查看 GitHub 仓库</a>
+          </div>
+        </div>
+        <div class="summary-box">
+          <h3>这个项目想证明什么</h3>
+          <p>通过这次复现，我把 LLM 网页语料任务拆成了可执行、可验证、可复盘的数据工程链路，也明确了当前单机原型的边界和后续扩展路径。</p>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <span>Mini-C4 style corpus pipeline. Open-source reproduction with validation and observability.</span>
+    </footer>
+  </body>
+</html>

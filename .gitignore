@@ -1,0 +1,9 @@
+.DS_Store
+Thumbs.db
+Desktop.ini
+*.log
+backups/
+docs/
+AGENTS.md
+projects/*.before-*.html
+projects/sql-grouping-sets-optimization.html

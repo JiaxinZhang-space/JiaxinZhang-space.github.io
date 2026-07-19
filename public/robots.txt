@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://jiaxinzhang-space.github.io/sitemap.xml

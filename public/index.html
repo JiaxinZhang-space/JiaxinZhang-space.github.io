@@ -1,0 +1,2000 @@
+﻿<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>张佳欣｜大数据开发 / 数据仓库 / 数据工程作品集</title>
+    <meta
+      name="description"
+      content="张佳欣的大数据开发、数据仓库、数据工程方向作品集，展示离线数仓、实时链路、复杂调度和 LLM 数据管道项目。"
+    >
+    <link rel="canonical" href="https://jiaxinzhang-space.github.io/">
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+    <meta name="theme-color" content="#10231d">
+    <meta property="og:type" content="website">
+    <meta property="og:locale" content="zh_CN">
+    <meta property="og:site_name" content="张佳欣的技术作品集">
+    <meta property="og:title" content="张佳欣｜大数据开发 / 数据仓库 / 数据工程作品集">
+    <meta property="og:description" content="离线数仓、实时链路、数据治理与 LLM 数据工程项目，用公开仓库和验收结果展示可验证的工程能力。">
+    <meta property="og:url" content="https://jiaxinzhang-space.github.io/">
+    <meta property="og:image" content="https://jiaxinzhang-space.github.io/og-cover.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="张佳欣｜数据工程作品集">
+    <meta name="twitter:description" content="离线数仓、实时链路、数据治理与 LLM 数据工程项目。">
+    <meta name="twitter:image" content="https://jiaxinzhang-space.github.io/og-cover.png">
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "Person",
+            "@id": "https://jiaxinzhang-space.github.io/#person",
+            "name": "张佳欣",
+            "alternateName": "Jiaxin Zhang",
+            "url": "https://jiaxinzhang-space.github.io/",
+            "jobTitle": "数据工程师",
+            "email": "mailto:1611209560@qq.com",
+            "sameAs": [
+              "https://github.com/JiaxinZhang-space",
+              "https://blog.csdn.net/zjx19961016"
+            ],
+            "knowsAbout": ["数据仓库", "大数据开发", "数据工程", "Flink", "Doris", "LLM 数据工程"]
+          },
+          {
+            "@type": "WebSite",
+            "@id": "https://jiaxinzhang-space.github.io/#website",
+            "url": "https://jiaxinzhang-space.github.io/",
+            "name": "张佳欣的技术作品集",
+            "inLanguage": "zh-CN",
+            "author": {"@id": "https://jiaxinzhang-space.github.io/#person"}
+          }
+        ]
+      }
+    </script>
+    <style>
+      :root {
+        --bg: #f7f3ea;
+        --surface: #fffdf8;
+        --surface-strong: #f0eadf;
+        --ink: #1f211d;
+        --muted: #5f6359;
+        --subtle: #8a887e;
+        --line: #d8d2c4;
+        --line-strong: #bdb5a5;
+        --green: #1f5c45;
+        --green-dark: #10231d;
+        --green-soft: #dfe9df;
+        --amber: #b7791f;
+        --amber-soft: #f3dfb7;
+        --code: #f5efe3;
+        --shadow: 0 16px 40px rgba(32, 34, 29, 0.08);
+        --radius: 8px;
+        --content: 1360px;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        background:
+          linear-gradient(90deg, rgba(31, 92, 69, 0.045) 1px, transparent 1px),
+          linear-gradient(rgba(31, 92, 69, 0.035) 1px, transparent 1px),
+          var(--bg);
+        background-size: 56px 56px;
+        color: var(--ink);
+        font-family:
+          system-ui,
+          -apple-system,
+          BlinkMacSystemFont,
+          "Segoe UI",
+          sans-serif;
+        font-size: clamp(16px, 0.95vw, 17px);
+        line-height: 1.65;
+      }
+
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
+
+      a:focus-visible,
+      button:focus-visible {
+        outline: 3px solid rgba(183, 121, 31, 0.55);
+        outline-offset: 3px;
+      }
+
+      .skip-link {
+        position: fixed;
+        top: 12px;
+        left: 12px;
+        z-index: 100;
+        padding: 10px 14px;
+        border-radius: var(--radius);
+        background: var(--green-dark);
+        color: #fffdf8;
+        transform: translateY(-160%);
+        transition: transform 160ms ease;
+      }
+
+      .skip-link:focus {
+        transform: translateY(0);
+      }
+
+      .site-header {
+        position: sticky;
+        top: 0;
+        z-index: 20;
+        border-bottom: 1px solid rgba(216, 210, 196, 0.82);
+        background: rgba(247, 243, 234, 0.92);
+        backdrop-filter: blur(12px);
+      }
+
+      .nav {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        width: min(100% - 32px, var(--content));
+        min-height: 72px;
+        margin: 0 auto;
+        gap: 24px;
+      }
+
+      .brand {
+        display: inline-flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        min-width: max-content;
+        font-weight: 700;
+      }
+
+      .brand small {
+        display: block;
+        margin-top: 2px;
+        color: var(--muted);
+        font-size: 13px;
+        font-weight: 500;
+      }
+
+      .brand-name {
+        color: #344055;
+        font-size: 22px;
+        line-height: 1.1;
+        font-weight: 650;
+      }
+
+      .nav-links {
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        gap: 6px;
+        flex-wrap: wrap;
+      }
+
+      .nav-links a {
+        min-height: 48px;
+        display: inline-flex;
+        align-items: center;
+        padding: 0 12px;
+        border-radius: 6px;
+        color: var(--muted);
+        font-size: clamp(15px, 0.95vw, 16px);
+        font-weight: 600;
+        transition: background 180ms ease, color 180ms ease;
+      }
+
+      .nav-links a:hover {
+        background: rgba(31, 92, 69, 0.08);
+        color: var(--ink);
+      }
+
+      .resume-link {
+        border: 1px solid var(--green);
+        color: var(--green) !important;
+      }
+
+      main {
+        overflow: clip;
+      }
+
+      .section {
+        width: min(100% - 32px, var(--content));
+        margin: 0 auto;
+        padding: 80px 0;
+        scroll-margin-top: 88px;
+      }
+
+      .hero {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr);
+        align-items: start;
+        gap: 28px;
+        min-height: calc(100dvh - 72px);
+        padding-top: 56px;
+        padding-bottom: 72px;
+      }
+
+      .hero-content {
+        display: grid;
+        gap: 28px;
+        max-width: 1040px;
+      }
+
+      .eyebrow {
+        display: inline-flex;
+        align-items: center;
+        width: fit-content;
+        min-height: 32px;
+        margin-bottom: 22px;
+        padding: 0 10px;
+        border: 1px solid var(--line);
+        border-radius: 999px;
+        background: rgba(255, 253, 248, 0.72);
+        color: var(--green);
+        font-size: 13px;
+        font-weight: 700;
+      }
+
+      h1,
+      h2,
+      h3,
+      p {
+        margin-top: 0;
+      }
+
+      h1 {
+        max-width: 720px;
+        margin-bottom: 0;
+        font-size: clamp(42px, 6.2vw, 76px);
+        line-height: 1.04;
+        letter-spacing: 0;
+      }
+
+      .hero-actions {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 12px;
+      }
+
+      .button {
+        min-height: 48px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        padding: 0 18px;
+        border: 1px solid var(--green);
+        border-radius: var(--radius);
+        font-size: clamp(15px, 0.95vw, 16px);
+        font-weight: 750;
+        transition:
+          transform 180ms ease,
+          background 180ms ease,
+          border-color 180ms ease,
+          color 180ms ease;
+      }
+
+      .button:hover {
+        transform: translateY(-2px);
+      }
+
+      .button.primary {
+        background: var(--green);
+        color: #fffdf8;
+      }
+
+      .button.secondary {
+        background: rgba(255, 253, 248, 0.74);
+        color: var(--green);
+      }
+
+      .button svg {
+        width: 18px;
+        height: 18px;
+      }
+
+      .resume-snapshot {
+        padding: 28px;
+        border: 1px solid rgba(16, 35, 29, 0.18);
+        border-radius: var(--radius);
+        background:
+          linear-gradient(135deg, rgba(31, 92, 69, 0.08), transparent 44%),
+          rgba(255, 253, 248, 0.86);
+        box-shadow: var(--shadow);
+      }
+
+      .snapshot-kicker {
+        display: block;
+        margin-bottom: 10px;
+        color: var(--green);
+        font-size: 13px;
+        font-weight: 800;
+      }
+
+      .resume-snapshot h2 {
+        margin-bottom: 20px;
+        font-size: clamp(24px, 3vw, 36px);
+        line-height: 1.18;
+      }
+
+      .snapshot-list {
+        display: grid;
+        gap: 14px;
+        margin: 0;
+        padding: 0;
+        list-style: none;
+      }
+
+      .snapshot-list li {
+        display: grid;
+        grid-template-columns: 88px minmax(0, 1fr);
+        gap: 14px;
+        padding-top: 14px;
+        border-top: 1px solid var(--line);
+      }
+
+      .snapshot-list strong {
+        color: var(--ink);
+        font-size: 15px;
+      }
+
+      .snapshot-list span {
+        color: var(--muted);
+        font-size: 15px;
+      }
+
+      .section-heading {
+        display: grid;
+        grid-template-columns: 1fr;
+        align-items: start;
+        gap: 0;
+        margin-bottom: 32px;
+      }
+
+      .section-heading h2 {
+        margin-bottom: 0;
+        font-size: clamp(30px, 3.7vw, 52px);
+        line-height: 1.05;
+        letter-spacing: 0;
+      }
+
+      .section-heading p {
+        margin-bottom: 0;
+        color: var(--muted);
+      }
+
+      .project-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        align-items: stretch;
+        gap: 18px;
+      }
+
+      .project-card,
+      .article-card,
+      .research-panel,
+      .about-panel,
+      .contact-panel {
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        background: rgba(255, 253, 248, 0.82);
+        box-shadow: 0 1px 0 rgba(255, 255, 255, 0.7) inset;
+      }
+
+      .project-card {
+        display: flex;
+        flex-direction: column;
+        min-height: 328px;
+        padding: 24px;
+        transition: transform 180ms ease, border-color 180ms ease, box-shadow 180ms ease;
+      }
+
+      .project-card:hover {
+        transform: translateY(-3px);
+        border-color: var(--line-strong);
+        box-shadow: var(--shadow);
+      }
+
+      .project-card.featured {
+        display: grid;
+        grid-column: 1 / -1;
+        gap: 18px;
+        background:
+          linear-gradient(135deg, rgba(31, 92, 69, 0.08), transparent 42%),
+          rgba(255, 253, 248, 0.86);
+      }
+
+      .project-featured-intro {
+        display: grid;
+        gap: 10px;
+      }
+
+      .project-featured-intro .project-topline {
+        margin-bottom: 2px;
+      }
+
+      .project-featured-intro h3 {
+        max-width: 980px;
+        margin-bottom: 0;
+        font-size: clamp(28px, 2.35vw, 38px);
+      }
+
+      .project-featured-intro p {
+        max-width: 1180px;
+        margin-bottom: 0;
+        font-size: clamp(16px, 1.05vw, 18px);
+      }
+
+      .project-featured-body {
+        display: grid;
+        grid-template-columns: minmax(360px, 0.72fr) minmax(0, 1.28fr);
+        gap: 18px;
+        align-items: start;
+      }
+
+      .project-featured-copy {
+        display: flex;
+        flex-direction: column;
+        min-height: 100%;
+      }
+
+      .project-card.featured .project-metrics {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        margin-top: 0;
+      }
+
+      .project-card.featured .project-list {
+        margin-bottom: 18px;
+      }
+
+      .project-card.featured .project-list li {
+        grid-template-columns: 54px minmax(0, 1fr);
+      }
+
+      .project-card.featured .project-visual {
+        margin: 0;
+      }
+
+      .project-card.featured > .card-link {
+        width: fit-content;
+        margin-top: 0;
+      }
+      .project-visual {
+        margin: -4px 0 18px;
+        overflow: hidden;
+        border: 1px solid var(--line);
+        border-radius: 6px;
+        background: rgba(247, 243, 234, 0.74);
+      }
+
+      .project-visual img {
+        display: block;
+        width: 100%;
+        height: auto;
+        aspect-ratio: 900 / 506;
+        object-fit: cover;
+      }
+
+      .project-visual[data-visual="ecommerce-home-thumb"] img {
+        aspect-ratio: 1386 / 651;
+        object-fit: contain;
+        padding: 10px;
+      }
+
+      .project-card.novel-featured {
+        background:
+          linear-gradient(135deg, rgba(31, 92, 69, 0.1), transparent 44%),
+          linear-gradient(315deg, rgba(159, 99, 57, 0.07), transparent 36%),
+          rgba(255, 253, 248, 0.88);
+      }
+
+      .novel-home-visual {
+        display: grid;
+        align-content: center;
+        gap: 16px;
+        min-height: 100%;
+        margin: 0;
+        padding: 20px;
+        overflow: hidden;
+        border: 1px solid var(--line);
+        border-radius: 6px;
+        background:
+          radial-gradient(circle at 92% 8%, rgba(31, 92, 69, 0.12), transparent 29%),
+          rgba(247, 243, 234, 0.78);
+      }
+
+      .novel-home-visual figcaption {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: space-between;
+        gap: 8px;
+        color: var(--muted);
+        font-size: 13px;
+        font-weight: 720;
+        letter-spacing: 0.04em;
+      }
+
+      .synthetic-mark {
+        display: inline-flex;
+        align-items: center;
+        min-height: 26px;
+        padding: 0 8px;
+        border: 1px solid rgba(159, 99, 57, 0.28);
+        border-radius: 999px;
+        background: rgba(159, 99, 57, 0.08);
+        color: #784820;
+        font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
+        font-size: 11px;
+        letter-spacing: 0.08em;
+      }
+
+      .novel-mini-flow {
+        display: grid;
+        grid-template-columns: repeat(6, minmax(0, 1fr));
+        gap: 8px;
+      }
+
+      .novel-mini-step {
+        position: relative;
+        display: grid;
+        align-content: center;
+        min-height: 92px;
+        padding: 12px 10px;
+        border: 1px solid rgba(31, 92, 69, 0.18);
+        border-radius: 5px;
+        background: rgba(255, 253, 248, 0.86);
+      }
+
+      .novel-mini-step::after {
+        content: "";
+        position: absolute;
+        top: 50%;
+        right: -9px;
+        z-index: 2;
+        width: 9px;
+        height: 1px;
+        background: rgba(31, 92, 69, 0.38);
+      }
+
+      .novel-mini-step:last-child::after {
+        display: none;
+      }
+
+      .novel-mini-step small {
+        margin-bottom: 8px;
+        color: var(--green);
+        font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
+        font-size: 11px;
+      }
+
+      .novel-mini-step strong {
+        color: var(--ink);
+        font-size: 13px;
+        line-height: 1.35;
+      }
+
+      .novel-mini-controls {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 8px;
+      }
+
+      .novel-mini-control {
+        padding: 10px 12px;
+        border-left: 3px solid var(--green);
+        background: rgba(223, 233, 223, 0.5);
+        color: var(--green-dark);
+        font-size: 12px;
+        font-weight: 750;
+        line-height: 1.4;
+      }
+
+      .project-topline,
+      .article-meta {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 8px;
+        margin-bottom: 18px;
+      }
+
+      .pill {
+        display: inline-flex;
+        align-items: center;
+        min-height: 28px;
+        padding: 0 9px;
+        border: 1px solid var(--line);
+        border-radius: 999px;
+        background: rgba(255, 253, 248, 0.58);
+        color: var(--muted);
+        cursor: default;
+        user-select: none;
+        font-size: 13px;
+        font-weight: 700;
+      }
+
+      .pill.strong {
+        border-color: rgba(31, 92, 69, 0.22);
+        background: rgba(223, 233, 223, 0.78);
+        color: var(--green-dark);
+      }
+
+      .project-card h3,
+      .article-card h3,
+      .research-panel h3,
+      .about-panel h3 {
+        margin-bottom: 12px;
+        font-size: 24px;
+        line-height: 1.18;
+      }
+
+      .project-card p,
+      .article-card p,
+      .research-panel p,
+      .about-panel p,
+      .contact-panel p {
+        color: var(--muted);
+      }
+
+      .project-list {
+        display: grid;
+        gap: 10px;
+        margin: 18px 0 24px;
+        padding: 0;
+        list-style: none;
+      }
+
+      .project-list li {
+        display: grid;
+        grid-template-columns: 88px minmax(0, 1fr);
+        gap: 12px;
+        color: var(--muted);
+        font-size: 15px;
+      }
+
+      .project-list strong {
+        color: var(--ink);
+      }
+
+      .project-metrics {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(112px, 1fr));
+        gap: 10px;
+        margin: 20px 0 8px;
+      }
+
+      .project-metric {
+        min-height: 78px;
+        padding: 12px;
+        border: 1px solid var(--line);
+        border-radius: 6px;
+        background: rgba(247, 243, 234, 0.74);
+      }
+
+      .project-metric strong {
+        display: block;
+        margin-bottom: 5px;
+        color: var(--green-dark);
+        font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
+        font-size: clamp(24px, 1.8vw, 30px);
+        line-height: 1.1;
+      }
+
+      .project-metric span {
+        display: block;
+        color: var(--muted);
+        font-size: 15px;
+        font-weight: 650;
+        line-height: 1.45;
+      }
+
+      .engineering-card {
+        gap: 16px;
+      }
+
+      .engineering-card .project-list {
+        margin: 10px 0 0;
+      }
+
+      .challenge-cases {
+        display: grid;
+        gap: 14px;
+      }
+
+      .challenge-case {
+        padding-top: 14px;
+        border-top: 1px solid var(--line);
+      }
+
+      .challenge-case h4 {
+        margin: 0 0 8px;
+        color: var(--ink);
+        font-size: 17px;
+        line-height: 1.25;
+      }
+
+      .challenge-case p {
+        margin-bottom: 0;
+        font-size: 15px;
+        line-height: 1.62;
+      }
+
+      .card-link {
+        margin-top: auto;
+        color: var(--green);
+        font-weight: 800;
+      }
+
+      .challenge-case .card-link {
+        display: inline-flex;
+        align-items: center;
+        width: fit-content;
+        min-height: 44px;
+        margin-top: 8px;
+      }
+
+
+      .governance-map {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 10px;
+        margin-top: 14px;
+        padding: 12px;
+        border: 1px solid rgba(31, 92, 69, 0.2);
+        border-radius: 8px;
+        background: rgba(222, 237, 225, 0.52);
+      }
+
+      .governance-step {
+        min-height: 96px;
+        padding: 12px;
+        border: 1px solid var(--line);
+        border-radius: 6px;
+        background: rgba(255, 253, 248, 0.84);
+      }
+
+      .governance-step strong {
+        display: block;
+        margin-bottom: 6px;
+        color: var(--ink);
+        font-size: 15px;
+        line-height: 1.25;
+      }
+
+      .governance-step span {
+        display: block;
+        color: var(--muted);
+        font-size: 13.5px;
+        line-height: 1.5;
+      }
+
+      .pipeline {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 14px;
+        padding: 18px;
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        background: rgba(255, 253, 248, 0.72);
+      }
+
+      .pipe-stage {
+        position: relative;
+        min-height: 216px;
+        padding: 18px;
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        background: var(--surface);
+      }
+
+      .pipe-stage::after {
+        content: "";
+        position: absolute;
+        top: 50%;
+        right: -16px;
+        width: 18px;
+        height: 1px;
+        background: var(--green);
+      }
+
+      .pipe-stage:last-child::after {
+        display: none;
+      }
+
+      .pipe-index {
+        display: grid;
+        width: 32px;
+        height: 32px;
+        margin-bottom: 16px;
+        place-items: center;
+        border-radius: 50%;
+        background: var(--green-dark);
+        color: var(--amber-soft);
+        font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
+        font-size: 13px;
+        font-weight: 800;
+      }
+
+      .pipe-stage h3 {
+        margin-bottom: 8px;
+        font-size: 19px;
+      }
+
+      .pipe-stage ul {
+        display: grid;
+        gap: 6px;
+        margin: 14px 0 0;
+        padding: 0;
+        color: var(--muted);
+        list-style: none;
+        font-size: 15px;
+      }
+
+      .articles-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 18px;
+      }
+
+      .article-card {
+        display: flex;
+        flex-direction: column;
+        min-height: 270px;
+        padding: 22px;
+        transition: transform 180ms ease, border-color 180ms ease;
+      }
+
+      .article-card .card-link {
+        display: inline-flex;
+        align-items: center;
+        width: fit-content;
+        min-height: 44px;
+        margin-top: auto;
+      }
+
+      .article-card:hover {
+        transform: translateY(-3px);
+        border-color: var(--line-strong);
+      }
+
+      .research {
+        display: grid;
+        grid-template-columns: minmax(0, 0.82fr) minmax(320px, 0.58fr);
+        gap: 18px;
+      }
+
+      .research-panel,
+      .about-panel,
+      .contact-panel {
+        padding: 26px;
+      }
+
+      .research-list {
+        display: grid;
+        gap: 14px;
+        margin: 22px 0 0;
+        padding: 0;
+        list-style: none;
+      }
+
+      .research-list li {
+        display: grid;
+        grid-template-columns: 32px minmax(0, 1fr);
+        gap: 12px;
+        align-items: start;
+        padding-top: 14px;
+        border-top: 1px solid var(--line);
+      }
+
+      .research-list span {
+        display: grid;
+        width: 32px;
+        height: 32px;
+        place-items: center;
+        border-radius: 50%;
+        background: var(--code);
+        color: var(--green);
+        font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
+        font-weight: 800;
+      }
+
+      .research-list strong {
+        display: block;
+        margin-bottom: 4px;
+      }
+
+      .research-list p {
+        margin-bottom: 0;
+      }
+
+      .schema {
+        display: grid;
+        gap: 12px;
+        align-content: center;
+        min-height: 100%;
+        border: 1px solid rgba(16, 35, 29, 0.16);
+        border-radius: var(--radius);
+        background: var(--green-dark);
+        padding: 22px;
+        color: #fffdf8;
+      }
+
+      .schema-node {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 14px;
+        min-height: 52px;
+        padding: 0 14px;
+        border: 1px solid rgba(255, 255, 255, 0.14);
+        border-radius: 6px;
+        background: rgba(255, 255, 255, 0.06);
+        font-weight: 750;
+      }
+
+      .schema-node small {
+        color: rgba(255, 253, 248, 0.62);
+        font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
+      }
+
+
+      .credentials-layout {
+        display: grid;
+        grid-template-columns: minmax(0, 1.2fr) minmax(320px, 0.72fr);
+        gap: 18px;
+        align-items: stretch;
+      }
+
+      .credentials-group,
+      .recognition-panel {
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        padding: 26px;
+        background: rgba(255, 253, 248, 0.82);
+        box-shadow: 0 1px 0 rgba(255, 255, 255, 0.7) inset;
+      }
+
+      .proof-kicker {
+        display: inline-flex;
+        align-items: center;
+        width: fit-content;
+        min-height: 30px;
+        padding: 0 9px;
+        border: 1px solid var(--line);
+        border-radius: 999px;
+        color: var(--green);
+        font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
+        font-size: 13px;
+        font-weight: 800;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+      }
+
+      .credentials-group > h3,
+      .recognition-panel > h3 {
+        margin: 14px 0 0;
+        font-size: clamp(23px, 2vw, 30px);
+        line-height: 1.2;
+      }
+
+      .credentials-group > p {
+        max-width: 720px;
+        margin: 10px 0 0;
+        color: var(--muted);
+      }
+
+      .certificate-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 14px;
+        margin-top: 22px;
+      }
+
+      .certificate-card {
+        display: flex;
+        min-width: 0;
+        flex-direction: column;
+        overflow: hidden;
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        background: rgba(247, 243, 234, 0.68);
+        transition: transform 180ms ease, border-color 180ms ease, box-shadow 180ms ease;
+      }
+
+      .certificate-card:hover {
+        transform: translateY(-3px);
+        border-color: var(--line-strong);
+        box-shadow: var(--shadow);
+      }
+
+      .certificate-visual {
+        aspect-ratio: 3 / 2;
+        margin: 0;
+        overflow: hidden;
+        border-bottom: 1px solid var(--line);
+        background: #fffdf8;
+      }
+
+      .certificate-visual img {
+        display: block;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+
+      .certificate-copy {
+        display: flex;
+        flex: 1;
+        flex-direction: column;
+        padding: 18px;
+      }
+
+      .credential-label {
+        color: var(--amber);
+        font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
+        font-size: 12px;
+        font-weight: 850;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+      }
+
+      .certificate-copy h4 {
+        margin: 8px 0 6px;
+        font-size: 20px;
+        line-height: 1.3;
+      }
+
+      .certificate-copy p {
+        margin: 0;
+        color: var(--muted);
+        font-size: 15px;
+      }
+
+      .proof-meta {
+        display: block;
+        margin-top: 10px;
+        color: var(--subtle);
+        font-size: 14px;
+        font-variant-numeric: tabular-nums;
+      }
+
+      .certificate-link,
+      .recognition-link {
+        display: inline-flex;
+        align-items: center;
+        width: fit-content;
+        min-height: 44px;
+        margin-top: auto;
+        padding-top: 12px;
+        color: var(--green);
+        font-weight: 800;
+      }
+
+      .recognition-panel {
+        display: flex;
+        flex-direction: column;
+        background:
+          linear-gradient(145deg, rgba(183, 121, 31, 0.14), transparent 42%),
+          var(--green-dark);
+        color: #fffdf8;
+      }
+
+      .recognition-panel .proof-kicker {
+        border-color: rgba(255, 255, 255, 0.22);
+        color: var(--amber-soft);
+      }
+
+      .recognition-list {
+        display: grid;
+        gap: 0;
+        margin: 22px 0 0;
+        padding: 0;
+        list-style: none;
+      }
+
+      .recognition-item {
+        display: grid;
+        grid-template-columns: 48px minmax(0, 1fr);
+        gap: 14px;
+        padding: 20px 0;
+        border-top: 1px solid rgba(255, 255, 255, 0.16);
+      }
+
+      .evidence-index {
+        display: grid;
+        width: 40px;
+        height: 40px;
+        place-items: center;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        border-radius: 50%;
+        color: var(--amber-soft);
+        font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
+        font-size: 13px;
+        font-weight: 800;
+      }
+
+      .recognition-item h4 {
+        margin: 0 0 7px;
+        font-size: 20px;
+        line-height: 1.35;
+      }
+
+      .recognition-item p {
+        margin: 0;
+        color: rgba(255, 253, 248, 0.74);
+        font-size: 15px;
+      }
+
+      .recognition-item .proof-meta {
+        color: rgba(255, 253, 248, 0.54);
+      }
+
+      .recognition-link {
+        color: #fffdf8;
+      }
+
+      .recognition-note {
+        margin: auto 0 0;
+        padding-top: 18px;
+        border-top: 1px solid rgba(255, 255, 255, 0.16);
+        color: rgba(255, 253, 248, 0.62);
+        font-size: 14px;
+      }
+
+      .about-grid {
+        display: grid;
+        grid-template-columns: minmax(0, 0.72fr) minmax(320px, 0.48fr);
+        gap: 18px;
+        align-items: stretch;
+      }
+
+      .about-panel.highlight {
+        background:
+          linear-gradient(135deg, rgba(183, 121, 31, 0.13), transparent 48%),
+          rgba(255, 253, 248, 0.86);
+      }
+
+      .about-items {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 12px;
+        margin-top: 24px;
+      }
+
+      .about-item {
+        min-height: 116px;
+        padding: 16px;
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        background: rgba(247, 243, 234, 0.72);
+      }
+
+      .about-item strong {
+        display: block;
+        margin-bottom: 6px;
+      }
+
+      .about-item span {
+        color: var(--muted);
+        font-size: 15px;
+      }
+
+      .contact-panel {
+        display: grid;
+        gap: 28px;
+        margin-top: 18px;
+        padding: 30px;
+        background: var(--green-dark);
+        color: #fffdf8;
+      }
+
+      .contact-header {
+        display: grid;
+        grid-template-columns: minmax(220px, 0.72fr) minmax(320px, 1.28fr);
+        align-items: end;
+        gap: 32px;
+      }
+
+      .contact-header p {
+        max-width: 560px;
+        margin: 0;
+        justify-self: end;
+        color: rgba(255, 253, 248, 0.72);
+        text-align: right;
+      }
+
+      .contact-panel h2 {
+        margin: 0;
+      }
+
+      .contact-actions {
+        display: grid;
+        grid-template-columns: minmax(0, 0.82fr) minmax(0, 1fr) minmax(0, 1.42fr);
+        border-top: 1px solid rgba(255, 253, 248, 0.2);
+        border-bottom: 1px solid rgba(255, 253, 248, 0.2);
+      }
+
+      .contact-card {
+        min-width: 0;
+        min-height: 92px;
+        display: grid;
+        grid-template-columns: 42px minmax(0, 1fr) 18px;
+        align-items: center;
+        gap: 12px;
+        padding: 18px 20px;
+        color: #fffdf8;
+        transition: background 180ms ease;
+      }
+
+      .contact-card + .contact-card {
+        border-left: 1px solid rgba(255, 253, 248, 0.2);
+      }
+
+      .contact-card:hover {
+        background: rgba(255, 253, 248, 0.08);
+      }
+
+      .contact-card:focus-visible {
+        outline: 2px solid #f6d47a;
+        outline-offset: -2px;
+      }
+
+      .contact-icon {
+        width: 42px;
+        height: 42px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 8px;
+        background: rgba(255, 253, 248, 0.12);
+        color: #f6d47a;
+      }
+
+      .contact-icon svg {
+        width: 21px;
+        height: 21px;
+        stroke: currentColor;
+      }
+
+      .contact-label {
+        display: block;
+        color: rgba(255, 253, 248, 0.62);
+        font-size: 13px;
+        font-weight: 700;
+      }
+
+      .contact-value {
+        display: block;
+        margin-top: 4px;
+        color: #fffdf8;
+        font-size: 16px;
+        font-weight: 750;
+        line-height: 1.35;
+        white-space: nowrap;
+      }
+
+      .contact-arrow {
+        display: inline-flex;
+        color: rgba(255, 253, 248, 0.54);
+        transition: color 180ms ease, transform 180ms ease;
+      }
+
+      .contact-arrow svg {
+        width: 18px;
+        height: 18px;
+        stroke: currentColor;
+      }
+
+      .contact-card:hover .contact-arrow {
+        color: #f6d47a;
+        transform: translateX(2px);
+      }
+
+      footer {
+        width: min(100% - 32px, var(--content));
+        margin: 0 auto;
+        padding: 28px 0 48px;
+        border-top: 1px solid var(--line);
+        color: var(--muted);
+        font-size: 15px;
+      }
+
+      @media (max-width: 1100px) {
+        .contact-actions {
+          grid-template-columns: minmax(0, 0.82fr) minmax(0, 1.18fr);
+        }
+
+        .contact-card:nth-child(3) {
+          grid-column: 1 / -1;
+          border-top: 1px solid rgba(255, 253, 248, 0.2);
+          border-left: 0;
+        }
+      }
+
+      @media (max-width: 900px) {
+        .nav {
+          align-items: flex-start;
+          flex-direction: column;
+          padding: 14px 0;
+          gap: 10px;
+        }
+
+        .nav-links {
+          justify-content: flex-start;
+        }
+
+        .section {
+          scroll-margin-top: 152px;
+        }
+
+        .hero,
+        .section-heading,
+        .project-grid,
+        .research,
+        .about-grid,
+        .contact-panel,
+        .credentials-layout {
+          grid-template-columns: 1fr;
+        }
+        .project-featured-body {
+          grid-template-columns: 1fr;
+        }
+
+        .novel-mini-flow {
+          grid-template-columns: repeat(3, minmax(0, 1fr));
+        }
+
+        .novel-mini-step:nth-child(3)::after,
+        .novel-mini-step:last-child::after {
+          display: none;
+        }
+
+        .hero {
+          min-height: auto;
+          padding-top: 44px;
+        }
+
+        .pipeline,
+        .articles-grid,
+        .about-items {
+          grid-template-columns: 1fr;
+        }
+
+        .pipe-stage {
+          min-height: auto;
+        }
+
+        .pipe-stage::after {
+          top: auto;
+          right: auto;
+          bottom: -15px;
+          left: 32px;
+          width: 1px;
+          height: 16px;
+        }
+
+        .contact-header {
+          grid-template-columns: 1fr;
+          gap: 12px;
+        }
+
+        .contact-header p {
+          justify-self: start;
+          text-align: left;
+        }
+
+        .contact-actions {
+          grid-template-columns: 1fr;
+        }
+
+        .contact-card + .contact-card {
+          border-top: 1px solid rgba(255, 253, 248, 0.2);
+          border-left: 0;
+        }
+
+        .contact-card:nth-child(3) {
+          grid-column: auto;
+        }
+      }
+
+      @media (max-width: 560px) {
+        .section {
+          width: min(100% - 24px, var(--content));
+          padding: 56px 0;
+        }
+
+        .nav {
+          width: min(100% - 24px, var(--content));
+        }
+
+        .nav-links a {
+          padding: 0 9px;
+        }
+
+        .project-list li {
+          grid-template-columns: 1fr;
+          gap: 2px;
+        }
+
+        .novel-home-visual {
+          padding: 14px;
+        }
+
+        .novel-mini-flow,
+        .novel-mini-controls {
+          grid-template-columns: 1fr;
+        }
+
+        .novel-mini-step {
+          min-height: 70px;
+        }
+
+        .novel-mini-step::after {
+          display: none;
+        }
+
+        .certificate-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .credentials-group,
+        .recognition-panel {
+          padding: 20px;
+        }
+
+        .recognition-item {
+          grid-template-columns: 40px minmax(0, 1fr);
+          gap: 12px;
+        }
+
+        .contact-panel {
+          padding: 22px;
+        }
+
+        .contact-card {
+          min-height: 82px;
+          grid-template-columns: 38px minmax(0, 1fr) 18px;
+          gap: 10px;
+          padding: 16px 0;
+        }
+
+        .contact-icon {
+          width: 38px;
+          height: 38px;
+        }
+
+        .contact-value {
+          font-size: 15px;
+        }
+
+        .evidence-index {
+          width: 36px;
+          height: 36px;
+        }
+
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        *,
+        *::before,
+        *::after {
+          scroll-behavior: auto !important;
+          transition: none !important;
+        }
+      }
+    </style>
+  </head>
+  <body id="top">
+    <a class="skip-link" href="#main-content">跳到正文</a>
+    <header class="site-header">
+      <nav class="nav" aria-label="主导航">
+        <a class="brand" href="#top" aria-label="返回首页">
+          <span>
+            <span class="brand-name">Jiaxin Zhang</span>
+            <small>Data Warehouse Engineer</small>
+          </span>
+        </a>
+        <div class="nav-links">
+          <a href="#projects">项目</a>
+          <a href="#skills">技能图谱</a>
+          <a href="#writing">技术文章</a>
+          <a href="#credentials">证书与认可</a>
+          <a class="resume-link" href="#contact">联系</a>
+        </div>
+      </nav>
+    </header>
+
+    <main id="main-content">
+      <section class="section hero" aria-labelledby="hero-title">
+        <div class="hero-content">
+          <span class="eyebrow">Data Warehouse · Big Data · Data Engineering</span>
+          <h1 id="hero-title">张佳欣</h1>
+
+          <div class="resume-snapshot" aria-label="首页简历快照">
+            <span class="snapshot-kicker">Resume Snapshot</span>
+            <h2>大数据开发 / 数据仓库 / 数据工程能力快照</h2>
+            <ul class="snapshot-list">
+              <li>
+                <strong>背景定位</strong>
+                <span>中国农业大学数据科学与大数据技术第二学士，目标岗位为大数据开发 / 数据仓库工程师</span>
+              </li>
+              <li>
+                <strong>生产经历</strong>
+                <span>牧原总部 10 个月企业数仓经历，实际使用 MaxCompute、DataWorks、Hologres 和 SQL</span>
+              </li>
+              <li>
+                <strong>数仓能力</strong>
+                <span>维度建模、分层加工、调度依赖治理、数据质量核验与异常回溯</span>
+              </li>
+              <li>
+                <strong>实时补强</strong>
+                <span>通过本地可复现电商项目实践 Flink SQL、Kafka、Paimon、Doris 与双链路指标对账</span>
+              </li>
+              <li>
+                <strong>AI 补充</strong>
+                <span>Governed Novel 合成数据治理管道 + Mini-C4 网页预训练语料流水线</span>
+              </li>
+            </ul>
+          </div>
+
+          <div class="hero-actions">
+            <a class="button primary" href="#projects">
+              查看项目
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M5 12h14M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </a>
+            <a class="button secondary" href="#contact">
+              联系我
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M5 12h14M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="projects" aria-labelledby="projects-title">
+        <div class="section-heading">
+          <h2 id="projects-title">精选项目：用可验证的工程链路说明能力</h2>
+        </div>
+
+        <div class="project-grid">
+          <article class="project-card featured">
+            <div class="project-featured-intro">
+              <div class="project-topline">
+                <span class="pill strong">主项目</span>
+                <span class="pill">Doris</span>
+                <span class="pill">Flink</span>
+                <span class="pill">Paimon</span>
+                <span class="pill">指标对账</span>
+              </div>
+              <h3>电商离线 + 实时双版本湖仓数仓</h3>
+              <p>
+                复现并封装一个电商交易指标双链路数仓：离线链路使用 MySQL + Doris 完成物理分层；实时链路由 Kafka + Flink SQL 临时视图构成 DWD → DWS → ADS 逻辑计算链，再通过 Statement Set 并行物化 Paimon ODS/DWD/DWS/ADS 和 Doris ADS，最终逐字段对账。
+              </p>
+            </div>
+            <div class="project-featured-body">
+              <div class="project-featured-copy">
+                <div class="project-metrics" aria-label="电商数仓项目指标">
+                  <div class="project-metric"><strong>2</strong><span>离线 + 实时链路</span></div>
+                  <div class="project-metric"><strong>6</strong><span>核心交易指标</span></div>
+                  <div class="project-metric"><strong>1/7/30</strong><span>固定统计范围</span></div>
+                  <div class="project-metric"><strong>PASS</strong><span>逐字段对账</span></div>
+                </div>
+                <ul class="project-list">
+                  <li><strong>问题</strong><span>离线报表和实时看板容易因为口径、统计范围、数据源不同导致指标不一致。</span></li>
+                  <li><strong>方案</strong><span>Doris 离线链路按表逐层加工；Flink 实时链路以临时视图串联口径，并在同一 Statement Set 中并行写入 Paimon 分层表与 Doris ADS。</span></li>
+                  <li><strong>结果</strong><span>固定日期锚点下，1 / 7 / 30 日统计范围的核心指标和客单价全部对账 PASS。</span></li>
+                </ul>
+              </div>
+              <figure class="project-visual" data-visual="ecommerce-home-thumb">
+                <img src="assets/projects/ecommerce-lakehouse/architecture.png" alt="电商离线与实时双链路数仓架构缩略图" width="1386" height="651" loading="lazy">
+              </figure>
+            </div>
+            <a class="card-link" href="projects/ecommerce-lakehouse-warehouse.html">查看项目详情 -></a>
+          </article>
+
+          <article class="project-card featured novel-featured">
+            <div class="project-featured-intro">
+              <div class="project-topline">
+                <span class="pill strong">SYNTHETIC DEMO</span>
+                <span class="pill">AI Data Engineering</span>
+                <span class="pill">Data Governance</span>
+                <span class="pill">v0.1.0-demo</span>
+              </div>
+              <h3>Governed Novel Data Pipeline</h3>
+              <p>
+                2025 年中，我与算法工程师、内容编辑共同推进一套私有 AI 小说创作工作台。项目暴露出权利不可追溯、字段口径漂移和“结构全绿、语义塌缩”等问题；我据此主导治理重构，并将训练前部分独立重建为这套 100% 合成、可公开复核的数据管道。
+              </p>
+            </div>
+            <div class="project-featured-body">
+              <div class="project-featured-copy">
+                <div class="project-metrics" aria-label="Governed Novel 合成演示指标">
+                  <div class="project-metric"><strong>17/17</strong><span>SYNTHETIC DEMO · 自动化测试</span></div>
+                  <div class="project-metric"><strong>23</strong><span>SYNTHETIC DEMO · SHA-256 产物校验</span></div>
+                  <div class="project-metric"><strong>20</strong><span>SYNTHETIC DEMO · 最终唯一作品</span></div>
+                  <div class="project-metric"><strong>0/0/0</strong><span>SYNTHETIC DEMO · 作者 / 作品 / 正文哈希跨集合重叠</span></div>
+                </div>
+                <ul class="project-list">
+                  <li><strong>问题</strong><span>字段口径漂移、特征分布塌缩，结构验证却被误当成文学判断正确。</span></li>
+                  <li><strong>重构</strong><span>权利硬门、规范化、双层去重、作者 / 作品级隔离、数据集生产与版本血缘。</span></li>
+                  <li><strong>证据</strong><span>固定提交、双版本 CI、可重复构建、校验和、Dataset Card 与验证报告。</span></li>
+                </ul>
+              </div>
+              <figure class="novel-home-visual" aria-label="Governed Novel 数据治理管道缩略流程图">
+                <figcaption>
+                  <span>TRAINING-DATA CONTROL PLANE</span>
+                  <span class="synthetic-mark">SYNTHETIC DEMO</span>
+                </figcaption>
+                <div class="novel-mini-flow">
+                  <div class="novel-mini-step"><small>01</small><strong>权利<br>准入</strong></div>
+                  <div class="novel-mini-step"><small>02</small><strong>文本<br>规范化</strong></div>
+                  <div class="novel-mini-step"><small>03</small><strong>精确 / 近似<br>去重</strong></div>
+                  <div class="novel-mini-step"><small>04</small><strong>作者 / 作品<br>隔离切分</strong></div>
+                  <div class="novel-mini-step"><small>05</small><strong>SFT / 偏好<br>评测集</strong></div>
+                  <div class="novel-mini-step"><small>06</small><strong>轻量公开<br>发布门</strong></div>
+                </div>
+                <div class="novel-mini-controls">
+                  <div class="novel-mini-control">Manifest 与版本血缘</div>
+                  <div class="novel-mini-control">测试与隔离断言</div>
+                  <div class="novel-mini-control">SHA-256 文件校验</div>
+                </div>
+              </figure>
+            </div>
+            <a class="card-link" href="projects/governed-novel-data-pipeline.html">查看审计、重构与证据 -></a>
+          </article>
+
+          <article class="project-card">
+            <div class="project-topline">
+              <span class="pill strong">LLM Data</span>
+              <span class="pill">Mini-C4</span>
+              <span class="pill">Validation</span>
+            </div>
+            <figure class="project-visual" data-visual="mini-c4-home-thumb">
+              <img src="assets/projects/mini-c4/pipeline-iterations-thumb.webp" alt="Mini-C4 数据管道三次迭代缩略图" width="900" height="506" loading="lazy">
+            </figure>
+            <h3>Mini-C4 风格网页预训练语料流水线</h3>
+            <p>
+              复现并增强开源 Mini-C4 项目，在单机 CPU / WSL 环境下完成 WARC 解析、正文抽取、清洗去重、语种拆分、质量过滤、训练封装和一致性检查。
+            </p>
+            <div class="project-metrics" aria-label="Mini-C4 项目指标">
+              <div class="project-metric"><strong>10</strong><span>阶段脚本串联运行</span></div>
+              <div class="project-metric"><strong>14/14</strong><span>一致性检查通过</span></div>
+            </div>
+            <a class="card-link" href="projects/mini-c4-data-pipeline.html">查看项目详情 -></a>
+          </article>
+
+          <article class="project-card engineering-card">
+            <div class="project-topline">
+              <span class="pill strong">工程片段</span>
+              <span class="pill">DataWorks</span>
+              <span class="pill">血缘核对</span>
+              <span class="pill">调度治理</span>
+            </div>
+            <h3>工程攻坚片段：一日双调度复杂链路治理</h3>
+            <div class="challenge-cases">
+              <section class="challenge-case" aria-labelledby="schedule-governance-title">
+                <h4 id="schedule-governance-title">一日双调度复杂链路治理</h4>
+                <p>
+                  面对自依赖、跨天依赖和多周期混合调度，先用血缘图谱和调度配置表标注链路关系，再按核心表、加工表和缓存层拆解改动范围，最后用数据量、核心指标和历史回溯做一致性校验。
+                </p>
+                <div class="governance-map" aria-label="一日双调度链路治理方法">
+                  <div class="governance-step">
+                    <strong>01 标注依赖类型</strong>
+                    <span>标记周 / 日 / 小时周期，以及普通、自依赖、跨天依赖。</span>
+                  </div>
+                  <div class="governance-step">
+                    <strong>02 拆分风险层级</strong>
+                    <span>区分核心表、加工表和缓存层，控制每次改动范围。</span>
+                  </div>
+                  <div class="governance-step">
+                    <strong>03 隔离时间窗口</strong>
+                    <span>拆出凌晨与下午窗口，对齐跨天边界和自依赖逻辑。</span>
+                  </div>
+                  <div class="governance-step">
+                    <strong>04 三重结果校验</strong>
+                    <span>用数据量、核心指标和历史回溯交叉校验结果。</span>
+                  </div>
+                </div>
+              </section>
+              <section class="challenge-case" aria-labelledby="schedule-delivery-title">
+                <h4 id="schedule-delivery-title">落地范围与故障处理</h4>
+                <ul class="project-list">
+                  <li><strong>改造范围</strong><span>调整上游表及关联链路，适配每日两次数据产出。</span></li>
+                  <li><strong>链路调整</strong><span>调整ODS抽取频率与中间层加工逻辑，逐层核对上下游结果。</span></li>
+                  <li><strong>故障排查</strong><span>定位并修复转群数据因大小写不一致导致的匹配问题。</span></li>
+                </ul>
+              </section>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section class="section" id="skills" aria-labelledby="skills-title">
+        <div class="section-heading">
+          <h2 id="skills-title">技术能力图谱</h2>
+        </div>
+
+        <div class="pipeline" aria-label="技术能力管线">
+          <div class="pipe-stage">
+            <span class="pipe-index">01</span>
+            <h3>Cloud Warehouse</h3>
+            <p>生产云数仓与调度</p>
+            <ul>
+              <li>MaxCompute</li>
+              <li>DataWorks</li>
+              <li>Hologres / SQL</li>
+            </ul>
+          </div>
+          <div class="pipe-stage">
+            <span class="pipe-index">02</span>
+            <h3>Model & Quality</h3>
+            <p>分层建模与质量治理</p>
+            <ul>
+              <li>ODS / DWD / DWS / DM</li>
+              <li>维度建模</li>
+              <li>质量核验 / 异常回溯</li>
+            </ul>
+          </div>
+          <div class="pipe-stage">
+            <span class="pipe-index">03</span>
+            <h3>Realtime Practice</h3>
+            <p>本地实时链路实践</p>
+            <ul>
+              <li>Flink SQL / Kafka</li>
+              <li>Paimon / Doris</li>
+              <li>指标合同 / 双链路对账</li>
+            </ul>
+          </div>
+          <div class="pipe-stage">
+            <span class="pipe-index">04</span>
+            <h3>Engineering</h3>
+            <p>可复现工程交付</p>
+            <ul>
+              <li>Python / Pandas</li>
+              <li>Docker / WSL2</li>
+              <li>测试 / 文档 / 血缘</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+
+      <section class="section" id="credentials" aria-labelledby="credentials-title">
+        <div class="section-heading">
+          <h2 id="credentials-title">证书与公开认可</h2>
+          <p>
+            专业认证提供知识基线，开源合并与公开采访补充可由第三方核验的协作和业务表达证据。
+          </p>
+        </div>
+
+        <div class="credentials-layout">
+          <div class="credentials-group">
+            <span class="proof-kicker">Professional Certifications</span>
+            <h3>与目标岗位直接相关的专业认证</h3>
+            <p>证书作为能力旁证展示；具体工程能力仍以公开项目、运行记录和验收结果为主。</p>
+
+            <div class="certificate-grid">
+              <article class="certificate-card">
+                <a
+                  class="certificate-visual"
+                  href="assets/credentials/alibaba-cloud-acp-big-data.jpg"
+                  target="_blank"
+                  rel="noopener"
+                  aria-label="查看阿里云大数据 ACP 证书原图"
+                >
+                  <img
+                    src="assets/credentials/alibaba-cloud-acp-big-data-thumb.webp"
+                    alt="张佳欣的阿里云大数据方向 ACP 专业认证证书"
+                    width="900"
+                    height="600"
+                    loading="lazy"
+                  >
+                </a>
+                <div class="certificate-copy">
+                  <span class="credential-label">Alibaba Cloud ACP · Big Data</span>
+                  <h4>阿里云大数据专业认证</h4>
+                  <p>作为大数据方向的知识认证，与云数仓生产经历和数仓项目证据配套展示。</p>
+                  <span class="proof-meta">有效期至 2027.11.15</span>
+                  <a
+                    class="certificate-link"
+                    href="assets/credentials/alibaba-cloud-acp-big-data.jpg"
+                    target="_blank"
+                    rel="noopener"
+                  >查看证书原图 -&gt;</a>
+                </div>
+              </article>
+
+              <article class="certificate-card">
+                <a
+                  class="certificate-visual"
+                  href="assets/credentials/alibaba-cloud-acp-llm.png"
+                  target="_blank"
+                  rel="noopener"
+                  aria-label="查看阿里云大模型 ACP 证书原图"
+                >
+                  <img
+                    src="assets/credentials/alibaba-cloud-acp-llm-thumb.webp"
+                    alt="张佳欣的阿里云大模型方向 ACP 专业认证证书"
+                    width="900"
+                    height="600"
+                    loading="lazy"
+                  >
+                </a>
+                <div class="certificate-copy">
+                  <span class="credential-label">Alibaba Cloud ACP · LLM</span>
+                  <h4>阿里云大模型专业认证</h4>
+                  <p>补充大模型基础知识证明；工程实践对应 Mini-C4 与训练前数据治理项目。</p>
+                  <span class="proof-meta">有效期至 2028.01.16</span>
+                  <a
+                    class="certificate-link"
+                    href="assets/credentials/alibaba-cloud-acp-llm.png"
+                    target="_blank"
+                    rel="noopener"
+                  >查看证书原图 -&gt;</a>
+                </div>
+              </article>
+            </div>
+          </div>
+
+          <aside class="recognition-panel" aria-labelledby="recognition-title">
+            <span class="proof-kicker">Public Evidence</span>
+            <h3 id="recognition-title">第三方公开材料</h3>
+
+            <ol class="recognition-list">
+              <li class="recognition-item">
+                <span class="evidence-index" aria-hidden="true">01</span>
+                <div>
+                  <h4>开源贡献Data Engineering Zoomcamp · PR #839</h4>
+                  <p>
+                    为官方数据导入文档补充 <code>nrows=100</code> 与 <code>DtypeWarning</code>
+                    的复现说明，改动已被上游项目合并。
+                  </p>
+                  <span class="proof-meta">2026.04.20 · Open-source contribution</span>
+                  <a
+                    class="recognition-link"
+                    href="https://github.com/DataTalksClub/data-engineering-zoomcamp/pull/839"
+                    target="_blank"
+                    rel="noopener"
+                  >查看合并记录 -&gt;</a>
+                </div>
+              </li>
+
+              <li class="recognition-item">
+                <span class="evidence-index" aria-hidden="true">02</span>
+                <div>
+                  <h4>牧原公开采访 · 信息化赋能一线</h4>
+                  <p>
+                    作为校招新员工代表，围绕精细化养殖、上下游信息打通，以及技术如何服务一线价值创造分享业务观察。
+                  </p>
+                  <span class="proof-meta">Public interview · Data &amp; business communication</span>
+                  <a
+                    class="recognition-link"
+                    href="https://v.douyin.com/xw4CEAWQ9MY/"
+                    target="_blank"
+                    rel="noopener"
+                  >查看公开视频 -&gt;</a>
+                </div>
+              </li>
+            </ol>
+
+            <p class="recognition-note">
+              本区只收录与数据工程主线相关、且可通过公开页面或证书原件核验的材料。
+            </p>
+          </aside>
+        </div>
+      </section>
+
+      <section class="section" id="writing" aria-labelledby="writing-title">
+        <div class="section-heading">
+          <h2 id="writing-title">技术文章：从故障定位到长期工程方法</h2>
+          <p>
+            两篇公开材料分别记录实时数据链路排障，以及 AI 工具的文件化状态管理；均保留实践边界、验证方法与可迁移结论。
+          </p>
+        </div>
+
+        <div class="articles-grid">
+          <article class="article-card">
+            <div class="article-meta">
+              <span class="pill strong">实时数据工程</span>
+              <span class="pill">Flink CDC · DataHub</span>
+            </div>
+            <h3>阿里云 Flink CDC × DataHub：同步故障定位与排障闭环</h3>
+            <p>
+              复盘六类同步与消费故障，按控制面、数据面、事件语义和验证信号拆分问题，并整理可复用的排障顺序。
+            </p>
+            <a
+              class="card-link"
+              href="https://github.com/JiaxinZhang-space/Flink-DataHub-Troubleshoot"
+              target="_blank"
+              rel="noopener"
+              aria-label="在 GitHub 阅读 Flink CDC 与 DataHub 排障文章"
+            >阅读 GitHub 排障记录 -&gt;</a>
+          </article>
+
+          <article class="article-card">
+            <div class="article-meta">
+              <span class="pill strong">AI 工程方法</span>
+              <span class="pill">OpenClaw · Codex</span>
+            </div>
+            <h3>让 OpenClaw 越用越懂你：文件化记忆与 Codex 复用</h3>
+            <p>
+              把任务状态、踩坑日志、通用知识和权限边界写入可迁移文件，并在 OpenClaw 与 Codex 中复用同一套工程方法。
+            </p>
+            <a
+              class="card-link"
+              href="https://blog.csdn.net/zjx19961016/article/details/161567096"
+              target="_blank"
+              rel="noopener"
+              aria-label="在 CSDN 阅读 OpenClaw 与 Codex 文件化记忆文章"
+            >阅读完整文章 -&gt;</a>
+          </article>
+        </div>
+      </section>
+
+      <section class="section" id="contact" aria-labelledby="contact-title">
+        <div class="contact-panel">
+          <div class="contact-header">
+            <h2 id="contact-title">联系与资料</h2>
+            <p>
+              欢迎联系我，共同创造价值，服务社会。
+            </p>
+          </div>
+          <div class="contact-actions" aria-label="联系方式">
+            <a class="contact-card" href="mailto:1611209560@qq.com" aria-label="发送邮件到 1611209560@qq.com">
+              <span class="contact-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <rect width="20" height="16" x="2" y="4" rx="2"></rect>
+                  <path d="m22 7-8.97 5.7a2 2 0 0 1-2.06 0L2 7"></path>
+                </svg>
+              </span>
+              <span>
+                <span class="contact-label">Email</span>
+                <span class="contact-value">1611209560@qq.com</span>
+              </span>
+              <span class="contact-arrow" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M5 12h14"></path>
+                  <path d="m13 6 6 6-6 6"></path>
+                </svg>
+              </span>
+            </a>
+            <a class="contact-card" href="https://github.com/JiaxinZhang-space" target="_blank" rel="noopener" aria-label="打开 GitHub 主页 github.com/JiaxinZhang-space">
+              <span class="contact-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.4 5.4 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.3-.85 2.1-.77.35-2.75.96-4.15-1.1 0 0-.8-1.5-2-1.6 0 0-1.3 0-.1.8 0 0 .9.4 1.5 2 0 0 .8 2.7 4.7 1.9V22"></path>
+                </svg>
+              </span>
+              <span>
+                <span class="contact-label">GitHub</span>
+                <span class="contact-value">github.com/JiaxinZhang-space</span>
+              </span>
+              <span class="contact-arrow" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M15 3h6v6"></path>
+                  <path d="M10 14 21 3"></path>
+                  <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                </svg>
+              </span>
+            </a>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <span>张佳欣的数据工程作品集。聚焦项目、技术能力、工程复盘与长期学习。</span>
+    </footer>
+  </body>
+</html>
+
+
+
+

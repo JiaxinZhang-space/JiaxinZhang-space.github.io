@@ -1,0 +1,853 @@
+﻿<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>电商离线 + 实时双版本湖仓数仓</title>
+    <meta name="description" content="大数据与数据仓库作品集项目：Doris 完成离线物理分层，Flink SQL 以临时视图构建实时逻辑计算链并通过 Statement Set 并行物化到 Paimon 与 Doris，最终完成逐字段对账。">
+    <link rel="canonical" href="https://jiaxinzhang-space.github.io/projects/ecommerce-lakehouse-warehouse.html">
+    <link rel="icon" href="../favicon.svg" type="image/svg+xml">
+    <meta name="theme-color" content="#10231d">
+    <meta property="og:type" content="article">
+    <meta property="og:locale" content="zh_CN">
+    <meta property="og:site_name" content="张佳欣的技术作品集">
+    <meta property="og:title" content="电商离线 + 实时双版本湖仓数仓｜张佳欣作品集">
+    <meta property="og:description" content="Doris 离线物理分层与 Flink SQL 实时逻辑计算链并行产出，并在 Doris 完成逐字段对账。">
+    <meta property="og:url" content="https://jiaxinzhang-space.github.io/projects/ecommerce-lakehouse-warehouse.html">
+    <meta property="og:image" content="https://jiaxinzhang-space.github.io/og-cover.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <style>
+      :root {
+        --bg: #f7f3ea;
+        --surface: #fffdf8;
+        --surface-strong: #f0eadf;
+        --ink: #1f211d;
+        --muted: #5f6359;
+        --line: #d8d2c4;
+        --green: #1f5c45;
+        --green-dark: #10231d;
+        --green-soft: rgba(31, 92, 69, 0.1);
+        --amber: #b7791f;
+        --amber-soft: #f3dfb7;
+        --radius: 8px;
+        --content: 1360px;
+        --shadow: 0 16px 40px rgba(32, 34, 29, 0.08);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        margin: 0;
+        background:
+          linear-gradient(90deg, rgba(31, 92, 69, 0.045) 1px, transparent 1px),
+          linear-gradient(rgba(31, 92, 69, 0.035) 1px, transparent 1px),
+          var(--bg);
+        background-size: 56px 56px;
+        color: var(--ink);
+        font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        font-size: clamp(16px, 1.04vw, 18px);
+        line-height: 1.65;
+      }
+
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
+
+      a:focus-visible {
+        outline: 3px solid rgba(183, 121, 31, 0.55);
+        outline-offset: 3px;
+      }
+
+      .skip-link {
+        position: fixed;
+        top: 12px;
+        left: 12px;
+        z-index: 100;
+        padding: 10px 14px;
+        border-radius: var(--radius);
+        background: var(--green-dark);
+        color: #fffdf8;
+        transform: translateY(-160%);
+        transition: transform 160ms ease;
+      }
+
+      .skip-link:focus {
+        transform: translateY(0);
+      }
+
+      .site-header {
+        position: sticky;
+        top: 0;
+        z-index: 20;
+        border-bottom: 1px solid rgba(216, 210, 196, 0.82);
+        background: rgba(247, 243, 234, 0.94);
+        backdrop-filter: blur(12px);
+      }
+
+      .nav {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        width: min(100% - 32px, var(--content));
+        min-height: 70px;
+        margin: 0 auto;
+        gap: 20px;
+      }
+
+      .brand {
+        display: inline-grid;
+        grid-template-columns: 40px auto;
+        align-items: center;
+        gap: 12px;
+        min-width: max-content;
+        font-weight: 750;
+      }
+
+      .brand-mark {
+        display: grid;
+        width: 40px;
+        height: 40px;
+        place-items: center;
+        border: 1px solid var(--green);
+        border-radius: var(--radius);
+        background: var(--green-dark);
+        color: var(--amber-soft);
+        font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
+        font-size: 15px;
+      }
+
+      .brand small {
+        display: block;
+        color: var(--muted);
+        font-size: 15px;
+        font-weight: 500;
+      }
+
+      .nav-links {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: flex-end;
+        gap: 8px;
+      }
+
+      .nav-links a,
+      .button {
+        min-height: 48px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 6px;
+        font-size: clamp(15px, 0.95vw, 16px);
+        font-weight: 750;
+      }
+
+      .nav-links a {
+        padding: 0 12px;
+        color: var(--muted);
+        font-size: clamp(15px, 0.95vw, 16px);
+      }
+
+      .nav-links a:hover {
+        background: rgba(31, 92, 69, 0.08);
+        color: var(--ink);
+      }
+
+      main {
+        overflow: clip;
+      }
+
+      .section {
+        width: min(100% - 32px, var(--content));
+        margin: 0 auto;
+        padding: 74px 0;
+      }
+
+      .hero {
+        display: grid;
+        grid-template-columns: minmax(0, 0.92fr) minmax(320px, 0.58fr);
+        gap: 42px;
+        align-items: center;
+        min-height: calc(92dvh - 70px);
+        padding-top: 52px;
+      }
+
+      .hero > * {
+        min-width: 0;
+      }
+
+      .eyebrow {
+        display: inline-flex;
+        align-items: center;
+        width: fit-content;
+        min-height: 32px;
+        padding: 0 10px;
+        border: 1px solid var(--line);
+        border-radius: 999px;
+        background: rgba(255, 253, 248, 0.76);
+        color: var(--green);
+        font-size: 13px;
+        font-weight: 800;
+        text-transform: uppercase;
+      }
+
+      h1,
+      h2,
+      h3,
+      p {
+        margin-top: 0;
+      }
+
+      h1 {
+        max-width: 880px;
+        margin: 20px 0 22px;
+        font-size: clamp(38px, 6.4vw, 76px);
+        line-height: 1.02;
+        letter-spacing: 0;
+        overflow-wrap: anywhere;
+      }
+
+      h2 {
+        margin-bottom: 14px;
+        font-size: clamp(28px, 4vw, 46px);
+        line-height: 1.08;
+        letter-spacing: 0;
+      }
+
+      h3 {
+        margin-bottom: 10px;
+        font-size: 24px;
+        line-height: 1.2;
+      }
+
+      .lead {
+        max-width: 780px;
+        color: var(--muted);
+        font-size: clamp(18px, 1.45vw, 24px);
+        overflow-wrap: anywhere;
+      }
+
+      .section-intro {
+        max-width: 100%;
+        margin-bottom: 28px;
+        color: var(--muted);
+        font-size: clamp(17px, 1.1vw, 19px);
+      }
+
+      .hero-actions,
+      .repo-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+        margin-top: 28px;
+      }
+
+      .repo-actions {
+        margin-top: 16px;
+      }
+
+      .button {
+        padding: 0 18px;
+        border: 1px solid var(--green);
+        color: var(--green);
+        transition: transform 180ms ease, background 180ms ease, color 180ms ease;
+      }
+
+      .button.primary {
+        background: var(--green);
+        color: #fffdf8;
+      }
+
+      .button:hover {
+        transform: translateY(-2px);
+      }
+
+      .hero-panel,
+      .card,
+      .metric,
+      .flow-step,
+      .project-figure,
+      .run-box,
+      .summary-box {
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        background: rgba(255, 253, 248, 0.86);
+        box-shadow: 0 1px 0 rgba(255, 255, 255, 0.7) inset;
+      }
+
+      .hero-panel {
+        padding: 22px;
+      }
+
+      .hero-panel strong {
+        color: var(--green-dark);
+        font-size: 20px;
+      }
+
+      .scope-note {
+        margin: 18px 0 0;
+        padding: 16px;
+        border-left: 4px solid var(--amber);
+        background: rgba(243, 223, 183, 0.28);
+        color: var(--muted);
+        font-size: clamp(17px, 1.1vw, 19px);
+        line-height: 1.7;
+      }
+
+      .metric-grid,
+      .problem-grid,
+      .engineering-grid,
+      .validation-copy,
+      .limits-grid,
+      .flow-grid,
+      .figure-grid {
+        display: grid;
+        gap: 16px;
+      }
+
+      .metric-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        margin-top: 18px;
+      }
+
+      .problem-grid,
+      .flow-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+
+      .engineering-grid,
+      .limits-grid,
+      .figure-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .validation-layout {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) minmax(320px, 0.68fr);
+        gap: 16px;
+        align-items: start;
+      }
+
+      .metric,
+      .card,
+      .flow-step,
+      .run-box,
+      .summary-box {
+        padding: 22px;
+      }
+
+      .metric strong {
+        display: block;
+        margin-bottom: 6px;
+        color: var(--green-dark);
+        font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        font-size: clamp(32px, 2vw, 36px);
+        font-weight: 800;
+        font-variant-numeric: tabular-nums;
+        line-height: 1;
+      }
+
+      .metric span,
+      .card p,
+      .flow-step p,
+      .summary-box p {
+        color: var(--muted);
+      }
+
+      .metric span {
+        font-size: clamp(16px, 1vw, 18px);
+        font-weight: 500;
+      }
+
+      .hero-actions .button {
+        width: 160px;
+      }
+
+      .card ul,
+      .summary-box ul {
+        display: grid;
+        gap: 9px;
+        margin: 14px 0 0;
+        padding: 0;
+        list-style: none;
+      }
+
+      .card li,
+      .summary-box li {
+        color: var(--muted);
+      }
+
+      .card li strong,
+      .summary-box li strong {
+        color: var(--green-dark);
+      }
+
+      .flow-step small {
+        display: inline-grid;
+        width: 32px;
+        height: 32px;
+        margin-bottom: 14px;
+        place-items: center;
+        border-radius: 50%;
+        background: var(--green-dark);
+        color: var(--amber-soft);
+        font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
+        font-weight: 800;
+      }
+
+      .pipeline-line {
+        margin: 24px 0 0;
+        padding: 18px;
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        background: var(--green-dark);
+        color: #f8edd7;
+        font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
+        font-size: 15px;
+        line-height: 1.75;
+      }
+
+      .project-figure {
+        margin: 30px 0 0;
+        overflow: hidden;
+        box-shadow: var(--shadow);
+      }
+
+      .project-figure a {
+        display: block;
+      }
+
+      .project-figure img {
+        display: block;
+        width: 100%;
+        height: auto;
+        background: var(--surface-strong);
+      }
+
+      .project-figure figcaption {
+        padding: 12px 16px;
+        border-top: 1px solid var(--line);
+        color: var(--muted);
+        font-size: 15px;
+      }
+
+      .figure-grid {
+        margin-top: 30px;
+      }
+
+      .figure-grid .project-figure {
+        margin: 0;
+      }
+
+      .validation-layout .project-figure {
+        margin: 0;
+      }
+
+      .validation-note {
+        grid-column: 1 / -1;
+        margin: 0;
+        padding: 12px 16px;
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        background: rgba(255, 253, 248, 0.78);
+        color: var(--muted);
+      }
+
+      @media (min-width: 901px) {
+        .validation-note {
+          white-space: nowrap;
+        }
+      }
+
+      .data-table {
+        overflow-x: auto;
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        background: rgba(255, 253, 248, 0.86);
+      }
+
+      table {
+        width: 100%;
+        min-width: 720px;
+        border-collapse: collapse;
+      }
+
+      th,
+      td {
+        padding: 14px 16px;
+        border-bottom: 1px solid var(--line);
+        text-align: left;
+        vertical-align: top;
+      }
+
+      th {
+        background: var(--surface-strong);
+        color: var(--green-dark);
+        font-size: 13px;
+      }
+
+      td {
+        color: var(--muted);
+      }
+
+      tr:last-child td {
+        border-bottom: 0;
+      }
+
+      code,
+      pre {
+        font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
+      }
+
+      pre {
+        overflow-x: auto;
+        margin: 14px 0 0;
+        padding: 18px;
+        border-radius: var(--radius);
+        background: var(--green-dark);
+        color: #f8edd7;
+        line-height: 1.7;
+      }
+
+      .summary-box {
+        background:
+          linear-gradient(135deg, rgba(31, 92, 69, 0.08), transparent 42%),
+          rgba(255, 253, 248, 0.86);
+      }
+
+      footer {
+        width: min(100% - 32px, var(--content));
+        margin: 0 auto;
+        padding: 28px 0 48px;
+        border-top: 1px solid var(--line);
+        color: var(--muted);
+        font-size: 15px;
+      }
+
+      @media (max-width: 900px) {
+        .nav {
+          align-items: flex-start;
+          flex-direction: column;
+          padding: 14px 0;
+          gap: 10px;
+        }
+
+        .nav-links {
+          justify-content: flex-start;
+        }
+
+        .hero,
+        .problem-grid,
+        .engineering-grid,
+        .validation-layout,
+        .limits-grid,
+        .flow-grid,
+        .figure-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .hero {
+          min-height: auto;
+          padding-top: 44px;
+        }
+      }
+
+      @media (max-width: 560px) {
+        .section,
+        .nav,
+        footer {
+          width: min(100% - 24px, var(--content));
+        }
+
+        .section {
+          padding: 56px 0;
+        }
+
+        h1 {
+          max-width: 100%;
+          font-size: clamp(27px, 7.5vw, 30px);
+          line-height: 1.08;
+          word-break: break-all;
+        }
+
+        .lead {
+          max-width: 100%;
+          font-size: 17px;
+          word-break: break-all;
+        }
+
+        .metric-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        *,
+        *::before,
+        *::after {
+          scroll-behavior: auto !important;
+          transition: none !important;
+        }
+      }
+    </style>
+  </head>
+  <body id="top">
+    <a class="skip-link" href="#main-content">跳到正文</a>
+    <header class="site-header">
+      <nav class="nav" aria-label="主导航">
+        <a class="brand" href="../index.html#top" aria-label="返回首页">
+          <span class="brand-mark">P02</span>
+          <span>
+            Ecommerce Lakehouse
+            <small>Offline + realtime warehouse project</small>
+          </span>
+        </a>
+        <div class="nav-links">
+          <a href="#problem">问题</a>
+          <a href="#architecture">架构</a>
+          <a href="#offline">离线</a>
+          <a href="#realtime">实时</a>
+          <a href="#compare">对账</a>
+          <a href="#limits">边界</a>
+          <a href="../index.html#projects">返回作品集</a>
+        </div>
+      </nav>
+    </header>
+
+    <main id="main-content">
+      <section class="section hero" aria-labelledby="project-title">
+        <div>
+          <span class="eyebrow">Data warehouse / Doris / Flink / Paimon</span>
+          <h1 id="project-title">电商离线 + 实时<br>双版本湖仓数仓</h1>
+          <p class="lead">
+            同一组电商交易指标，分别通过 Doris 离线物理分层和 Flink SQL 实时逻辑计算链产出；实时结果并行物化到 Paimon 分层表与 Doris ADS，最终在 Doris 统一查询并逐字段对账。
+          </p>
+          <div class="hero-actions">
+            <a class="button primary" href="#architecture">查看双链路架构</a>
+            <a class="button" href="#compare">查看对账结果</a>
+            <a class="button" href="https://github.com/JiaxinZhang-space/ecommerce-lakehouse-mvp" target="_blank" rel="noopener">查看 GitHub</a>
+          </div>
+        </div>
+
+        <aside class="hero-panel" aria-label="项目关键指标">
+          <strong>项目定位</strong>
+          <p class="scope-note">
+            这是基于公开项目
+            <a href="https://github.com/Mrkuhuo/data-warehouse-learning" target="_blank" rel="noopener">Mrkuhuo/data-warehouse-learning</a>
+            的作品集化复现与增强，并保留原始来源与许可证；不是生产级全量平台。重点展示离线和实时两套实现如何在同一指标合同下对齐。
+          </p>
+          <div class="metric-grid">
+            <div class="metric"><strong>2</strong><span>离线 + 实时链路</span></div>
+            <div class="metric"><strong>4 层 / 5 表</strong><span>Paimon 并行物化目标</span></div>
+            <div class="metric"><strong>6</strong><span>核心交易指标</span></div>
+            <div class="metric"><strong>1 / 7 / 30</strong><span>固定统计范围对账</span></div>
+            <div class="metric"><strong>Doris</strong><span>统一查询出口</span></div>
+            <div class="metric"><strong>PASS</strong><span>逐字段验收结果</span></div>
+          </div>
+        </aside>
+      </section>
+
+      <section class="section" id="problem" aria-labelledby="problem-title">
+        <h2 id="problem-title">为什么要做双链路数仓</h2>
+        <p class="section-intro">
+          离线链路强调稳定重算和历史口径，实时链路强调持续更新和低延迟看板。真正的难点不是让两个系统各跑一遍，而是让同一业务指标在两套技术栈里有一致口径、可解释结果和可复现验收。
+        </p>
+        <div class="problem-grid">
+          <article class="card">
+            <h3>指标口径容易分裂</h3>
+            <p>离线报表和实时看板如果各自实现，GMV、订单数、退款订单数很容易因为过滤条件或日期范围不同而不一致。</p>
+          </article>
+          <article class="card">
+            <h3>技术职责需要拆清楚</h3>
+            <p>Doris 承担 OLAP 查询服务和统一 ADS 出口；Paimon 保存同一实时逻辑 DAG 并行物化出的 ODS/DWD/DWS/ADS 结果。</p>
+          </article>
+          <article class="card">
+            <h3>本地复现要控制范围</h3>
+            <p>第一版先跑通 MySQL、Doris、Kafka、Flink、Paimon 的最小闭环，DolphinScheduler、Hudi、Iceberg 放增强版。</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="section" id="architecture" aria-labelledby="architecture-title">
+        <h2 id="architecture-title">整体架构：同指标两套实现</h2>
+        <p class="section-intro">
+          离线链路从 MySQL 业务库进入 Doris 并按物理表逐层加工；实时链路从 Kafka 事件进入 Flink SQL，由临时视图组成 DWD → DWS → ADS 逻辑计算链，再通过同一 Statement Set 并行写入 Paimon 各层与 Doris ADS。最后在 Doris 对账 offline ADS 与 realtime ADS。
+        </p>
+        <div class="flow-grid">
+          <article class="flow-step">
+            <small>01</small>
+            <h3>Doris 离线数仓</h3>
+            <p>MySQL 同步到 Doris ODS/DIM，再通过 Doris SQL 加工到 DWD、DWS、ADS。</p>
+          </article>
+          <article class="flow-step">
+            <small>02</small>
+            <h3>Flink + Paimon 实时湖仓</h3>
+            <p>Kafka 事件进入 Flink SQL 临时视图 DAG，Statement Set 将 ODS/DWD/DWS/ADS 与 Doris ADS 作为多个 sink 并行物化。</p>
+          </article>
+          <article class="flow-step">
+            <small>03</small>
+            <h3>Doris 统一查询</h3>
+            <p>对齐 `dt + recent_days` 粒度，逐字段比较 GMV、去重订单/用户、退款订单/用户及客单价。</p>
+          </article>
+        </div>
+        <figure class="project-figure" data-visual="ecommerce-architecture">
+          <a href="../assets/projects/ecommerce-lakehouse/architecture.png" target="_blank" rel="noopener">
+            <img src="../assets/projects/ecommerce-lakehouse/architecture.png" alt="电商离线物理分层与实时逻辑视图链并行物化架构图" width="1386" height="651" loading="lazy">
+          </a>
+          <figcaption>架构图突出三条边界：MySQL 到 Doris 的离线物理分层、Kafka 进入 Flink SQL 内部逻辑视图链后并行写入 Paimon/Doris、Doris 中 offline/realtime ADS 对账。</figcaption>
+        </figure>
+      </section>
+
+      <section class="section" id="offline" aria-labelledby="offline-title">
+        <h2 id="offline-title">Doris 离线数仓链路</h2>
+        <p class="section-intro">
+          离线链路用 MySQL 模拟电商业务库，脚本同步到 Doris ODS 和 DIM，再通过 Doris SQL 完成 DWD 明细标准化、DWS 固定日期范围汇总和 ADS 指标产出。
+        </p>
+        <div class="pipeline-line" aria-label="Doris offline pipeline">
+          MySQL ecommerce_oltp -> Doris ODS / DIM -> Doris DWD -> Doris DWS -> ads.ads_trade_stats_offline
+        </div>
+        <figure class="project-figure" data-visual="doris-layer-counts">
+          <a href="../assets/projects/ecommerce-lakehouse/doris-layer-counts.png" target="_blank" rel="noopener">
+            <img src="../assets/projects/ecommerce-lakehouse/doris-layer-counts.png" alt="Doris ODS DIM DWD DWS ADS 分层表行数查询结果" width="1845" height="974" loading="lazy">
+          </a>
+          <figcaption>Doris 查询一次性列出 ODS、DIM、DWD、DWS、ADS 的表行数，证明离线链路不是只落最终 ADS，而是按数仓分层产出可检查的中间结果。</figcaption>
+        </figure>
+      </section>
+
+      <section class="section" id="realtime" aria-labelledby="realtime-title">
+        <h2 id="realtime-title">Flink + Paimon 实时湖仓链路</h2>
+        <p class="section-intro">
+          实时链路使用 Kafka 确定性事件作为输入。DWD、DWS、ADS 由 Flink SQL 临时视图串成逻辑计算链；BEGIN STATEMENT SET 中的多个 INSERT 再把 ODS、DWD、DWS、ADS 并行物化到 Paimon，并通过 Doris Flink Connector 同步物化最终 ADS。Paimon 下游表在这个作业中不是逐层读取上游 Paimon 物理表。
+        </p>
+        <figure class="project-figure" data-visual="flink-operator-overview">
+          <a href="../assets/projects/ecommerce-lakehouse/flink-operator-overview.png" target="_blank" rel="noopener">
+            <img src="../assets/projects/ecommerce-lakehouse/flink-operator-overview.png" alt="Flink Dashboard 实际运行截图，作业状态为 RUNNING，9 个 task 的 DAG 和算子状态均可见" width="1866" height="969" loading="lazy">
+          </a>
+          <figcaption>Flink Dashboard 实际运行视图：顶部 Job State 为 RUNNING，作业包含 9 个 task；DAG 与下方算子表同时展示 Kafka Source、DWD/DWS 聚合以及 Paimon/Doris 多个 writer。最终 fresh clone 的 checkpoint 与落盘验收见“本地验收入口”。</figcaption>
+        </figure>
+      </section>
+
+      <section class="section" id="contract" aria-labelledby="contract-title">
+        <h2 id="contract-title">指标合同：同一口径才有对账意义</h2>
+        <p class="section-intro">
+          两条链路都按 `dt + recent_days` 输出，核心指标包含 GMV、去重订单数、去重下单用户数、退款订单数、退款用户数和客单价。业务日期固定为 2026-07-01，`recent_days` 表示固定日期范围，并非 Flink Window TVF。
+        </p>
+        <div class="data-table" aria-label="电商交易指标预期结果">
+          <table>
+            <thead>
+              <tr><th>recent_days</th><th>GMV</th><th>订单数</th><th>下单用户数</th><th>退款数</th><th>退款用户数</th><th>客单价</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>1</td><td>505.50</td><td>5</td><td>4</td><td>2</td><td>2</td><td>101.10</td></tr>
+              <tr><td>7</td><td>1078.50</td><td>9</td><td>6</td><td>3</td><td>3</td><td>119.83</td></tr>
+              <tr><td>30</td><td>1578.50</td><td>10</td><td>7</td><td>4</td><td>4</td><td>157.85</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="section" id="compare" aria-labelledby="compare-title">
+        <h2 id="compare-title">Doris 统一查询与逐字段对账</h2>
+        <p class="section-intro">
+          最终不是只看两个表都有数据，而是在 Doris 中把 offline ADS 和 realtime ADS 按 `dt + recent_days` 对齐，用同一次查询逐字段比较 GMV、去重订单/用户、退款订单/用户和客单价。三个固定统计范围全部 PASS，说明两条链路在当前样例数据和指标合同下结果一致。
+        </p>
+        <figure class="project-figure" data-visual="doris-compare-pass">
+          <a href="../assets/projects/ecommerce-lakehouse/doris-compare-pass.png" target="_blank" rel="noopener">
+            <img src="../assets/projects/ecommerce-lakehouse/doris-compare-pass.png" alt="Doris Playground 对账 SQL 结果截图，1、7、30 日三个固定统计范围均为 PASS" width="1862" height="960" loading="lazy">
+          </a>
+          <figcaption>Doris Playground 直接对齐 offline ADS 与 realtime ADS，1 / 7 / 30 日三个固定统计范围均返回 PASS；完整指标口径与最终 3 / 3 验收结果分别记录在上方指标合同和“本地验收入口”。</figcaption>
+        </figure>
+      </section>
+
+      <section class="section" id="engineering" aria-labelledby="engineering-title">
+        <h2 id="engineering-title">关键工程取舍：少堆组件，多证明闭环</h2>
+        <div class="engineering-grid">
+          <article class="card">
+            <h3>Doris 作为统一查询出口</h3>
+            <p>离线 ADS 和实时 ADS 都写入 Doris，BI 或演示只需要查一个 OLAP 层，也能直接做 offline/realtime 对账。</p>
+          </article>
+          <article class="card">
+            <h3>逻辑计算与物化解耦</h3>
+            <p>DWD → DWS → ADS 的依赖由临时视图表达；Paimon ODS/DWD/DWS/ADS 和 Doris ADS 是同一 Statement Set 的并行物化目标，用于检查、留存与统一查询。</p>
+          </article>
+          <article class="card">
+            <h3>Doris Connector 替代 JDBC sink</h3>
+            <p>通用 JDBC sink 会遇到 Doris MySQL 协议与 `ON DUPLICATE KEY` 语法兼容问题，因此改用 Doris Flink Connector 走 Stream Load。</p>
+          </article>
+          <article class="card">
+            <h3>确定性样例保证可复现</h3>
+            <p>Kafka topic 每次重置后再写入样例事件，避免重复生产导致实时 GMV 翻倍，保证离线和实时可以稳定对账。</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="section" id="run" aria-labelledby="run-title">
+        <h2 id="run-title">本地验收入口</h2>
+        <p class="section-intro">
+          第一版以 Docker Desktop + WSL2 为本地运行环境，启动 MySQL、Doris、Kafka、Flink 后按脚本顺序执行即可复现。
+        </p>
+        <figure class="project-figure" data-visual="docker-compose-ps">
+          <a href="../assets/projects/ecommerce-lakehouse/docker-compose-ps.png" target="_blank" rel="noopener">
+            <img src="../assets/projects/ecommerce-lakehouse/docker-compose-ps.png" alt="docker compose ps 截图，展示 MySQL、Doris、Kafka、Flink 服务运行" width="1593" height="237" loading="lazy">
+          </a>
+          <figcaption>本地服务启动后，Doris、MySQL、Kafka、Flink JobManager 和 TaskManager 均处于运行状态。</figcaption>
+        </figure>
+        <div class="pipeline-line" aria-label="全新克隆验收摘要">
+          Fresh clone PASS · 5 services · Flink RUNNING · 8 RUNNING + 1 FINISHED task · checkpoint 1 → 2 with no new failure · Paimon 5 / 5 current-job files · 3 / 3 reconciliation PASS
+        </div>
+        <div class="run-box">
+          <pre><code>powershell -NoProfile -ExecutionPolicy Bypass -File .\scripts\validate-repo.ps1
+powershell -NoProfile -ExecutionPolicy Bypass -File .\scripts\run-demo.ps1 -Reset</code></pre>
+        </div>
+      </section>
+
+      <section class="section" id="limits" aria-labelledby="limits-title">
+        <h2 id="limits-title">当前边界与增强路径</h2>
+        <p class="section-intro">
+          这版的价值是跑通双链路指标合同和本地复现闭环，不把尚未完成的增强项写成已交付能力。
+        </p>
+        <div class="limits-grid">
+          <article class="card">
+            <h3>当前边界</h3>
+            <ul>
+              <li>实时输入为 Kafka 确定性样例事件，MySQL CDC 尚未接入。</li>
+              <li>DolphinScheduler 尚未编排，当前用 PowerShell 脚本串联。</li>
+              <li>Paimon 使用本地 filesystem catalog，未接 Hive Metastore 或对象存储。</li>
+              <li>实时分层是临时视图逻辑链加并行 sink，不是 Paimon 物理表之间逐层读取。</li>
+              <li>1 / 7 / 30 日指标采用固定日期条件持续聚合，尚未实现 Window TVF、乱序与迟到数据处理。</li>
+              <li>样例数据规模小，重点是口径对齐和链路闭环，不是压测性能。</li>
+            </ul>
+          </article>
+          <article class="card">
+            <h3>下一步增强</h3>
+            <ul>
+              <li>接入 DolphinScheduler，把离线初始化、同步和 ADS 聚合编排成 DAG。</li>
+              <li>增加 MySQL CDC 或 Debezium/Flink CDC 输入。</li>
+              <li>增加 Window TVF、乱序和迟到数据用例，补齐事件时间语义。</li>
+              <li>把端到端容器验收接入可重复运行的专用 CI 环境。</li>
+            </ul>
+          </article>
+        </div>
+        <div class="summary-box">
+          <h3>这个项目想证明什么</h3>
+          <p>我能把同一个电商交易指标拆成 Doris 离线物理分层与 Flink SQL 实时逻辑计算链两套实现，使用 Statement Set 并行物化 Paimon 分层结果和 Doris ADS，再通过 Doris 逐字段对账；同时能说明本地 MVP 的实现边界。</p>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <span>Ecommerce lakehouse warehouse. Offline and realtime metrics reconciled in Doris.</span>
+    </footer>
+  </body>
+</html>
+
+
+
+
+

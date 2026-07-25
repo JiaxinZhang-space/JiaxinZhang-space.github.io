@@ -668,8 +668,8 @@
             <p>Doris 承担 OLAP 查询服务和统一 ADS 出口；Paimon 保存同一实时逻辑 DAG 并行物化出的 ODS/DWD/DWS/ADS 结果。</p>
           </article>
           <article class="card">
-            <h3>本地复现要控制范围</h3>
-            <p>第一版先跑通 MySQL、Doris、Kafka、Flink、Paimon 的最小闭环，DolphinScheduler、Hudi、Iceberg 放增强版。</p>
+            <h3>聚焦可复现的核心闭环</h3>
+            <p>本次实现聚焦 MySQL、Doris、Kafka、Flink 与 Paimon，重点完成离线与实时双链路的本地复现和逐字段对账，避免额外组件稀释核心验证目标。</p>
           </article>
         </div>
       </section>

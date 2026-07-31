@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 920" role="img" aria-labelledby="title desc">
+  <title id="title">Mini-C4 Retention Funnel and Training Outputs</title>
+  <desc id="desc">A retention funnel showing 3,008 extracted candidates, 2,522 cleaned candidates, 2,443 deduplicated candidates, and 231 final training samples, plus the training deliverables.</desc>
+  <defs>
+    <pattern id="grid" width="56" height="56" patternUnits="userSpaceOnUse">
+      <path d="M56 0H0V56" fill="none" stroke="#ded9ca" stroke-width="1" opacity="0.58"/>
+    </pattern>
+    <filter id="soft-shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="4" stdDeviation="8" flood-color="#31352e" flood-opacity="0.08"/>
+    </filter>
+  </defs>
+
+  <rect width="1600" height="920" fill="#f6f2e8"/>
+  <rect width="1600" height="920" fill="url(#grid)"/>
+
+  <g font-family="Arial, Helvetica, sans-serif" fill="#20231f">
+    <text x="800" y="88" text-anchor="middle" font-size="56" font-weight="800">Mini-C4 Retention Funnel and Training Outputs</text>
+    <text x="800" y="137" text-anchor="middle" font-size="26" fill="#6b6e65">Observed repository run · single-CPU / WSL reproduction</text>
+  </g>
+
+  <g stroke="#fffdf7" stroke-width="4" stroke-linejoin="round" filter="url(#soft-shadow)">
+    <path d="M150 180H1010L960 300H200Z" fill="#1f644e"/>
+    <path d="M200 322H960L910 442H250Z" fill="#278970"/>
+    <path d="M250 464H910L810 584H350Z" fill="#bd7b19"/>
+    <path d="M350 606H810L740 730H420Z" fill="#2f7e57"/>
+  </g>
+
+  <g font-family="Arial, Helvetica, sans-serif" text-anchor="middle" fill="#fffdf7">
+    <text x="580" y="225" font-size="30" font-weight="700">Extracted Text</text>
+    <text x="580" y="266" font-size="40" font-weight="800">3,008 / 100.00%</text>
+    <text x="580" y="293" font-size="21">body-text candidates after WARC parsing</text>
+
+    <text x="580" y="367" font-size="30" font-weight="700">Basic Cleaning</text>
+    <text x="580" y="408" font-size="40" font-weight="800">2,522 / 83.84%</text>
+    <text x="580" y="435" font-size="21">empty content, abnormal lengths, and obvious noise removed</text>
+
+    <text x="580" y="508" font-size="29" font-weight="700">Near-Duplicate Deduplication</text>
+    <text x="580" y="550" font-size="40" font-weight="800">2,443 / 81.22%</text>
+    <text x="580" y="577" font-size="21">candidates retained after MinHash + LSH</text>
+
+    <text x="580" y="651" font-size="30" font-weight="700">After Quality Filtering</text>
+    <text x="580" y="693" font-size="40" font-weight="800">231 / 7.68%</text>
+    <text x="580" y="722" font-size="21">final training samples</text>
+  </g>
+
+  <g filter="url(#soft-shadow)">
+    <rect x="1080" y="205" width="420" height="500" rx="20" fill="#fffdfa" stroke="#d6d0c0" stroke-width="3"/>
+  </g>
+  <g font-family="Arial, Helvetica, sans-serif">
+    <text x="1120" y="270" font-size="34" font-weight="800" fill="#173b2e">Training Deliverables</text>
+    <line x1="1120" y1="292" x2="1460" y2="292" stroke="#d6d0c0" stroke-width="2"/>
+
+    <g font-size="24" fill="#666a62">
+      <text x="1120" y="350">train.jsonl</text>
+      <text x="1120" y="405">val.jsonl</text>
+      <text x="1120" y="460">smoke_test</text>
+      <text x="1120" y="515">estimated tokens</text>
+      <text x="1120" y="570">language</text>
+      <text x="1120" y="625">checks</text>
+    </g>
+    <g font-size="24" font-weight="800" fill="#1f644e" text-anchor="end">
+      <text x="1460" y="350">205</text>
+      <text x="1460" y="405">26</text>
+      <text x="1460" y="460">32</text>
+      <text x="1460" y="515">180,759</text>
+      <text x="1460" y="570">en 207 / zh 24</text>
+      <text x="1460" y="625">14 / 14 PASS</text>
+    </g>
+  </g>
+
+  <rect x="80" y="795" width="1440" height="70" rx="18" fill="#fff9e9" stroke="#e5c77e" stroke-width="2"/>
+  <text x="800" y="838" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="25" font-weight="700" fill="#af741d">
+    Final retention: 7.68%. Most attrition occurred during quality filtering because navigation,
+  </text>
+  <text x="800" y="868" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="25" font-weight="700" fill="#af741d">
+    template, low-information-density, and mixed-language pages sharply reduced training-ready yield.
+  </text>
+</svg>

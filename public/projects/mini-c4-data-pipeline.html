@@ -709,8 +709,8 @@
           Common Crawl WARC → Main Text → Cleaned Text → Deduplicated Text → Language Subsets → Quality Corpus → Train / Validation JSONL + Manifest + Reports
         </div>
         <figure class="project-figure" data-visual="pipeline-iterations">
-          <a href="../assets/projects/mini-c4/pipeline-iterations.webp" target="_blank" rel="noopener">
-            <img src="../assets/projects/mini-c4/pipeline-iterations.webp" alt="Three iterations of the Mini-C4 pipeline, from execution to noise reduction and quality convergence" width="1500" height="839" loading="lazy">
+          <a href="../assets/projects/mini-c4/pipeline-iterations-en.svg" target="_blank" rel="noopener">
+            <img src="../assets/projects/mini-c4/pipeline-iterations-en.svg" alt="Three iterations of the Mini-C4 pipeline, from execution to noise reduction and quality convergence" width="900" height="503" loading="lazy">
           </a>
           <figcaption>The project evolved through three iterations: make the pipeline run, reduce web noise, then converge on training-ready data.</figcaption>
         </figure>
@@ -741,14 +741,14 @@
         </div>
         <div class="figure-grid" aria-label="Core engineering diagrams">
           <figure class="project-figure" data-visual="dedup-minhash-lsh">
-            <a href="../assets/projects/mini-c4/dedup-minhash-lsh.webp" target="_blank" rel="noopener">
-              <img src="../assets/projects/mini-c4/dedup-minhash-lsh.webp" alt="MinHash and LSH near-duplicate flow from signatures to candidate buckets and duplicate removal" width="1500" height="839" loading="lazy">
+            <a href="../assets/projects/mini-c4/dedup-minhash-lsh-en.svg" target="_blank" rel="noopener">
+              <img src="../assets/projects/mini-c4/dedup-minhash-lsh-en.svg" alt="MinHash and LSH near-duplicate flow from signatures to candidate buckets and duplicate removal" width="900" height="503" loading="lazy">
             </a>
             <figcaption>MinHash + LSH narrows the comparison set and avoids an unscalable all-pairs deduplication process.</figcaption>
           </figure>
           <figure class="project-figure" data-visual="language-branching">
-            <a href="../assets/projects/mini-c4/language-branching.webp" target="_blank" rel="noopener">
-              <img src="../assets/projects/mini-c4/language-branching.webp" alt="fastText language routing into English, Chinese, and other-language branches" width="1500" height="837" loading="lazy">
+            <a href="../assets/projects/mini-c4/language-branching-en.svg" target="_blank" rel="noopener">
+              <img src="../assets/projects/mini-c4/language-branching-en.svg" alt="fastText language routing into English, Chinese, and other-language branches" width="900" height="503" loading="lazy">
             </a>
             <figcaption>Language routing makes quality controls extensible instead of forcing every language through one coarse threshold.</figcaption>
           </figure>
@@ -758,8 +758,8 @@
       <section class="section" id="results" aria-labelledby="results-title">
         <h2 id="results-title">Results and Review: Follow the Retention Funnel</h2>
         <figure class="project-figure" data-visual="retention-funnel-current">
-          <a href="../assets/projects/mini-c4/retention-funnel-current.webp" target="_blank" rel="noopener">
-            <img src="../assets/projects/mini-c4/retention-funnel-current.webp" alt="Mini-C4 retention funnel from 3,008 extracted candidates to 231 final samples" width="1600" height="920" loading="lazy">
+          <a href="../assets/projects/mini-c4/retention-funnel-current-en.svg" target="_blank" rel="noopener">
+            <img src="../assets/projects/mini-c4/retention-funnel-current-en.svg" alt="Mini-C4 retention funnel from 3,008 extracted candidates to 231 final samples" width="1600" height="920" loading="lazy">
           </a>
                   </figure>
         <div class="data-table" aria-label="Mini-C4 experiment retention results">
@@ -801,8 +801,8 @@
             </article>
           </div>
           <figure class="project-figure" data-visual="validation-loop">
-            <a href="../assets/projects/mini-c4/validation-loop.webp" target="_blank" rel="noopener">
-              <img src="../assets/projects/mini-c4/validation-loop.webp" alt="Validation loop connecting scripts, data artifacts, the training manifest, evaluation outputs, and consistency checks" width="1180" height="1180" loading="lazy">
+            <a href="../assets/projects/mini-c4/validation-loop-en.svg" target="_blank" rel="noopener">
+              <img src="../assets/projects/mini-c4/validation-loop-en.svg" alt="Validation loop connecting scripts, data artifacts, the training manifest, evaluation outputs, and consistency checks" width="1024" height="1024" loading="lazy">
             </a>
           </figure>
           <p class="validation-note">The validation loop keeps code, data artifacts, and reports mutually consistent, reducing the risk of silent drift or misleading metrics.</p>

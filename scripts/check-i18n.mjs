@@ -72,6 +72,21 @@ for (const [relativePath, html] of englishPages) {
   assert(unexpected.length === 0, `${relativePath}: unexpected Chinese text on lines: ${unexpected.map((line) => line.trim()).join(" | ")}`);
 }
 
+const miniC4English = read("projects/mini-c4-data-pipeline.html");
+const miniC4Chinese = read("zh/projects/mini-c4-data-pipeline.html");
+for (const asset of [
+  "pipeline-iterations-en.svg",
+  "dedup-minhash-lsh-en.svg",
+  "language-branching-en.svg",
+  "retention-funnel-current-en.svg",
+  "validation-loop-en.svg",
+]) {
+  assert(miniC4English.includes(asset), `English Mini-C4 page: missing localized diagram ${asset}`);
+  assert(!miniC4Chinese.includes(asset), `Chinese Mini-C4 page: should keep the Chinese diagram instead of ${asset}`);
+  const diagram = read(`assets/projects/mini-c4/${asset}`);
+  assert(!/\p{Script=Han}/u.test(diagram), `English Mini-C4 diagram: unexpected Chinese text in ${asset}`);
+}
+
 const sitemap = read("sitemap.xml");
 for (const [, , englishUrl, chineseUrl] of pairs) {
   assert(sitemap.includes(`<loc>${site}${englishUrl}</loc>`), `sitemap.xml: missing ${englishUrl}`);

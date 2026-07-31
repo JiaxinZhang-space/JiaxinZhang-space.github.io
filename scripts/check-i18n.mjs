@@ -74,6 +74,12 @@ for (const [relativePath, html] of englishPages) {
 
 const miniC4English = read("projects/mini-c4-data-pipeline.html");
 const miniC4Chinese = read("zh/projects/mini-c4-data-pipeline.html");
+const homeEnglish = read("index.html");
+const homeChinese = read("zh/index.html");
+assert(homeEnglish.includes("assets/projects/mini-c4/pipeline-iterations-en.svg"), "English homepage: missing the English Mini-C4 thumbnail");
+assert(!homeEnglish.includes("assets/projects/mini-c4/pipeline-iterations-thumb.webp"), "English homepage: still references the Chinese Mini-C4 thumbnail");
+assert(homeChinese.includes("../assets/projects/mini-c4/pipeline-iterations-thumb.webp"), "Chinese homepage: missing the Chinese Mini-C4 thumbnail");
+assert(!homeChinese.includes("pipeline-iterations-en.svg"), "Chinese homepage: should not reference the English Mini-C4 thumbnail");
 for (const asset of [
   "pipeline-iterations-en.svg",
   "dedup-minhash-lsh-en.svg",

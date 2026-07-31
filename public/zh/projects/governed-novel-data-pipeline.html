@@ -1,26 +1,26 @@
 <!doctype html>
-<html lang="en">
+<html lang="zh-CN">
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Governed Novel Data Pipeline | Jiaxin Zhang</title>
+    <title>Governed Novel Data Pipeline｜张佳欣作品集</title>
     <meta
       name="description"
-      content="An AI data governance portfolio project rebuilt from lessons in a private three-person writing system, using 100% synthetic data to demonstrate rights gates, leakage-safe splits, validation, and reproducible release evidence."
+      content="张佳欣的 AI 数据工程作品集：从三人私有 AI 小说项目中的权利、伪验证与评测耦合事故出发，独立重建并公开发布 100% 合成、可复核的数据治理 Demo。"
     >
-    <link rel="canonical" href="https://jiaxinzhang-space.github.io/projects/governed-novel-data-pipeline.html">
+    <link rel="canonical" href="https://jiaxinzhang-space.github.io/zh/projects/governed-novel-data-pipeline.html">
     <link rel="alternate" hreflang="en" href="https://jiaxinzhang-space.github.io/projects/governed-novel-data-pipeline.html">
     <link rel="alternate" hreflang="zh-CN" href="https://jiaxinzhang-space.github.io/zh/projects/governed-novel-data-pipeline.html">
     <link rel="alternate" hreflang="x-default" href="https://jiaxinzhang-space.github.io/projects/governed-novel-data-pipeline.html">
-    <link rel="icon" href="../favicon.svg" type="image/svg+xml">
+    <link rel="icon" href="../../favicon.svg" type="image/svg+xml">
     <meta name="theme-color" content="#10231d">
     <meta property="og:type" content="article">
-    <meta property="og:locale" content="en_US">
-    <meta property="og:locale:alternate" content="zh_CN">
-    <meta property="og:site_name" content="Jiaxin Zhang's Data Engineering Portfolio">
-    <meta property="og:title" content="Governed Novel Data Pipeline | Jiaxin Zhang">
-    <meta property="og:description" content="A 100% synthetic, auditable data-governance demo covering rights, label truth, evaluation isolation, and release integrity.">
-    <meta property="og:url" content="https://jiaxinzhang-space.github.io/projects/governed-novel-data-pipeline.html">
+    <meta property="og:locale" content="zh_CN">
+    <meta property="og:locale:alternate" content="en_US">
+    <meta property="og:site_name" content="张佳欣的技术作品集">
+    <meta property="og:title" content="Governed Novel Data Pipeline｜张佳欣作品集">
+    <meta property="og:description" content="从权利、伪验证与评测耦合问题出发，公开发布 100% 合成、可复核的数据治理 Demo。">
+    <meta property="og:url" content="https://jiaxinzhang-space.github.io/zh/projects/governed-novel-data-pipeline.html">
     <meta property="og:image" content="https://jiaxinzhang-space.github.io/og-cover.png">
     <meta name="twitter:card" content="summary_large_image">
     <style>
@@ -1451,14 +1451,14 @@
         }
       }
     </style>
-    <link rel="stylesheet" href="../assets/i18n.css">
+    <link rel="stylesheet" href="../../assets/i18n.css">
   </head>
   <body>
-    <a class="skip-link" href="#main-content">Skip to main content</a>
+    <a class="skip-link" href="#main-content">跳到正文</a>
 
     <header class="site-header">
-      <nav class="nav" aria-label="Project navigation">
-        <a class="brand" href="../index.html#top" aria-label="Back to Jiaxin Zhang's portfolio">
+      <nav class="nav" aria-label="项目页导航">
+        <a class="brand" href="../index.html#top" aria-label="返回张佳欣作品集首页">
           <span class="brand-mark">P03</span>
           <span>
             Governed Novel Pipeline
@@ -1466,17 +1466,17 @@
           </span>
         </a>
         <div class="nav-links">
-          <a href="#background">Context</a>
-          <a href="#incident">Incident</a>
-          <a href="#architecture">Architecture</a>
-          <a href="#validation">Validation</a>
-          <a href="#decisions">Decisions</a>
-          <a href="#limits">Scope</a>
-          <a href="../index.html#projects">Portfolio</a>
+          <a href="#background">背景</a>
+          <a href="#incident">事故</a>
+          <a href="#architecture">架构</a>
+          <a href="#validation">验证</a>
+          <a href="#decisions">决策</a>
+          <a href="#limits">边界</a>
+          <a href="../index.html#projects">返回作品集</a>
         </div>
-        <div class="language-switch" aria-label="Choose language">
-          <span lang="en" aria-current="page">English</span>
-          <a href="../zh/projects/governed-novel-data-pipeline.html" lang="zh-CN" hreflang="zh-CN">中文</a>
+        <div class="language-switch" aria-label="选择语言">
+          <a href="../../projects/governed-novel-data-pipeline.html" lang="en" hreflang="en">English</a>
+          <span lang="zh-CN" aria-current="page">中文</span>
         </div>
       </nav>
     </header>
@@ -1486,46 +1486,46 @@
         <div>
           <span class="eyebrow">P03 · AI DATA ENGINEERING · SYNTHETIC DEMO</span>
           <h1 id="project-title">Governed Novel Data Pipeline</h1>
-          <p class="hero-subtitle">From pseudo-precise literary features to an auditable AI data pipeline</p>
+          <p class="hero-subtitle">从“伪精确文学特征”到可审计 AI 数据管道</p>
           <p class="lead">
-            In June 2025, I began building a private AI writing workspace with an algorithm engineer and a content editor. I later rebuilt the exposed rights, label-truth, evaluation-isolation, and version-governance problems as this 100% synthetic, publicly auditable data pipeline.
+            2025 年 6 月，我与一名算法工程师和一名内容编辑开始筹备私有 AI 小说创作工作台；后续我把项目中暴露的权利、标签真值、评测隔离和版本治理问题，独立重建为这套 100% 合成、可公开复核的数据管道。
           </p>
           <div class="hero-actions">
-            <a class="button primary" href="https://github.com/JiaxinZhang-space/novel-ai-data-pipeline" target="_blank" rel="noopener">View GitHub</a>
-            <a class="button" href="https://github.com/JiaxinZhang-space/novel-ai-data-pipeline/releases/tag/v0.1.0-demo" target="_blank" rel="noopener">View Release</a>
-            <a class="button" href="#evidence">View Evidence</a>
+            <a class="button primary" href="https://github.com/JiaxinZhang-space/novel-ai-data-pipeline" target="_blank" rel="noopener">查看 GitHub</a>
+            <a class="button" href="https://github.com/JiaxinZhang-space/novel-ai-data-pipeline/releases/tag/v0.1.0-demo" target="_blank" rel="noopener">查看 Release</a>
+            <a class="button" href="#evidence">查看证据</a>
           </div>
           <div class="boundary-strip">
-            The private project provides problem context; the public demo provides auditable engineering evidence. They do not share the same data or code. The public repository contains no private code, manuscripts, logs, configurations, prompts, contracts, or operating records.
+            真实项目提供问题背景，公开 Demo 提供可审计的工程证据；两者不是同一份数据，也不是同一套代码。公开仓库不含私有项目的代码、小说、日志、配置、提示词、合同或经营记录。
           </div>
         </div>
 
-        <aside class="hero-panel" aria-label="Validation metrics from the pinned release">
+        <aside class="hero-panel" aria-label="固定 Release 的项目验证指标">
           <strong>Evidence snapshot</strong>
           <span class="snapshot">v0.1.0-demo · b19b3b5d9aa78715fbb65218a3438516d901b87b</span>
           <p class="scope-note">
-            Every count on this page comes from a fixed synthetic regression fixture; none represents business scale, model quality, or production throughput.
+            页面中的数据量全部属于固定合成回归样例，不代表真实业务规模、模型效果或生产吞吐。
           </p>
           <div class="metric-grid">
             <div class="metric">
               <small>SYNTHETIC DEMO</small>
               <strong>27 → 20</strong>
-              <span>Raw records → unique final works</span>
+              <span>原始记录 → 最终唯一作品</span>
             </div>
             <div class="metric">
               <small>SYNTHETIC DEMO BUILD</small>
               <strong>17/17</strong>
-              <span>Automated tests passed</span>
+              <span>自动化测试通过</span>
             </div>
             <div class="metric">
               <small>SYNTHETIC DEMO SPLIT</small>
               <strong>0 / 0 / 0</strong>
-              <span>Author / work / text-hash overlap across splits</span>
+              <span>作者 / 作品 / 正文哈希跨集合重叠</span>
             </div>
             <div class="metric">
               <small>SYNTHETIC DEMO ARTIFACTS</small>
               <strong>23</strong>
-              <span>Managed build artifacts verified with SHA-256</span>
+              <span>受管构建文件 SHA-256 校验通过</span>
             </div>
           </div>
         </aside>
@@ -1533,160 +1533,160 @@
 
       <section class="section" id="background" aria-labelledby="background-title">
         <span class="section-kicker">01 / Background</span>
-        <h2 id="background-title">Origin: A Private Three-person AI Writing Workspace</h2>
+        <h2 id="background-title">真实项目起点：三人协作的私有小说创作工作台</h2>
         <p class="section-intro">
-          Planning began in June 2025 and development started in July. The workspace connected ideation, source material, outlines, drafting, revision, and review. The algorithm engineer owned model calls and workflows, the editor owned content rules and final acceptance, and I owned ingestion, cleaning, databases, vector retrieval, and later the data audit and governance rebuild.
+          项目在 2025 年 6 月筹备、7 月进入开发。我们希望把选题、素材、大纲、正文、润色和评价串成一套私有工作台：算法工程师负责模型调用与工作流，编辑负责内容规则与最终验收，我负责采集、清洗、数据库、向量检索，并在后期主导数据审计与治理重构。
         </p>
 
-        <div class="context-bridge" aria-label="Boundary between the private project and public synthetic demo">
+        <div class="context-bridge" aria-label="私有真实项目与公开合成 Demo 的边界">
           <article class="context-card private">
             <span class="context-label">PRIVATE PROJECT · REAL CONTEXT</span>
-            <h3>Private project: where the problems came from</h3>
+            <h3>真实项目：问题从哪里来</h3>
             <p>
-              The three-person project exposed real issues in rights traceability, semantic validation, editorial bottlenecks, retry recovery, version management, and model replacement. Its code, manuscripts, logs, prompts, contracts, and operating records remain private.
+              三人合作的私有 AI 小说项目暴露了权利追溯、语义验证、编辑瓶颈、重试恢复、版本管理和模型替换等真实问题。相关代码、小说、日志、提示词、合同和经营记录不进入公开仓库。
             </p>
           </article>
           <article class="context-card public">
             <span class="context-label">PUBLIC REPOSITORY · 100% SYNTHETIC DEMO</span>
-            <h3>Public portfolio: how I demonstrate the solution</h3>
+            <h3>公开作品：如何证明我会解决</h3>
             <p>
-              I independently rebuilt the pre-training governance layer as a public demo. All public data is 100% synthetic, and every reproducible metric comes from a pinned release rather than the private project's scale or business results.
+              我基于上述事故独立重建了训练前数据治理 Demo。所有公开数据 100% 合成；页面中的可复现指标只来自固定 Release，不代表私有项目规模或业务结果。
             </p>
           </article>
           <p class="context-note">
-            The private project explains the problem chain; the public demo supplies a verifiable implementation chain. They appear together for context while their assets remain strictly separated.
+            真实项目提供可解释的问题链，公开 Demo 提供可复核的实现链。二者在页面中并列说明，但资产边界始终分开。
           </p>
         </div>
 
-        <h3 class="subsection-title">Why the original data was not training-ready</h3>
+        <h3 class="subsection-title">为什么不能直接训练</h3>
         <div class="intro-grid">
           <article class="card">
-            <h3>The schema contract drifted</h3>
+            <h3>字段合同发生漂移</h3>
             <p>
-              Comparing the early field specification, database tables, and analysis modules revealed three conflicting definitions of the supposed “12-dimensional literary features.”
+              我对照早期字段说明、数据库表和分析模块后发现，“12 维文学特征”存在三套不同定义。
             </p>
           </article>
           <article class="card">
-            <h3>Literary semantics were over-reduced to rules</h3>
+            <h3>文学语义被过度规则化</h3>
             <p>
-              Hooks, reversals, and emotional progression relied mainly on keywords, lexicons, and templates. These detect surface signals but cannot reliably judge irony, dry humor, or language whose literal meaning conflicts with intent.
+              钩子、反转和情绪递进主要依赖关键词、词典与模板。它们可以寻找表面信号，却难以判断反讽、冷幽默和字面含义与真实意图相反的表达。
             </p>
           </article>
           <article class="card">
-            <h3>Generation and evaluation were not independent</h3>
+            <h3>生成与评审没有解耦</h3>
             <p>
-              Similar model services participated in both generation and evaluation without independent gold labels, blind review, or calibration. Some model scores were stored but never used in the final gate, which still relied mostly on surface-format rules.
+              同类模型服务同时参与生成和评价，缺少独立金标、盲评与校准。部分模型评价虽然被保存，却没有进入最终门禁，实际通过条件仍主要依赖表面格式规则。
             </p>
           </article>
         </div>
 
         <div class="boundary-strip">
-          My role: I initially owned data collection, cleaning, databases, vector retrieval, and feature engineering, then led the data audit and governance rebuild after the issues surfaced. I independently designed, implemented, and released the public repository. AI assisted development, but I remain responsible for data boundaries, engineering decisions, validation results, and release quality.
+          我的角色：早期负责数据采集、清洗、数据库、向量检索和文学特征工程；发现问题后主导数据审计与治理重构。公开仓库由我独立设计、实现和发布。我使用 AI 辅助开发，但对数据边界、工程设计、验证结果和最终发布负责。
         </div>
       </section>
 
       <section class="section" id="incident" aria-labelledby="incident-title">
         <span class="section-kicker">02 / Failure analysis</span>
-        <h2 id="incident-title">Most Valuable Failure: Structural Checks Passed While Semantics Collapsed</h2>
+        <h2 id="incident-title">最有价值的一次失败：抽样结构检查全绿，语义已经塌缩</h2>
 
         <blockquote class="failure-quote">
-          <p>Every format check passed, yet the literary signals had no meaningful variation.</p>
-          <span>“All passed” in the original report referred only to sampled format, range, and enum checks—not full semantic validation.</span>
+          <p>数据格式全部通过，但文学语义完全没有区分度。</p>
+          <span>原报告里的“全部通过”只指抽样字段格式、范围和枚举检查，不是全量语义验证。</span>
         </blockquote>
 
         <div class="contrast-grid">
           <article class="contrast-card pass">
             <span class="section-kicker">Report says PASS</span>
-            <h3>What the automated report actually checked</h3>
+            <h3>自动报告实际检查了什么</h3>
             <ul>
-              <li>Field types and basic formats</li>
-              <li>Nonnegative values and ratings within 1–5</li>
-              <li>Enum and Boolean membership</li>
-              <li>Some semantic fields could still pass when empty or <code>None</code></li>
+              <li>字段类型与基础格式是否合法</li>
+              <li>数值是否非负、评分是否落在 1—5</li>
+              <li>枚举和布尔值是否属于允许集合</li>
+              <li>部分语义字段即使为空或 None 也能通过</li>
             </ul>
           </article>
           <article class="contrast-card fail">
             <span class="section-kicker">Semantics collapse</span>
-            <h3>What those checks did not prove</h3>
+            <h3>这些检查没有证明什么</h3>
             <ul>
-              <li>Whether a passage actually created an opening hook</li>
-              <li>Whether the plot contained a genuine semantic reversal</li>
-              <li>Whether emotional progression was meaningfully differentiated</li>
-              <li>Whether a same-family model could serve as independent ground truth</li>
+              <li>某个位置是否真的构成开篇钩子</li>
+              <li>情节是否真的发生语义反转</li>
+              <li>情绪变化是否具有有效区分度</li>
+              <li>同类模型给出的评价是否能作为独立真值</li>
             </ul>
           </article>
         </div>
 
-        <div class="audit-stats" aria-label="Aggregated audit results from the early prototype">
+        <div class="audit-stats" aria-label="早期原型审计聚合结果">
           <div class="audit-stat">
             <small>EARLY PRIVATE PROTOTYPE · SYNTHETIC DEMO RECORDS · NOT PUBLIC DATASET</small>
             <strong>21/32</strong>
-            <span>No opening hook detected</span>
+            <span>未识别到开篇钩子</span>
           </div>
           <div class="audit-stat">
             <small>EARLY PRIVATE PROTOTYPE · SYNTHETIC DEMO RECORDS · NOT PUBLIC DATASET</small>
             <strong>30/32</strong>
-            <span>Reversal count was 0</span>
+            <span>反转数为 0</span>
           </div>
           <div class="audit-stat">
             <small>EARLY PRIVATE PROTOTYPE · SYNTHETIC DEMO RECORDS · NOT PUBLIC DATASET</small>
             <strong>32/32</strong>
-            <span>Emotional progression was always 2</span>
+            <span>情绪递进全部为 2</span>
           </div>
         </div>
         <p class="fine-print">
-          These aggregates come from 32 synthetic AI experiment records in a private early prototype. The source material remains private evidence and is not reproduced in the public repository; it is neither the public demo’s pinned regression data nor a claim of business scale.
+          以上来自私有早期原型的 32 条合成 AI 试验记录，只展示内部审计聚合结果。来源材料属于私有证据，不在公开仓库复现；它们不是公开 Demo 的固定回归数据，也不代表真实业务规模。
         </p>
 
-        <h3 class="timeline-heading">From Private Project to Public Demo</h3>
-        <div class="timeline" aria-label="Timeline from private project planning to the public synthetic governance demo">
+        <h3 class="timeline-heading">从私有项目到公开 Demo</h3>
+        <div class="timeline" aria-label="从私有项目筹备到公开合成治理 Demo 的时间线">
           <article class="timeline-item">
             <time>2025.06—07</time>
             <div class="card">
-              <h3>Project Planning and Development</h3>
-              <p>A three-person team began building a private fiction-writing workbench. I owned collection, cleaning, databases, and vector retrieval; the algorithm engineer owned model calls and workflows; the editor defined content rules and acceptance criteria.</p>
+              <h3>项目筹备与开发启动</h3>
+              <p>我们三人开始搭建私有小说创作工作台。我负责采集、清洗、数据库和向量检索；算法工程师负责模型调用与工作流，编辑负责内容规则与验收。</p>
             </div>
           </article>
           <article class="timeline-item">
             <time>2025.08</time>
             <div class="card">
-              <h3>Multi-Agent Demo Operational</h3>
-              <p>Streamlit, LangGraph, Qwen, Chroma, and SQLite connected ideation, source material, outlines, prose, and scoring. At this stage, “can generate” was still being mistaken for “training-ready data.”</p>
+              <h3>多 Agent Demo 跑通</h3>
+              <p>Streamlit、LangGraph、通义千问、Chroma 和 SQLite 串起选题、素材、大纲、正文与评分；此时“能生成”仍被误当成“数据可用于训练”。</p>
             </div>
           </article>
           <article class="timeline-item">
             <time>2025.09</time>
             <div class="card">
-              <h3>Rights and Data Ingress Rebuilt</h3>
-              <p>Provenance and permitted use could not be proved work by work. I isolated the legacy corpus as read-only experimental data and rebuilt ledgers for author, source, license scope, withdrawal path, and version.</p>
+              <h3>权利与数据接入重建</h3>
+              <p>旧素材无法逐作品证明来源和使用范围。我把旧库隔离为只读实验数据，重新建立作者、来源、授权范围、撤回方式和版本台账。</p>
             </div>
           </article>
           <article class="timeline-item">
             <time>2025.10</time>
             <div class="card">
-              <h3>Structure Passed; Semantics Collapsed</h3>
-              <p>Editorial review found highly homogeneous samples. I traced the issue across source material, databases, and the analysis agent, confirming drifting field definitions, collapsed feature distributions, and insufficient separation between generation and evaluation.</p>
+              <h3>抽样结构全绿，语义却塌缩</h3>
+              <p>编辑抽查发现样本高度同质；我继续对照材料、数据库和分析 Agent，确认字段口径漂移、特征分布塌缩，以及生成与评价没有真正解耦。</p>
             </div>
           </article>
           <article class="timeline-item">
             <time>2025.11—2026.01</time>
             <div class="card">
-              <h3>From Generation Throughput to Usable-Draft Cost</h3>
-              <p>Batch generation exposed editorial bottlenecks, rate-limit retries, checkpoint recovery, and vector-version drift. Blind comparisons reinforced that agent orchestration should remain replaceable and evaluation must be pinned and independent.</p>
+              <h3>从生成吞吐转向可用稿成本</h3>
+              <p>批量生成暴露了编辑瓶颈、限流重试、断点恢复和向量版本错位。同题盲测进一步说明：复杂 Agent 编排不应成为不可替换的核心，评测必须冻结且独立。</p>
             </div>
           </article>
           <article class="timeline-item">
             <time>2026.02—03</time>
             <div class="card">
-              <h3>Private Project Closed with Clear Asset Boundaries</h3>
-              <p>When the commercial hypothesis missed its stop criteria, we stopped expanding. I documented ownership, versions, secrets, indexes, dependencies, and handoff boundaries, preserving the reusable value in workflows, governance standards, and evaluation assets.</p>
+              <h3>私有项目收束与资产边界</h3>
+              <p>商业假设未通过止损线后，我们停止继续扩张。我整理权属、版本、密钥、索引、依赖与交付边界，把可保留价值收敛到工作流、治理规范和评测资产。</p>
             </div>
           </article>
           <article class="timeline-item">
             <time>2026.07</time>
             <div class="card">
-              <h3>Public Synthetic Governance Demo</h3>
-              <p>I independently rebuilt the pre-training governance layer as a public repository using 100% synthetic data, a pinned release, two-version CI, reproducible builds, and auditable governance documents.</p>
+              <h3>公开合成治理 Demo</h3>
+              <p>我把训练前治理部分独立重建为公开仓库，以 100% 合成数据、固定 Release、双版本 CI、可复现构建和治理文件完成发布。</p>
             </div>
           </article>
         </div>
@@ -1694,77 +1694,77 @@
 
       <section class="section" id="architecture" aria-labelledby="architecture-title">
         <span class="section-kicker">03 / Governed architecture</span>
-        <h2 id="architecture-title">Repair Strategy: Give Every Type of Judgment a Clear Owner</h2>
+        <h2 id="architecture-title">修复方法：让每一种判断都有清晰责任</h2>
         <p class="section-intro">
-          Instead of adding more literary terminology to rules, I separated deterministic gates, candidate retrieval, semantic pre-screening, and final editorial judgment. The public repository implements the pre-training data-engineering layer.
+          我没有继续给规则增加更多文学名词，而是把客观硬门、候选检索、语义预筛和最终内容判断拆开。公开仓库重点实现其中的训练前数据工程层。
         </p>
 
-        <div class="responsibility-grid" aria-label="Responsibility layers for rules, retrieval, AI, and editors">
+        <div class="responsibility-grid" aria-label="规则、检索、AI 与编辑职责分层">
           <article class="responsibility-card">
             <b>01</b>
             <small>PUBLIC DEMO · IMPLEMENTED</small>
-            <h3>Rules</h3>
-            <p>Rights admission, schema, format, length, hashes, versions, and file integrity.</p>
+            <h3>规则</h3>
+            <p>权利准入、Schema、格式、字数、哈希、版本和文件完整性。</p>
           </article>
           <article class="responsibility-card">
             <b>02</b>
             <small>PRIVATE BLUEPRINT · NOT IMPLEMENTED</small>
-            <h3>Retrieval</h3>
-            <p>Similar characters, conflicts, historical material, prior outlines, and editorial experience.</p>
+            <h3>检索</h3>
+            <p>相似人设、相似冲突、历史素材、旧大纲和编辑经验。</p>
           </article>
           <article class="responsibility-card">
             <b>03</b>
             <small>PRIVATE BLUEPRINT · NOT IMPLEMENTED</small>
             <h3>AI</h3>
-            <p>Ideation, candidate generation, style rewrites, editorial suggestions, and evidence-backed semantic pre-screening.</p>
+            <p>创意扩展、候选生成、风格改写、编辑建议和带证据的语义预筛。</p>
           </article>
           <article class="responsibility-card">
             <b>04</b>
             <small>PRIVATE BLUEPRINT · REQUIRES REAL EVALUATION</small>
-            <h3>Editor</h3>
-            <p>Gold sets, blind review, final semantic judgment, and continuous calibration from editing diffs.</p>
+            <h3>编辑</h3>
+            <p>黄金集、盲评、最终语义判断，以及修改 diff 的持续校准。</p>
           </article>
         </div>
 
-        <div class="architecture-board" role="img" aria-label="Governed Novel synthetic data architecture: rights gate, normalization, exact and near deduplication, author and work splitting, derived datasets, and controls">
+        <div class="architecture-board" role="img" aria-label="Governed Novel 合成数据治理架构：权利门、规范化、精确去重、近似去重、作者作品切分、数据集生产与控制面">
           <div class="architecture-flow">
             <article class="arch-step">
               <small>INPUT</small>
-              <h3>Synthetic Raw Records</h3>
-              <p>Text, author, work, rights fields, and version identifiers.</p>
+              <h3>合成原始记录</h3>
+              <p>正文、作者、作品、权利字段与版本标识。</p>
             </article>
             <article class="arch-step">
               <small>GATE 01</small>
-              <h3>Rights Gate</h3>
-              <p>Invalid status, purpose, or term sends a record to the rejection path.</p>
+              <h3>权利硬门</h3>
+              <p>状态、用途、期限不满足即进入拒绝旁路。</p>
             </article>
             <article class="arch-step">
               <small>PROCESS 02</small>
-              <h3>Text Normalization</h3>
-              <p>Unicode, whitespace, punctuation, and deterministic hash input.</p>
+              <h3>文本规范化</h3>
+              <p>Unicode、空白、标点与可重复哈希输入。</p>
             </article>
             <article class="arch-step">
               <small>DEDUP 03</small>
               <h3>SHA-256</h3>
-              <p>Detect exact duplicates in normalized text.</p>
+              <p>识别规范化正文的精确重复。</p>
             </article>
             <article class="arch-step">
               <small>DEDUP 04</small>
               <h3>MinHash / LSH</h3>
-              <p>Find near-duplicate candidates without treating similarity as a copyright judgment.</p>
+              <p>发现近重复候选，不把相似性等同于版权判断。</p>
             </article>
             <article class="arch-step">
               <small>SPLIT 05</small>
-              <h3>Author / Work Split</h3>
-              <p>Group by author first, keep each work intact, then derive datasets.</p>
+              <h3>作者 / 作品切分</h3>
+              <p>作者优先分组、作品不可拆，再派生数据集。</p>
             </article>
           </div>
-          <div class="branch-grid" aria-label="Derived datasets">
+          <div class="branch-grid" aria-label="派生数据集">
             <div class="branch-card">SFT train / validation</div>
             <div class="branch-card">Preference pairs</div>
             <div class="branch-card">Isolated evaluation</div>
           </div>
-          <div class="control-grid" aria-label="Governance controls">
+          <div class="control-grid" aria-label="治理控制面">
             <div class="control-card">Dataset Card</div>
             <div class="control-card">Manifest + Lineage</div>
             <div class="control-card">Tests + Leakage Checks</div>
@@ -1775,35 +1775,35 @@
 
       <section class="section" id="validation" aria-labelledby="validation-title">
         <span class="section-kicker">04 / Verification</span>
-        <h2 id="validation-title">Pinned Synthetic Regression: From Data Funnel to Release Evidence</h2>
+        <h2 id="validation-title">固定合成回归：从数据漏斗到发布证据</h2>
         <p class="section-intro">
-          All counts are pinned to <code>v0.1.0-demo</code> to verify rights gating, deduplication, splitting, dataset derivation, and file reconciliation. They are not business-scale metrics.
+          所有数据量都固定在 <code>v0.1.0-demo</code>，用于验证权利门、去重、切分、数据集派生和文件对账。它们不是业务规模指标。
         </p>
 
-        <div class="funnel" aria-label="SYNTHETIC DEMO work-level data funnel">
+        <div class="funnel" aria-label="SYNTHETIC DEMO 作品级数据漏斗">
           <div class="funnel-row">
-            <div class="funnel-label">Synthetic raw records</div>
+            <div class="funnel-label">合成原始记录</div>
             <div class="funnel-track"><div class="funnel-fill" style="width: 100%;">SYNTHETIC DEMO</div></div>
             <div class="funnel-value">27</div>
           </div>
           <div class="funnel-row">
-            <div class="funnel-label">Passed rights gate</div>
+            <div class="funnel-label">权利硬门通过</div>
             <div class="funnel-track"><div class="funnel-fill" style="width: 92.6%;">SYNTHETIC DEMO</div></div>
             <div class="funnel-value">25</div>
           </div>
           <div class="funnel-row">
-            <div class="funnel-label">Final unique works</div>
+            <div class="funnel-label">最终唯一作品</div>
             <div class="funnel-track"><div class="funnel-fill" style="width: 74.1%;">SYNTHETIC DEMO</div></div>
             <div class="funnel-value">20</div>
           </div>
-          <div class="reject-grid" aria-label="Synthetic records rejected by gating and deduplication">
-            <div class="reject-note"><strong>2</strong> SYNTHETIC DEMO rights cases blocked</div>
-            <div class="reject-note"><strong>2</strong> SYNTHETIC DEMO exact duplicates</div>
-            <div class="reject-note"><strong>3</strong> SYNTHETIC DEMO near duplicates</div>
+          <div class="reject-grid" aria-label="被硬门与去重流程拒绝的合成记录">
+            <div class="reject-note"><strong>2</strong> 条 SYNTHETIC DEMO 权利案例被硬门阻断</div>
+            <div class="reject-note"><strong>2</strong> 条 SYNTHETIC DEMO 精确重复</div>
+            <div class="reject-note"><strong>3</strong> 条 SYNTHETIC DEMO 近似重复</div>
           </div>
         </div>
 
-        <div class="output-grid" aria-label="SYNTHETIC DEMO derived datasets">
+        <div class="output-grid" aria-label="SYNTHETIC DEMO 派生数据集">
           <div class="output-card">
             <small>SYNTHETIC DEMO DATASET</small>
             <strong>36 / 12</strong>
@@ -1812,78 +1812,78 @@
           <div class="output-card">
             <small>SYNTHETIC DEMO DATASET</small>
             <strong>24</strong>
-            <span>Preference pairs</span>
+            <span>偏好对</span>
           </div>
           <div class="output-card">
             <small>SYNTHETIC DEMO DATASET</small>
             <strong>30</strong>
-            <span>Isolated evaluation tasks</span>
+            <span>隔离评测任务</span>
           </div>
           <div class="output-card">
             <small>SYNTHETIC DEMO · SIMULATED EVENTS</small>
             <strong>40</strong>
-            <span>Simulated editing events</span>
+            <span>模拟编辑事件</span>
           </div>
         </div>
 
-        <div class="proof-grid" aria-label="Release engineering verification results">
+        <div class="proof-grid" aria-label="Release 工程验证结果">
           <div class="proof-card">
             <small>SYNTHETIC DEMO BUILD</small>
             <strong>17/17</strong>
-            <span>Automated tests passed</span>
+            <span>自动化测试通过</span>
           </div>
           <div class="proof-card">
             <small>RELEASE CI</small>
             <strong>3.10 / 3.12</strong>
-            <span>Both Python jobs passed</span>
+            <span>两个 Python job 均成功</span>
           </div>
           <div class="proof-card">
             <small>DETERMINISTIC SYNTHETIC BUILD</small>
             <strong>byte-stable</strong>
-            <span>Repeated builds matched checksums; rebuilt CI artifacts had no diff</span>
+            <span>重复构建 checksum 一致，CI 重建 artifacts 无 diff</span>
           </div>
           <div class="proof-card">
             <small>LIGHTWEIGHT RELEASE GATE</small>
             <strong>PASS</strong>
-            <span>Checks for secret patterns, local paths, private directories, archives, and DEMO markers</span>
+            <span>密钥模式、本机路径、私有目录、归档类型和 DEMO 标记检查</span>
           </div>
         </div>
       </section>
 
       <section class="section" id="decisions" aria-labelledby="decisions-title">
         <span class="section-kicker">05 / Engineering decisions</span>
-        <h2 id="decisions-title">Four Key Design Decisions</h2>
+        <h2 id="decisions-title">四个关键设计决策</h2>
         <p class="section-intro">
-          These choices keep unprovable judgments out of deterministic gates.
+          我做这四个取舍，是为了不把无法证明的判断混进确定性硬门。
         </p>
 
         <div class="decision-grid">
           <article class="decision-card">
             <span class="decision-index">DECISION 01</span>
-            <h3>Why split by author first?</h3>
+            <h3>为什么先按作者切分</h3>
             <p>
-              An author’s style, preferences, and narrative habits can recur across works. Random chapter- or sample-level splits may expose validation data to stable author patterns from training. The pipeline freezes author groups, keeps each work intact, and only then derives SFT, preference, and evaluation tasks.
+              同一作者的风格、偏好与叙事习惯可能跨作品重复。如果只按章节或样本随机切分，验证集仍可能看到训练集作者的稳定模式。项目先冻结作者分组，并保持作品不可拆，再派生 SFT、偏好和评测任务。
             </p>
           </article>
           <article class="decision-card">
             <span class="decision-index">DECISION 02</span>
-            <h3>Why use both SHA-256 and MinHash?</h3>
+            <h3>为什么 SHA-256 和 MinHash 都需要</h3>
             <p>
-              SHA-256 is deterministic, fast, and traceable for identical normalized text. MinHash/LSH surfaces candidates with light rewrites or local changes. The former cannot detect semantic similarity; the latter cannot prove copyright safety. They serve different responsibilities.
+              SHA-256 对规范化后完全相同的正文确定、快速、可追踪；MinHash/LSH 用于发现轻微改写或局部变化的候选。前者不能识别语义近似，后者也不能证明版权安全，两者承担不同职责。
             </p>
           </article>
           <article class="decision-card">
             <span class="decision-index">DECISION 03</span>
-            <h3>Why can’t model review be the only ground truth?</h3>
+            <h3>为什么模型评审不能作为唯一真值</h3>
             <p>
-              When similar models generate and review the same material, they can share blind spots. Model scores are useful for pre-screening, explanations, and evidence—not as a replacement for independent gold labels, real editorial blind review, and calibrated release thresholds.
+              当同类模型同时生成和评审，它们容易共享盲区。模型评分适合预筛、解释和提供证据，不应替代独立金标、真实编辑盲评与校准后的发布门槛。
             </p>
           </article>
           <article class="decision-card">
             <span class="decision-index">DECISION 04</span>
-            <h3>Why separate rules, retrieval, and AI?</h3>
+            <h3>为什么规则、检索和 AI 必须分层</h3>
             <p>
-              Rules handle deterministic constraints, retrieval brings back historical evidence, AI proposes candidates and semantic suggestions, and editors own final content judgment. The layers make failure modes, validation methods, and accountability clearer.
+              规则处理可确定的约束，检索召回历史证据，AI 提供候选与语义建议，编辑负责最终内容判断。分层后，每个组件的错误类型、验证方式和责任边界都更清楚。
             </p>
           </article>
         </div>
@@ -1891,198 +1891,198 @@
 
       <section class="section" id="delivery" aria-labelledby="delivery-title">
         <span class="section-kicker">06 / Private project context</span>
-        <h2 id="delivery-title">Three-Person Collaboration and Private Workbench</h2>
+        <h2 id="delivery-title">三人实际协作与私有工作台</h2>
         <p class="project-context-note">
           <strong>PRIVATE PROJECT · REAL CONTEXT · NOT IN PUBLIC REPO</strong>
-          <span>These roles and workflows reflect real collaboration in the private project. Automation varied by stage, while final content always required editorial acceptance. The public repository implements only the pre-training data-governance layer.</span>
+          <span>以下角色分工和工作流来自私有项目的实际协作与迭代。不同阶段的自动化程度不同，最终内容始终由编辑验收；公开仓库只实现其中的训练前数据治理部分。</span>
         </p>
 
         <div class="role-grid">
           <article class="card">
-            <h3>Editor</h3>
+            <h3>编辑</h3>
             <ul>
-              <li>Maintain scorecards and gold sets</li>
-              <li>Run blind reviews and final content acceptance</li>
-              <li>Capture editing diffs as traceable feedback</li>
+              <li>维护评分卡与黄金集</li>
+              <li>执行盲评和最终内容验收</li>
+              <li>把修改 diff 沉淀为可追踪反馈</li>
             </ul>
           </article>
           <article class="card">
-            <h3>Data Engineer</h3>
+            <h3>数据工程师</h3>
             <ul>
-              <li>Rights, cleaning, deduplication, and splitting</li>
-              <li>Dataset, evaluation, and release versioning</li>
-              <li>Blinded statistics, lineage, and quality dashboards</li>
+              <li>权利、清洗、去重与切分</li>
+              <li>数据、评测和发布版本管理</li>
+              <li>盲化统计、血缘与质量看板</li>
             </ul>
           </article>
           <article class="card">
-            <h3>Algorithm Engineer</h3>
+            <h3>算法工程师</h3>
             <ul>
-              <li>Model adapters, RAG, and inference</li>
-              <li>Optional fine-tuning and provider switching</li>
-              <li>Cost, latency, and maintenance optimization</li>
+              <li>模型适配、RAG 与推理</li>
+              <li>可选微调和供应商切换</li>
+              <li>成本、延迟与维护复杂度优化</li>
             </ul>
           </article>
         </div>
 
-        <h3 class="subsection-title workbench-title">Iterated Creation Workflow</h3>
-        <div class="workbench-flow" aria-label="Workflow iterated in the private fiction-writing workbench">
-          <div class="work-step"><small>01</small><strong>Create work</strong></div>
-          <div class="work-step"><small>02</small><strong>Upload licensed material</strong></div>
-          <div class="work-step"><small>03</small><strong>Generate topic / outline candidates</strong></div>
-          <div class="work-step"><small>04</small><strong>Lock Story Bible</strong></div>
-          <div class="work-step"><small>05</small><strong>Generate chapter by chapter</strong></div>
-          <div class="work-step"><small>06</small><strong>Check characters / setups / logic</strong></div>
-          <div class="work-step"><small>07</small><strong>Edit and retain diffs</strong></div>
-          <div class="work-step"><small>08</small><strong>Export delivery draft</strong></div>
+        <h3 class="subsection-title workbench-title">项目中持续迭代的创作流程</h3>
+        <div class="workbench-flow" aria-label="私有小说创作工作台持续迭代的流程">
+          <div class="work-step"><small>01</small><strong>创建作品</strong></div>
+          <div class="work-step"><small>02</small><strong>上传授权素材</strong></div>
+          <div class="work-step"><small>03</small><strong>生成选题 / 大纲候选</strong></div>
+          <div class="work-step"><small>04</small><strong>锁定 Story Bible</strong></div>
+          <div class="work-step"><small>05</small><strong>逐章生成</strong></div>
+          <div class="work-step"><small>06</small><strong>人物 / 伏笔 / 逻辑检查</strong></div>
+          <div class="work-step"><small>07</small><strong>编辑修改并保存 diff</strong></div>
+          <div class="work-step"><small>08</small><strong>导出交付稿</strong></div>
         </div>
 
         <div class="boundary-strip">
           <span class="context-label">PRIVATE PROJECT DECISION · MODEL-AGNOSTIC DELIVERY</span>
-          Models and agent orchestration remain replaceable. If an in-house model fails to outperform external foundation models on editorial blind tests, usable-draft cost, and maintenance cost across two pinned evaluation versions, training stops. The durable assets are proprietary code, creation workflows, model adapters, scoring standards, rights-cleared editorial feedback and gold sets, plus deployment and operating guides.
+          模型和 Agent 编排保持可替换：如果连续两个冻结评测版本中，自研模型在编辑盲测、可用稿成本和维护成本上仍不优于外部基础模型，就停止训练。真正可沉淀的是私有新增代码、创作工作流、模型适配层、评分规范、权属清晰的编辑反馈与黄金集，以及部署与操作手册。
         </div>
 
       </section>
 
       <section class="section" id="evidence" aria-labelledby="evidence-title">
         <span class="section-kicker">07 / Public evidence</span>
-        <h2 id="evidence-title">Public Evidence Pinned to a Release Snapshot</h2>
+        <h2 id="evidence-title">固定到 Release 快照的公开证据</h2>
         <p class="section-intro">
-          The governance evidence below is pinned to release commit <code>b19b3b5…</code>; CI links point to the corresponding Actions run.
+          以下治理证据固定到 Release 对应提交 <code>b19b3b5…</code>；CI 结果单独链接到当次 Actions 运行记录。
         </p>
 
         <div class="evidence-grid">
           <a class="evidence-card" href="https://github.com/JiaxinZhang-space/novel-ai-data-pipeline/releases/tag/v0.1.0-demo" target="_blank" rel="noopener">
             <small>RELEASE</small>
             <h3>v0.1.0-demo</h3>
-            <p>Synthetic Portfolio Build and pinned commit snapshot.</p>
-            <span>View release →</span>
+            <p>Synthetic Portfolio Build 与固定提交快照。</p>
+            <span>查看 Release →</span>
           </a>
           <a class="evidence-card" href="https://github.com/JiaxinZhang-space/novel-ai-data-pipeline/actions/runs/29549542743" target="_blank" rel="noopener">
             <small>CI</small>
             <h3>Python 3.10 / 3.12</h3>
-            <p>Both jobs passed the lightweight public release gate, deterministic rebuild, tests, CLI, compilation, and artifact diff.</p>
-            <span>View Actions →</span>
+            <p>两个 job 的轻量公开发布安全门、确定性重建、测试、CLI、编译与 artifacts diff 均成功。</p>
+            <span>查看 Actions →</span>
           </a>
           <a class="evidence-card" href="https://github.com/JiaxinZhang-space/novel-ai-data-pipeline/blob/b19b3b5d9aa78715fbb65218a3438516d901b87b/governance/dataset_card.md" target="_blank" rel="noopener">
             <small>GOVERNANCE</small>
             <h3>Dataset Card</h3>
-            <p>Data sources, intended use, split strategy, limitations, and authenticity boundaries.</p>
-            <span>View document →</span>
+            <p>数据来源、用途、切分策略、限制和真实性边界。</p>
+            <span>查看文档 →</span>
           </a>
           <a class="evidence-card" href="https://github.com/JiaxinZhang-space/novel-ai-data-pipeline/blob/b19b3b5d9aa78715fbb65218a3438516d901b87b/docs/verification_report.md" target="_blank" rel="noopener">
             <small>VERIFICATION</small>
             <h3>Verification Report</h3>
-            <p>Counts, tests, deduplication, isolation, and validation for the pinned synthetic build.</p>
-            <span>View report →</span>
+            <p>固定合成构建的计数、测试、去重、隔离和校验结果。</p>
+            <span>查看报告 →</span>
           </a>
           <a class="evidence-card" href="https://github.com/JiaxinZhang-space/novel-ai-data-pipeline/blob/b19b3b5d9aa78715fbb65218a3438516d901b87b/artifacts/manifests/release_manifest.json" target="_blank" rel="noopener">
             <small>MANIFEST</small>
             <h3>Release Manifest</h3>
-            <p>Dataset versions, stage artifacts, source snapshot, and release lineage.</p>
-            <span>View manifest →</span>
+            <p>数据版本、阶段产物、源码快照与 Release 血缘。</p>
+            <span>查看 Manifest →</span>
           </a>
           <a class="evidence-card" href="https://github.com/JiaxinZhang-space/novel-ai-data-pipeline/blob/b19b3b5d9aa78715fbb65218a3438516d901b87b/artifacts/metrics/split_leakage_report.json" target="_blank" rel="noopener">
             <small>SPLIT CHECK</small>
-            <h3>Cross-Split Overlap 0 / 0 / 0</h3>
-            <p>Author, work, and text-hash overlap checks for the pinned synthetic splits.</p>
-            <span>View report →</span>
+            <h3>跨集合重叠 0 / 0 / 0</h3>
+            <p>固定合成切分的作者、作品与正文哈希重叠检查。</p>
+            <span>查看报告 →</span>
           </a>
           <a class="evidence-card" href="https://github.com/JiaxinZhang-space/novel-ai-data-pipeline/blob/b19b3b5d9aa78715fbb65218a3438516d901b87b/artifacts/manifests/checksums.sha256" target="_blank" rel="noopener">
             <small>CHECKSUMS</small>
-            <h3>23 SHA-256 Entries</h3>
-            <p>Pinned checksums for governed synthetic build files.</p>
-            <span>View checksums →</span>
+            <h3>23 项 SHA-256</h3>
+            <p>受管合成构建文件的固定校验和清单。</p>
+            <span>查看清单 →</span>
           </a>
           <a class="evidence-card" href="https://github.com/JiaxinZhang-space/novel-ai-data-pipeline/blob/b19b3b5d9aa78715fbb65218a3438516d901b87b/architecture/system_architecture.md" target="_blank" rel="noopener">
             <small>ARCHITECTURE</small>
-            <h3>System Architecture</h3>
-            <p>Public data-engineering scope, stage boundaries, and unimplemented areas.</p>
-            <span>View architecture →</span>
+            <h3>系统架构</h3>
+            <p>公开数据工程范围、阶段边界与未实现范围。</p>
+            <span>查看架构 →</span>
           </a>
           <a class="evidence-card" href="https://github.com/JiaxinZhang-space/novel-ai-data-pipeline/blob/b19b3b5d9aa78715fbb65218a3438516d901b87b/architecture/data_lineage.md" target="_blank" rel="noopener">
             <small>LINEAGE</small>
-            <h3>DEMO Data Lineage</h3>
-            <p>Implemented stages, dataset and evaluation versions, plus placeholder links for unexecuted training and models; the production withdrawal path remains target design.</p>
-            <span>View lineage →</span>
+            <h3>DEMO 数据血缘</h3>
+            <p>公开实现的阶段、数据与评测版本，以及未执行训练 / 模型的占位关联；生产撤回路径属于目标设计。</p>
+            <span>查看血缘 →</span>
           </a>
           <a class="evidence-card" href="https://github.com/JiaxinZhang-space/novel-ai-data-pipeline/blob/b19b3b5d9aa78715fbb65218a3438516d901b87b/CONTRIBUTIONS.md" target="_blank" rel="noopener">
             <small>OWNERSHIP</small>
             <h3>Contributions</h3>
-            <p>Independent implementation, AI-assisted development, and final accountability boundaries.</p>
-            <span>View statement →</span>
+            <p>独立实现、AI 辅助开发与最终责任边界。</p>
+            <span>查看声明 →</span>
           </a>
           <a class="evidence-card" href="https://github.com/JiaxinZhang-space/novel-ai-data-pipeline/blob/b19b3b5d9aa78715fbb65218a3438516d901b87b/PROVENANCE.md" target="_blank" rel="noopener">
             <small>PROVENANCE</small>
-            <h3>Provenance Statement</h3>
-            <p>How synthetic data was generated and the boundary excluding third-party project assets.</p>
-            <span>View statement →</span>
+            <h3>来源声明</h3>
+            <p>合成数据生成方式与不包含第三方项目资产的公开边界。</p>
+            <span>查看声明 →</span>
           </a>
           <a class="evidence-card" href="https://github.com/JiaxinZhang-space/novel-ai-data-pipeline/blob/b19b3b5d9aa78715fbb65218a3438516d901b87b/SECURITY.md" target="_blank" rel="noopener">
             <small>PUBLIC SAFETY</small>
             <h3>Security Policy</h3>
-            <p>Sensitive assets prohibited from the public repository and the manual-review boundary.</p>
-            <span>View policy →</span>
+            <p>公开仓库禁止提交的敏感资产与人工复核边界。</p>
+            <span>查看策略 →</span>
           </a>
         </div>
 
         <div class="run-box">
-          <h3>Local Reproduction</h3>
+          <h3>本地复现入口</h3>
           <pre><code>python scripts/run_demo.py --output-dir artifacts
 python -m unittest discover -s tests -v
 python scripts/check_public_repo.py</code></pre>
           <div class="repo-actions">
-            <a class="button primary" href="https://github.com/JiaxinZhang-space/novel-ai-data-pipeline/tree/b19b3b5d9aa78715fbb65218a3438516d901b87b" target="_blank" rel="noopener">Open pinned source snapshot</a>
-            <a class="button" href="https://github.com/JiaxinZhang-space/novel-ai-data-pipeline/blob/b19b3b5d9aa78715fbb65218a3438516d901b87b/governance/data_dictionary.md" target="_blank" rel="noopener">View data dictionary</a>
-            <a class="button" href="https://github.com/JiaxinZhang-space/novel-ai-data-pipeline/blob/b19b3b5d9aa78715fbb65218a3438516d901b87b/governance/data_quality_contract.md" target="_blank" rel="noopener">View partially implemented quality contract</a>
-            <a class="button" href="https://github.com/JiaxinZhang-space/novel-ai-data-pipeline/blob/b19b3b5d9aa78715fbb65218a3438516d901b87b/LICENSE" target="_blank" rel="noopener">View MIT License</a>
+            <a class="button primary" href="https://github.com/JiaxinZhang-space/novel-ai-data-pipeline/tree/b19b3b5d9aa78715fbb65218a3438516d901b87b" target="_blank" rel="noopener">打开固定代码快照</a>
+            <a class="button" href="https://github.com/JiaxinZhang-space/novel-ai-data-pipeline/blob/b19b3b5d9aa78715fbb65218a3438516d901b87b/governance/data_dictionary.md" target="_blank" rel="noopener">查看数据字典</a>
+            <a class="button" href="https://github.com/JiaxinZhang-space/novel-ai-data-pipeline/blob/b19b3b5d9aa78715fbb65218a3438516d901b87b/governance/data_quality_contract.md" target="_blank" rel="noopener">查看部分实现的质量契约</a>
+            <a class="button" href="https://github.com/JiaxinZhang-space/novel-ai-data-pipeline/blob/b19b3b5d9aa78715fbb65218a3438516d901b87b/LICENSE" target="_blank" rel="noopener">查看 MIT License</a>
           </div>
         </div>
       </section>
 
       <section class="section" id="limits" aria-labelledby="limits-title">
         <span class="section-kicker">08 / Limits</span>
-        <h2 id="limits-title">Public Demo Scope</h2>
+        <h2 id="limits-title">公开 Demo 边界</h2>
         <p class="section-intro">
-          This section describes only the pinned public implementation. It neither dismisses the real private-project experience nor presents private assets as publicly reproducible evidence.
+          下面只描述固定公开仓库的实现范围；它不否认私有项目的真实经历与工作流，也不把私有资产包装成公开可复现证据。
         </p>
 
         <div class="limits-grid">
           <article class="card">
-            <h3>Implemented in the Public Demo</h3>
+            <h3>公开 Demo 已完成</h3>
             <ul>
-              <li>Deterministic synthetic data can be regenerated and reconciled.</li>
-              <li>Rights gating, normalization, SHA-256 exact deduplication, and educational MinHash/LSH near-duplicate candidate detection run on the synthetic regression.</li>
-              <li>SFT, preference, and isolated evaluation formats are derived consistently.</li>
-              <li>The manifest, DEMO stage and placeholder lineage, tests, author/work/text-hash cross-split checks, and lightweight public release gate are reviewable.</li>
+              <li>确定性合成数据可以重复生成和对账。</li>
+              <li>权利硬门、规范化、SHA-256 精确去重与教学型 MinHash/LSH 近重复候选检测，已在合成回归上运行。</li>
+              <li>SFT、偏好和隔离评测格式可以稳定派生。</li>
+              <li>Manifest、DEMO 阶段 / 占位血缘、测试、作者 / 作品 / 正文哈希跨 split 重叠检查和轻量公开发布门禁可以公开复核。</li>
             </ul>
           </article>
           <article class="card">
-            <h3>Not Covered</h3>
+            <h3>当前没有覆盖</h3>
             <ul>
-              <li>No fiction model was trained or fine-tuned; model and training runs are placeholder relations only.</li>
-              <li>No real users, publication outcomes, revenue, or production throughput.</li>
-              <li>Not a production-grade copyright-legal, PII, or content-safety system.</li>
-              <li>Baseline, ablation, and blind-test files are synthetic format examples, not real editorial experiments.</li>
-              <li>Real deployment still requires a private environment, work-level authorization, and independent editorial blind review.</li>
+              <li>未训练或微调小说模型，模型与训练运行只保留占位关联。</li>
+              <li>没有真实用户、发布结果、收入或生产吞吐。</li>
+              <li>不是生产级版权法律判断、PII 或内容安全系统。</li>
+              <li>基线、消融与盲测文件是合成格式样例，不是真实编辑实验。</li>
+              <li>真实落地仍需私有环境、逐作品授权和独立编辑盲测。</li>
             </ul>
           </article>
         </div>
 
         <div class="summary-box">
-          <h3>What This Project Demonstrates</h3>
+          <h3>我希望通过这个项目展示什么</h3>
           <p>
-            This project does not predict “hits” and did not train a fiction model. It demonstrates how I identify falsely precise labels, establish data contracts, and turn rights, deduplication, isolation, versioning, and release validation into an executable pipeline. Literary judgment remains the responsibility of real editorial evaluation and human review.
+            这个项目不包含“爆款”预测，也没有训练小说模型。我用它展示了自己如何识别伪精确标签、建立数据契约，并把权利、去重、隔离、版本和发布验证落实成可执行链路；文学语义仍由真实编辑评测和人工判断负责。
           </p>
           <div class="repo-actions">
-            <a class="button primary" href="../index.html#projects">Back to Portfolio</a>
-            <a class="button" href="https://github.com/JiaxinZhang-space/novel-ai-data-pipeline" target="_blank" rel="noopener">View Public Repository</a>
+            <a class="button primary" href="../index.html#projects">返回作品集</a>
+            <a class="button" href="https://github.com/JiaxinZhang-space/novel-ai-data-pipeline" target="_blank" rel="noopener">查看公开仓库</a>
           </div>
         </div>
       </section>
     </main>
 
     <footer>
-      <span>Governed Novel Data Pipeline · Jiaxin Zhang’s AI Data Engineering Portfolio</span>
+      <span>Governed Novel Data Pipeline · 张佳欣的 AI 数据工程作品集</span>
     </footer>
   </body>
 </html>

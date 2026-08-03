@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://jiaxinzhang-space.github.io/sitemap.xml
+Sitemap: https://www.jiaxinzhang-data.com/sitemap.xml

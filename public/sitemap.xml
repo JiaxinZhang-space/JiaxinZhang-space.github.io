@@ -2,66 +2,66 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
         xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>https://jiaxinzhang-space.github.io/</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://jiaxinzhang-space.github.io/" />
-    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://jiaxinzhang-space.github.io/zh/" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://jiaxinzhang-space.github.io/" />
+    <loc>https://www.jiaxinzhang-data.com/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.jiaxinzhang-data.com/" />
+    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://www.jiaxinzhang-data.com/zh/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.jiaxinzhang-data.com/" />
     <lastmod>2026-07-31</lastmod>
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://jiaxinzhang-space.github.io/zh/</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://jiaxinzhang-space.github.io/" />
-    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://jiaxinzhang-space.github.io/zh/" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://jiaxinzhang-space.github.io/" />
+    <loc>https://www.jiaxinzhang-data.com/zh/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.jiaxinzhang-data.com/" />
+    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://www.jiaxinzhang-data.com/zh/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.jiaxinzhang-data.com/" />
     <lastmod>2026-07-31</lastmod>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://jiaxinzhang-space.github.io/projects/ecommerce-lakehouse-warehouse.html</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://jiaxinzhang-space.github.io/projects/ecommerce-lakehouse-warehouse.html" />
-    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://jiaxinzhang-space.github.io/zh/projects/ecommerce-lakehouse-warehouse.html" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://jiaxinzhang-space.github.io/projects/ecommerce-lakehouse-warehouse.html" />
+    <loc>https://www.jiaxinzhang-data.com/projects/ecommerce-lakehouse-warehouse.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.jiaxinzhang-data.com/projects/ecommerce-lakehouse-warehouse.html" />
+    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://www.jiaxinzhang-data.com/zh/projects/ecommerce-lakehouse-warehouse.html" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.jiaxinzhang-data.com/projects/ecommerce-lakehouse-warehouse.html" />
     <lastmod>2026-07-31</lastmod>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://jiaxinzhang-space.github.io/zh/projects/ecommerce-lakehouse-warehouse.html</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://jiaxinzhang-space.github.io/projects/ecommerce-lakehouse-warehouse.html" />
-    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://jiaxinzhang-space.github.io/zh/projects/ecommerce-lakehouse-warehouse.html" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://jiaxinzhang-space.github.io/projects/ecommerce-lakehouse-warehouse.html" />
+    <loc>https://www.jiaxinzhang-data.com/zh/projects/ecommerce-lakehouse-warehouse.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.jiaxinzhang-data.com/projects/ecommerce-lakehouse-warehouse.html" />
+    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://www.jiaxinzhang-data.com/zh/projects/ecommerce-lakehouse-warehouse.html" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.jiaxinzhang-data.com/projects/ecommerce-lakehouse-warehouse.html" />
     <lastmod>2026-07-31</lastmod>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://jiaxinzhang-space.github.io/projects/mini-c4-data-pipeline.html</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://jiaxinzhang-space.github.io/projects/mini-c4-data-pipeline.html" />
-    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://jiaxinzhang-space.github.io/zh/projects/mini-c4-data-pipeline.html" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://jiaxinzhang-space.github.io/projects/mini-c4-data-pipeline.html" />
+    <loc>https://www.jiaxinzhang-data.com/projects/mini-c4-data-pipeline.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.jiaxinzhang-data.com/projects/mini-c4-data-pipeline.html" />
+    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://www.jiaxinzhang-data.com/zh/projects/mini-c4-data-pipeline.html" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.jiaxinzhang-data.com/projects/mini-c4-data-pipeline.html" />
     <lastmod>2026-07-31</lastmod>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://jiaxinzhang-space.github.io/zh/projects/mini-c4-data-pipeline.html</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://jiaxinzhang-space.github.io/projects/mini-c4-data-pipeline.html" />
-    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://jiaxinzhang-space.github.io/zh/projects/mini-c4-data-pipeline.html" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://jiaxinzhang-space.github.io/projects/mini-c4-data-pipeline.html" />
+    <loc>https://www.jiaxinzhang-data.com/zh/projects/mini-c4-data-pipeline.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.jiaxinzhang-data.com/projects/mini-c4-data-pipeline.html" />
+    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://www.jiaxinzhang-data.com/zh/projects/mini-c4-data-pipeline.html" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.jiaxinzhang-data.com/projects/mini-c4-data-pipeline.html" />
     <lastmod>2026-07-31</lastmod>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://jiaxinzhang-space.github.io/projects/governed-novel-data-pipeline.html</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://jiaxinzhang-space.github.io/projects/governed-novel-data-pipeline.html" />
-    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://jiaxinzhang-space.github.io/zh/projects/governed-novel-data-pipeline.html" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://jiaxinzhang-space.github.io/projects/governed-novel-data-pipeline.html" />
+    <loc>https://www.jiaxinzhang-data.com/projects/governed-novel-data-pipeline.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.jiaxinzhang-data.com/projects/governed-novel-data-pipeline.html" />
+    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://www.jiaxinzhang-data.com/zh/projects/governed-novel-data-pipeline.html" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.jiaxinzhang-data.com/projects/governed-novel-data-pipeline.html" />
     <lastmod>2026-07-31</lastmod>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://jiaxinzhang-space.github.io/zh/projects/governed-novel-data-pipeline.html</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://jiaxinzhang-space.github.io/projects/governed-novel-data-pipeline.html" />
-    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://jiaxinzhang-space.github.io/zh/projects/governed-novel-data-pipeline.html" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://jiaxinzhang-space.github.io/projects/governed-novel-data-pipeline.html" />
+    <loc>https://www.jiaxinzhang-data.com/zh/projects/governed-novel-data-pipeline.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.jiaxinzhang-data.com/projects/governed-novel-data-pipeline.html" />
+    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://www.jiaxinzhang-data.com/zh/projects/governed-novel-data-pipeline.html" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.jiaxinzhang-data.com/projects/governed-novel-data-pipeline.html" />
     <lastmod>2026-07-31</lastmod>
     <priority>0.8</priority>
   </url>

@@ -3,7 +3,7 @@ import path from "node:path";
 
 const root = path.resolve(import.meta.dirname, "..");
 const publicDir = path.join(root, "public");
-const site = "https://jiaxinzhang-space.github.io";
+const site = "https://www.jiaxinzhang-data.com";
 
 const pairs = [
   ["index.html", "zh/index.html", "/", "/zh/"],

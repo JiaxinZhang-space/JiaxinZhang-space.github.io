@@ -1638,58 +1638,6 @@
           以上来自私有早期原型的 32 条合成 AI 试验记录，只展示内部审计聚合结果。来源材料属于私有证据，不在公开仓库复现；它们不是公开 Demo 的固定回归数据，也不代表真实业务规模。
         </p>
 
-        <h3 class="timeline-heading">从私有项目到公开 Demo</h3>
-        <div class="timeline" aria-label="从私有项目筹备到公开合成治理 Demo 的时间线">
-          <article class="timeline-item">
-            <time>2025.06—07</time>
-            <div class="card">
-              <h3>项目筹备与开发启动</h3>
-              <p>我们三人开始搭建私有小说创作工作台。我负责采集、清洗、数据库和向量检索；算法工程师负责模型调用与工作流，编辑负责内容规则与验收。</p>
-            </div>
-          </article>
-          <article class="timeline-item">
-            <time>2025.08</time>
-            <div class="card">
-              <h3>多 Agent Demo 跑通</h3>
-              <p>Streamlit、LangGraph、通义千问、Chroma 和 SQLite 串起选题、素材、大纲、正文与评分；此时“能生成”仍被误当成“数据可用于训练”。</p>
-            </div>
-          </article>
-          <article class="timeline-item">
-            <time>2025.09</time>
-            <div class="card">
-              <h3>权利与数据接入重建</h3>
-              <p>旧素材无法逐作品证明来源和使用范围。我把旧库隔离为只读实验数据，重新建立作者、来源、授权范围、撤回方式和版本台账。</p>
-            </div>
-          </article>
-          <article class="timeline-item">
-            <time>2025.10</time>
-            <div class="card">
-              <h3>抽样结构全绿，语义却塌缩</h3>
-              <p>编辑抽查发现样本高度同质；我继续对照材料、数据库和分析 Agent，确认字段口径漂移、特征分布塌缩，以及生成与评价没有真正解耦。</p>
-            </div>
-          </article>
-          <article class="timeline-item">
-            <time>2025.11—2026.01</time>
-            <div class="card">
-              <h3>从生成吞吐转向可用稿成本</h3>
-              <p>批量生成暴露了编辑瓶颈、限流重试、断点恢复和向量版本错位。同题盲测进一步说明：复杂 Agent 编排不应成为不可替换的核心，评测必须冻结且独立。</p>
-            </div>
-          </article>
-          <article class="timeline-item">
-            <time>2026.02—03</time>
-            <div class="card">
-              <h3>私有项目收束与资产边界</h3>
-              <p>商业假设未通过止损线后，我们停止继续扩张。我整理权属、版本、密钥、索引、依赖与交付边界，把可保留价值收敛到工作流、治理规范和评测资产。</p>
-            </div>
-          </article>
-          <article class="timeline-item">
-            <time>2026.07</time>
-            <div class="card">
-              <h3>公开合成治理 Demo</h3>
-              <p>我把训练前治理部分独立重建为公开仓库，以 100% 合成数据、固定 Release、双版本 CI、可复现构建和治理文件完成发布。</p>
-            </div>
-          </article>
-        </div>
       </section>
 
       <section class="section" id="architecture" aria-labelledby="architecture-title">
